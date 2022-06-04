@@ -8,6 +8,7 @@ import com.example.telecare.service.impl.CityServiceImpl;
 import com.example.telecare.service.impl.DistrictServiceImpl;
 import com.example.telecare.service.impl.WardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class AddressController {
     @Autowired
     WardServiceImpl wardService;
 
+    @Cacheable(value="allCity")
     @GetMapping(value = "/city")
     public List<City> getAllCity() {
         return cityService.findAll();
