@@ -17,7 +17,7 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
     // 24 hours
 
 
@@ -67,14 +67,14 @@ public class JwtTokenUtil implements Serializable {
     private String doGenerateAccessToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY ))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
     private String doGenerateRefreshToken(String subject) {
 
         return Jwts.builder().setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 30 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 30 ))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
