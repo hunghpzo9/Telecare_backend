@@ -1,8 +1,10 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.AuthenticationRequest;
+import com.example.telecare.model.Patient;
 import com.example.telecare.model.User;
 import com.example.telecare.model.UserRole;
+import com.example.telecare.repository.PatientRepository;
 import com.example.telecare.repository.UserRoleRepository;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.service.AuthService;
@@ -38,6 +40,8 @@ public class AuthController {
 
     @Autowired
     MyUserDetailsService userDetailsService;
+
+
 
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);

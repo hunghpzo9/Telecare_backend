@@ -1,7 +1,11 @@
 package com.example.telecare.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 public class Feedback {
@@ -18,12 +22,11 @@ public class Feedback {
     @Basic
     @Column(name = "is_hidden")
     private Byte isHidden;
-    @Basic
-    @Column(name = "created_at")
-    private Timestamp createdAt;
-    @Basic
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
+
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private Date updatedAt;
 
     public int getId() {
         return id;
@@ -57,17 +60,13 @@ public class Feedback {
         this.isHidden = isHidden;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
+
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
+
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
