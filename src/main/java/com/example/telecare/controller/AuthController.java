@@ -29,14 +29,12 @@ public class AuthController {
     @PostMapping("/register/patient")
     public User registerUserPatient(@RequestBody User user) {
         User registeredUser = userService.registerPatient(user);
-        logger.info("User ID: {}",user.getId());
         return registeredUser;
     }
 
     @PostMapping("/register/doctor")
     public User registerUserDoctor(@RequestBody User user) {
         User registeredUser = userService.registerDoctor(user);
-        logger.info("User ID: {}",user.getId());
         return registeredUser;
     }
     @PostMapping("/login")
