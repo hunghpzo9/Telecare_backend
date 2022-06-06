@@ -17,6 +17,9 @@ public class Appointment {
     @Basic
     @Column(name = "scheduele_id")
     private Integer schedueleId;
+    @Basic
+    @Column(name = "relative_id")
+    private Integer relativeId;
 
     public int getId() {
         return id;
@@ -72,5 +75,13 @@ public class Appointment {
         result = 31 * result + (doctorId != null ? doctorId.hashCode() : 0);
         result = 31 * result + (schedueleId != null ? schedueleId.hashCode() : 0);
         return result;
+    }
+
+    public Integer getRelativeId() {
+        return relativeId;
+    }
+
+    public void setRelativeId(Integer relativeId) {
+        this.relativeId = relativeId;
     }
 }

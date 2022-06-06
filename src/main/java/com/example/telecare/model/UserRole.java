@@ -8,10 +8,12 @@ import javax.persistence.*;
 public class UserRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Basic
     @Column(name = "user_id")
     private int userId;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Basic
     @Column(name = "role_id")
     private int roleId;
 

@@ -1,6 +1,7 @@
 package com.example.telecare.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "appointment_details", schema = "telecare", catalog = "")
@@ -21,6 +22,12 @@ public class AppointmentDetails {
     @Basic
     @Column(name = "medical_record_id")
     private Integer medicalRecordId;
+    @Basic
+    @Column(name = "status_id")
+    private Integer statusId;
+    @Basic
+    @Column(name = "time")
+    private Date time;
 
     public int getAppointmentId() {
         return appointmentId;
@@ -88,5 +95,21 @@ public class AppointmentDetails {
         result = 31 * result + (prescriptionId != null ? prescriptionId.hashCode() : 0);
         result = 31 * result + (medicalRecordId != null ? medicalRecordId.hashCode() : 0);
         return result;
+    }
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

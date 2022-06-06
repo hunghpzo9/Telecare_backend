@@ -1,9 +1,17 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -14,7 +22,7 @@ public class User {
     private String fullName;
     @Basic
     @Column(name = "date_of_birth")
-    private Timestamp dateOfBirth;
+    private Date dateOfBirth;
     @Basic
     @Column(name = "gender")
     private Byte gender;
@@ -34,8 +42,16 @@ public class User {
     @Column(name = "is_active")
     private Byte isActive;
     @Basic
+    @Column(name = "image_url")
+    private String imageUrl;
+    @Basic
     @Column(name = "address_id")
     private Integer addressId;
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name="role_id"))
+//    @JsonBackReference
+    public Set<Role> roles =  new HashSet<>();
 
     public int getId() {
         return id;
@@ -53,11 +69,11 @@ public class User {
         this.fullName = fullName;
     }
 
-    public Timestamp getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Timestamp dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -109,12 +125,24 @@ public class User {
         this.isActive = isActive;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Integer getAddressId() {
         return addressId;
     }
 
     public void setAddressId(Integer addressId) {
         this.addressId = addressId;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     @Override
@@ -133,6 +161,7 @@ public class User {
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (passwordSalt != null ? !passwordSalt.equals(user.passwordSalt) : user.passwordSalt != null) return false;
         if (isActive != null ? !isActive.equals(user.isActive) : user.isActive != null) return false;
+        if (imageUrl != null ? !imageUrl.equals(user.imageUrl) : user.imageUrl != null) return false;
         if (addressId != null ? !addressId.equals(user.addressId) : user.addressId != null) return false;
 
         return true;
@@ -149,6 +178,7 @@ public class User {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (passwordSalt != null ? passwordSalt.hashCode() : 0);
         result = 31 * result + (isActive != null ? isActive.hashCode() : 0);
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
         result = 31 * result + (addressId != null ? addressId.hashCode() : 0);
         return result;
     }

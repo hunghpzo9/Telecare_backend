@@ -1,6 +1,7 @@
 package com.example.telecare.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -30,6 +31,9 @@ public class Relative {
     @Basic
     @Column(name = "patient_id")
     private Integer patientId;
+    @Basic
+    @Column(name = "image_url")
+    private String imageUrl;
 
     public int getId() {
         return id;
@@ -50,6 +54,8 @@ public class Relative {
     public Timestamp getDateOfBirth() {
         return dateOfBirth;
     }
+
+
 
     public void setDateOfBirth(Timestamp dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
@@ -127,5 +133,13 @@ public class Relative {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (patientId != null ? patientId.hashCode() : 0);
         return result;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

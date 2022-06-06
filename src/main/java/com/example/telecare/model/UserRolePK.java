@@ -1,17 +1,16 @@
 package com.example.telecare.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 public class UserRolePK implements Serializable {
     @Column(name = "user_id")
+    @Basic
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
     @Column(name = "role_id")
+    @Basic
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roleId;
