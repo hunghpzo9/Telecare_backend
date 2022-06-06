@@ -1,7 +1,13 @@
 package com.example.telecare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +20,12 @@ public class Doctor {
     @Basic
     @Column(name = "job_place")
     private String jobPlace;
+
+    @JsonIgnore
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "doctor_id")
+    private User user;
 
     public int getDoctorId() {
         return doctorId;

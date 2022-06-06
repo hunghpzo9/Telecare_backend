@@ -1,8 +1,11 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.model.Doctor;
+import com.example.telecare.model.Patient;
 import com.example.telecare.model.Role;
 import com.example.telecare.model.User;
+import com.example.telecare.repository.PatientRepository;
 import com.example.telecare.repository.RoleRepository;
 import com.example.telecare.repository.UserRepository;
 import com.example.telecare.repository.UserRoleRepository;
@@ -27,6 +30,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    PatientRepository patientRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -44,8 +50,12 @@ public class UserServiceImpl implements UserService {
             logger.info("Save user to database");
             Role rolePatient = roleRepository.findByName(ProjectStorage.ROLE_PATIENT);
             user.addRole(rolePatient);
-            User registeredUser = userRepository.save(user);
-            return registeredUser;
+
+            Patient patient = new Patient();
+            patient.setUser(user);
+            user.setPatient(patient);
+
+            return userRepository.save(user);
         }
     }
 
@@ -62,10 +72,14 @@ public class UserServiceImpl implements UserService {
         } else {
             encodePassword(user);
             logger.info("Save user to database");
-            Role rolePatient = roleRepository.findByName(ProjectStorage.ROLE_DOCTOR);
-            user.addRole(rolePatient);
-            User registeredUser = userRepository.save(user);
-            return registeredUser;
+            Role roleDoctor = roleRepository.findByName(ProjectStorage.ROLE_DOCTOR);
+            user.addRole(roleDoctor);
+
+            Doctor doctor = new Doctor();
+            doctor.setUser(user);
+            user.setDoctor(doctor);
+
+            return userRepository.save(user);
         }
     }
 

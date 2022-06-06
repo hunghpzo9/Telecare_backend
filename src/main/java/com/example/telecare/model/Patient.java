@@ -1,7 +1,13 @@
 package com.example.telecare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +32,13 @@ public class Patient {
     @Basic
     @Column(name = "ethnic_id")
     private Integer ethnicId;
+
+    @JsonIgnore
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "patient_id")
+    private User user;
+
 
     public int getPatientId() {
         return patientId;
