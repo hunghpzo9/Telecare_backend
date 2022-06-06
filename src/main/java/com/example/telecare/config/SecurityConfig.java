@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -40,8 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/auth/login");
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/api/v1/auth/login").permitAll()
-                .antMatchers("/api/v1/auth/register/**").permitAll()
+                .antMatchers("/api/v1/auth/login/**").permitAll()
                 .antMatchers("/api/v1/auth/register/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/address/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
                 .anyRequest().authenticated()
