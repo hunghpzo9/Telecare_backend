@@ -23,9 +23,9 @@ public class ProjectStorage {
 
     public static final String ROLE_ADMIN= "ADMIN";
 
-    public static final int GENDER_MALE= 1;
+    public static final int GENDER_MALE= 0;
 
-    public static final int GENDER_FEMALE= 2;
+    public static final int GENDER_FEMALE= 1;
 
-    public static final int GENDER_OTHER= 3;
+    public static final int GENDER_OTHER= 2;
 }
