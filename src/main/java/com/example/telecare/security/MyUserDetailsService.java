@@ -1,6 +1,9 @@
 package com.example.telecare.security;
 
+import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.ForbiddenException;
 import com.example.telecare.repository.UserRepository;
+import com.example.telecare.utils.ProjectStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,11 @@ public class MyUserDetailsService implements UserDetailsService {
         if (user == null) {
             logger.error("User not found");
             throw new UsernameNotFoundException("User not found in database");
-        } else {
+        }
+        if(user.getIsActive() == ProjectStorage.IS_NOT_ACTIVE){
+            throw new ForbiddenException("Tài khoản của bạn đang chưa được kích hoạt");
+        }
+        else {
             String decodePass = passwordHashService.decodePasswordAlgorithm(user.getPassword());
             Collection<SimpleGrantedAuthority> authorities;
             authorities = user.getRoles()

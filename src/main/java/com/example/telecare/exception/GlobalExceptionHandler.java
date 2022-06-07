@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<?> handlerForbiddenException(BadRequestException ex, WebRequest req){
+    public ResponseEntity<?> handlerForbiddenException(ForbiddenException ex, WebRequest req){
         ErrorResponse errorResponse = new ErrorResponse(new Date(),ex.getMessage());
         return new ResponseEntity(errorResponse,HttpStatus.FORBIDDEN);
     }

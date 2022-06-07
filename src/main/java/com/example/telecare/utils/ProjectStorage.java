@@ -1,6 +1,8 @@
 package com.example.telecare.utils;
 
 public class ProjectStorage {
+
+    //API
     public static final String ACCESS_TOKEN= "access_token";
 
     public static final String REFRESH_TOKEN= "refresh_token";
@@ -8,6 +10,10 @@ public class ProjectStorage {
     public static final String BEARER= "Bearer ";
 
     public static final String AUTHORIZATION= "Authorization";
+
+    public static final int IS_ACTIVE= 1;
+
+    public static final int IS_NOT_ACTIVE= 0;
 
     public static final String ROLE_PATIENT= "PATIENT";
 
