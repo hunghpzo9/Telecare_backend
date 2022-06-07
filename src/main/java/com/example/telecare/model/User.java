@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,15 +53,17 @@ public class User {
     @Basic
     @Column(name = "address_id")
     private Integer addressId;
+    @Basic
+    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    @Basic
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Patient patient;
-
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Doctor doctor;

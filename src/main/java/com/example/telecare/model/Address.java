@@ -1,7 +1,16 @@
 package com.example.telecare.model;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
+
+@Getter
+@Setter
 @Entity
 public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,46 +29,12 @@ public class Address {
     @Basic
     @Column(name = "street_name")
     private String streetName;
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private Date updatedAt;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(String cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getDistricyId() {
-        return districyId;
-    }
-
-    public void setDistricyId(String districyId) {
-        this.districyId = districyId;
-    }
-
-    public String getWardId() {
-        return wardId;
-    }
-
-    public void setWardId(String wardId) {
-        this.wardId = wardId;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -86,4 +61,5 @@ public class Address {
         result = 31 * result + (streetName != null ? streetName.hashCode() : 0);
         return result;
     }
+
 }

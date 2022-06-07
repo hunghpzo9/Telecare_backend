@@ -26,30 +26,11 @@ public class Doctor {
     @MapsId
     @JoinColumn(name = "doctor_id")
     private User user;
+    @Basic
+    @Column(name = "position")
+    private String position;
 
-    public int getDoctorId() {
-        return doctorId;
-    }
 
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public String getCertificate() {
-        return certificate;
-    }
-
-    public void setCertificate(String certificate) {
-        this.certificate = certificate;
-    }
-
-    public String getJobPlace() {
-        return jobPlace;
-    }
-
-    public void setJobPlace(String jobPlace) {
-        this.jobPlace = jobPlace;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -72,4 +53,5 @@ public class Doctor {
         result = 31 * result + (jobPlace != null ? jobPlace.hashCode() : 0);
         return result;
     }
+
 }

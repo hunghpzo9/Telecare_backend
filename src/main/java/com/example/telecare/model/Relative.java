@@ -1,9 +1,16 @@
 package com.example.telecare.model;
 
-import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
+
+@Getter
+@Setter
 @Entity
 public class Relative {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +22,7 @@ public class Relative {
     private String fullName;
     @Basic
     @Column(name = "date_of_birth")
-    private Timestamp dateOfBirth;
+    private Date dateOfBirth;
     @Basic
     @Column(name = "gender")
     private Byte gender;
@@ -34,72 +41,12 @@ public class Relative {
     @Basic
     @Column(name = "image_url")
     private String imageUrl;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public Timestamp getDateOfBirth() {
-        return dateOfBirth;
-    }
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private Date updatedAt;
 
 
-
-    public void setDateOfBirth(Timestamp dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Byte getGender() {
-        return gender;
-    }
-
-    public void setGender(Byte gender) {
-        this.gender = gender;
-    }
-
-    public String getRelationship() {
-        return relationship;
-    }
-
-    public void setRelationship(String relationship) {
-        this.relationship = relationship;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -135,11 +82,4 @@ public class Relative {
         return result;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }

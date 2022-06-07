@@ -1,5 +1,7 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -7,6 +9,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,49 +32,7 @@ public class Feedback {
     @UpdateTimestamp
     private Date updatedAt;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public Byte getIsHidden() {
-        return isHidden;
-    }
-
-    public void setIsHidden(Byte isHidden) {
-        this.isHidden = isHidden;
-    }
-
-
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 
     @Override
     public boolean equals(Object o) {

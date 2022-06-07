@@ -1,7 +1,12 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 public class District {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,37 +23,6 @@ public class District {
     @Column(name = "cityid")
     private String cityid;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCityid() {
-        return cityid;
-    }
-
-    public void setCityid(String cityid) {
-        this.cityid = cityid;
-    }
 
     @Override
     public boolean equals(Object o) {

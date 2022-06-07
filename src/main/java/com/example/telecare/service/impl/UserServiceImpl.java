@@ -41,10 +41,10 @@ public class UserServiceImpl implements UserService {
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByPhone != null) {
             logger.error("{} is existed", duplicateUserByPhone.getPhone());
-            throw new BadRequestException("Phone is already existed");
+            throw new BadRequestException("Số điện thoại đã tồn tại");
         } else if (duplicateUserByEmail != null) {
             logger.error("{} is existed", duplicateUserByEmail.getEmail());
-            throw new BadRequestException("Email is already existed");
+            throw new BadRequestException("Email đã tồn tại");
         } else {
             encodePassword(user);
             logger.info("Save user to database");
@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
             Patient patient = new Patient();
             patient.setUser(user);
             user.setPatient(patient);
+            logger.info("Save patient to database");
 
             return userRepository.save(user);
         }
@@ -65,11 +66,11 @@ public class UserServiceImpl implements UserService {
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByPhone != null) {
             logger.error("{} is existed", duplicateUserByPhone.getPhone());
-            throw new BadRequestException("Phone is already existed");
+            throw new BadRequestException("Số điện thoại đã tồn tại");
         } else if (duplicateUserByEmail != null) {
             logger.error("{} is existed", duplicateUserByEmail.getEmail());
-            throw new BadRequestException("Email is already existed");
-        } else {
+            throw new BadRequestException("Email đã tồn tại");
+        }  else {
             encodePassword(user);
             logger.info("Save user to database");
             Role roleDoctor = roleRepository.findByName(ProjectStorage.ROLE_DOCTOR);
