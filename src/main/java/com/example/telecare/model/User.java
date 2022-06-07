@@ -51,9 +51,6 @@ public class User {
     @Column(name = "image_url")
     private String imageUrl;
     @Basic
-    @Column(name = "address_id")
-    private Integer addressId;
-    @Basic
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
@@ -61,13 +58,18 @@ public class User {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Patient patient;
+
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Doctor doctor;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     @Override
     public boolean equals(Object o) {
@@ -86,7 +88,6 @@ public class User {
         if (passwordSalt != null ? !passwordSalt.equals(user.passwordSalt) : user.passwordSalt != null) return false;
         if (isActive != null ? !isActive.equals(user.isActive) : user.isActive != null) return false;
         if (imageUrl != null ? !imageUrl.equals(user.imageUrl) : user.imageUrl != null) return false;
-        if (addressId != null ? !addressId.equals(user.addressId) : user.addressId != null) return false;
 
         return true;
     }
@@ -103,7 +104,6 @@ public class User {
         result = 31 * result + (passwordSalt != null ? passwordSalt.hashCode() : 0);
         result = 31 * result + (isActive != null ? isActive.hashCode() : 0);
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
-        result = 31 * result + (addressId != null ? addressId.hashCode() : 0);
         return result;
     }
 

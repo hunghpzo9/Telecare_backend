@@ -1,5 +1,6 @@
 package com.example.telecare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,6 +35,8 @@ public class Address {
     @UpdateTimestamp
     private Date updatedAt;
 
+    @OneToOne(mappedBy = "address")
+    private User user;
 
 
     @Override

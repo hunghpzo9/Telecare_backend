@@ -35,6 +35,9 @@ public class MyUserDetailsService implements UserDetailsService {
         if(user.getIsActive() == ProjectStorage.IS_NOT_ACTIVE){
             throw new ForbiddenException("Tài khoản của bạn đang chưa được kích hoạt");
         }
+        if(user.getIsActive() == ProjectStorage.IS_BAN){
+            throw new ForbiddenException("Tài khoản của bạn đang bị khoá");
+        }
         else {
             String decodePass = passwordHashService.decodePasswordAlgorithm(user.getPassword());
             Collection<SimpleGrantedAuthority> authorities;
