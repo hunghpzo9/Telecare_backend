@@ -1,10 +1,7 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.model.Doctor;
-import com.example.telecare.model.Patient;
-import com.example.telecare.model.Role;
-import com.example.telecare.model.User;
+import com.example.telecare.model.*;
 import com.example.telecare.repository.PatientRepository;
 import com.example.telecare.repository.RoleRepository;
 import com.example.telecare.repository.UserRepository;
@@ -46,6 +43,11 @@ public class UserServiceImpl implements UserService {
             logger.error("{} is existed", duplicateUserByEmail.getEmail());
             throw new BadRequestException("Email đã tồn tại");
         } else {
+
+            Address address = new Address();
+            logger.info("Save address to database");
+            user.setAddress(address);
+
             encodePassword(user);
             logger.info("Save user to database");
             Role rolePatient = roleRepository.findByName(ProjectStorage.ROLE_PATIENT);
@@ -71,6 +73,11 @@ public class UserServiceImpl implements UserService {
             logger.error("{} is existed", duplicateUserByEmail.getEmail());
             throw new BadRequestException("Email đã tồn tại");
         }  else {
+
+            Address address = new Address();
+            logger.info("Save address to database");
+            user.setAddress(address);
+
             encodePassword(user);
             logger.info("Save user to database");
             Role roleDoctor = roleRepository.findByName(ProjectStorage.ROLE_DOCTOR);
@@ -83,8 +90,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public void encodePassword(User user) {
+
+    private void encodePassword(User user) {
         UUID randomUUID = UUID.randomUUID();
         String salt = randomUUID.toString().replaceAll("-", "").substring(0, 7);
         String encodePass = passwordEncoder.encodePasswordAlgorithm(salt, user.getPassword());
@@ -93,4 +100,6 @@ public class UserServiceImpl implements UserService {
         user.setPasswordSalt(salt);
         logger.info("User has been registered");
     }
+
+
 }

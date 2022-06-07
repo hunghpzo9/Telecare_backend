@@ -11,6 +11,8 @@ public class ProjectStorage {
 
     public static final String AUTHORIZATION= "Authorization";
 
+    public static final int IS_BAN= 2;
+
     public static final int IS_ACTIVE= 1;
 
     public static final int IS_NOT_ACTIVE= 0;
