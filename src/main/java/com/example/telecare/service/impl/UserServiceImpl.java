@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService {
             Doctor doctor = new Doctor();
             doctor.setUser(user);
             user.setDoctor(doctor);
-
             return userRepository.save(user);
         }
     }

@@ -2,6 +2,8 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.AuthenticationResponse;
+import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.ForbiddenException;
 import com.example.telecare.model.Role;
 import com.example.telecare.model.User;
 import com.example.telecare.repository.UserRepository;
@@ -42,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getPhone(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
+            throw new ForbiddenException("Số điện thoại hoặc mật khẩu không đúng. Vui lòng kiểm tra và thử lại.");
         }
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getPhone());
         final String access_token = jwtTokenUtil.generateAccessToken(userDetails);
