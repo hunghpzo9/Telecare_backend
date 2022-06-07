@@ -28,7 +28,7 @@ public class PatientController {
     UserServiceImpl userService;
 
 
-    @Cacheable(value = "patientDetails")
+//    @Cacheable(value = "patientDetails")
     @GetMapping(value = "/{id}")
     public PatientDTO findPatient(@PathVariable int id) {
       return  patientService.findPatientById(id);
