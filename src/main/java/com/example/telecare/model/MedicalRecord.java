@@ -1,7 +1,16 @@
 package com.example.telecare.model;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "medical_record", schema = "telecare", catalog = "")
 public class MedicalRecord {
@@ -16,29 +25,10 @@ public class MedicalRecord {
     @Column(name = "appointment_id")
     private int appointmentId;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public int getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private Date updatedAt;
 
     @Override
     public boolean equals(Object o) {
@@ -61,4 +51,5 @@ public class MedicalRecord {
         result = 31 * result + appointmentId;
         return result;
     }
+    
 }

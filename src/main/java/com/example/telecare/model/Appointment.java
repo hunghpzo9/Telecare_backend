@@ -1,7 +1,16 @@
 package com.example.telecare.model;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
+
+@Getter
+@Setter
 @Entity
 public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,37 +30,11 @@ public class Appointment {
     @Column(name = "relative_id")
     private Integer relativeId;
 
-    public int getId() {
-        return id;
-    }
+    @CreationTimestamp
+    private Date createdAt;
+    @UpdateTimestamp
+    private Date updatedAt;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Integer getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Integer patientId) {
-        this.patientId = patientId;
-    }
-
-    public Integer getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Integer doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public Integer getSchedueleId() {
-        return schedueleId;
-    }
-
-    public void setSchedueleId(Integer schedueleId) {
-        this.schedueleId = schedueleId;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -77,11 +60,4 @@ public class Appointment {
         return result;
     }
 
-    public Integer getRelativeId() {
-        return relativeId;
-    }
-
-    public void setRelativeId(Integer relativeId) {
-        this.relativeId = relativeId;
-    }
 }

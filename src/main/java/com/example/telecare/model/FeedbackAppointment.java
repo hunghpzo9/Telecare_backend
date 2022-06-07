@@ -1,7 +1,12 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "feedback_appointment", schema = "telecare", catalog = "")
 @IdClass(FeedbackAppointmentPK.class)

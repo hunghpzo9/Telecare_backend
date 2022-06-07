@@ -1,7 +1,13 @@
 package com.example.telecare.model;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
+
+@Getter
+@Setter
 @Entity
 public class Prescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,54 +29,12 @@ public class Prescription {
     @Basic
     @Column(name = "guardian")
     private String guardian;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Integer getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(Integer appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
-    public String getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public Integer getMedicineId() {
-        return medicineId;
-    }
-
-    public void setMedicineId(Integer medicineId) {
-        this.medicineId = medicineId;
-    }
-
-    public String getGuardian() {
-        return guardian;
-    }
-
-    public void setGuardian(String guardian) {
-        this.guardian = guardian;
-    }
+    @Basic
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+    @Basic
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 
     @Override
     public boolean equals(Object o) {
@@ -99,5 +63,21 @@ public class Prescription {
         result = 31 * result + (medicineId != null ? medicineId.hashCode() : 0);
         result = 31 * result + (guardian != null ? guardian.hashCode() : 0);
         return result;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

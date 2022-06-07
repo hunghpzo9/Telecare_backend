@@ -40,61 +40,6 @@ public class Patient {
     private User user;
 
 
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getBloodType() {
-        return bloodType;
-    }
-
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    public String getJobPlace() {
-        return jobPlace;
-    }
-
-    public void setJobPlace(String jobPlace) {
-        this.jobPlace = jobPlace;
-    }
-
-    public Integer getEthnicId() {
-        return ethnicId;
-    }
-
-    public void setEthnicId(Integer ethnicId) {
-        this.ethnicId = ethnicId;
-    }
 
     @Override
     public boolean equals(Object o) {

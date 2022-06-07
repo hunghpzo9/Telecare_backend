@@ -1,7 +1,12 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "appointment_status", schema = "telecare", catalog = "")
 public class AppointmentStatus {
@@ -12,22 +17,6 @@ public class AppointmentStatus {
     @Basic
     @Column(name = "name")
     private String name;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public boolean equals(Object o) {

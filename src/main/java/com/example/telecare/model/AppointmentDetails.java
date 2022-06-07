@@ -1,8 +1,13 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.sql.Date;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "appointment_details", schema = "telecare", catalog = "")
 public class AppointmentDetails {
@@ -29,45 +34,7 @@ public class AppointmentDetails {
     @Column(name = "time")
     private Date time;
 
-    public int getAppointmentId() {
-        return appointmentId;
-    }
 
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
-    public String getDesription() {
-        return desription;
-    }
-
-    public void setDesription(String desription) {
-        this.desription = desription;
-    }
-
-    public Integer getPrescriptionId() {
-        return prescriptionId;
-    }
-
-    public void setPrescriptionId(Integer prescriptionId) {
-        this.prescriptionId = prescriptionId;
-    }
-
-    public Integer getMedicalRecordId() {
-        return medicalRecordId;
-    }
-
-    public void setMedicalRecordId(Integer medicalRecordId) {
-        this.medicalRecordId = medicalRecordId;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -97,19 +64,5 @@ public class AppointmentDetails {
         return result;
     }
 
-    public Integer getStatusId() {
-        return statusId;
-    }
 
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
 }
