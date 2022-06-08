@@ -2,6 +2,7 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.AuthenticationResponse;
+import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ForbiddenException;
 import com.example.telecare.model.Role;
@@ -25,6 +26,7 @@ import org.springframework.util.MimeTypeUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -85,13 +87,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void changeOldPassword(String id, String oldPassword,String newPassword) {
+    public ResponseEntity<?> changeOldPassword(String id, String oldPassword,String newPassword) {
         User user = userRepository.findUserById(id);
         if(!oldPassword.equals(decodePassword(user))){
             throw new ForbiddenException("Mật khẩu ban đầu không đúng");
         }else{
             encodePassword(user,newPassword);
             userRepository.save(user);
+            return ResponseEntity.ok(new ResponseOkMessage("Mật khẩu đã được thay đổi",new Date()));
         }
     }
     private void encodePassword(User user,String newPassword) {
@@ -103,6 +106,7 @@ public class AuthServiceImpl implements AuthService {
     }
     private String decodePassword(User user) {
         String decodePass = passwordEncoder.decodePasswordAlgorithm(user.getPassword());
+        System.out.println("Current:" +decodePass.substring(7));
         return decodePass.substring(7);
     }
 }
