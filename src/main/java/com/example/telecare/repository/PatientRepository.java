@@ -1,6 +1,6 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.PatientDTO;
+import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +17,5 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "left outer join ethnic e on p.ethnic_id = e. id\n" +
             "WHERE u.id = ?1",
             nativeQuery = true)
-    PatientDTO findPatientById(int uid);
+    PatientDTOInf findPatientById(int uid);
 }

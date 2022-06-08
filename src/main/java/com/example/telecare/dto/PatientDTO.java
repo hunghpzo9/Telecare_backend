@@ -1,46 +1,50 @@
 package com.example.telecare.dto;
 
-import com.example.telecare.model.Patient;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
-@JsonDeserialize(as = Patient.class)
-public interface PatientDTO {
-    Integer getId();
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PatientDTO {
+    Integer id;
 
-    String getFullName();
+    String fullName;
 
-    Date getDob();
+    Date dob;
 
-    String getEmail();
+    String email;
 
-    Byte getGender();
+    Byte gender;
 
-    String getPhone();
+    String phone;
 
-    String getImageUrl();
+    String imageUrl;
 
-    String getStreetName();
+    String streetName;
 
-    Integer getEthnicId();
+    Integer ethnicId;
 
-    String getBloodType();
+    String bloodType;
 
-    Double getHeight();
+    Double height;
 
-    Double getWeight();
+    Double weight;
 
-    String getJob();
+    String job;
 
-    String getJobPlace();
+    String jobPlace;
 
-    Integer getAddressId();
+    Integer addressId;
 
-    String getCityId();
+    String cityId;
 
-    String getDistrictId();
+    String districtId;
 
-    String getWardId();
+    String wardId;
 }

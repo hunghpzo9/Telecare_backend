@@ -1,6 +1,7 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.PatientDTO;
+import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Address;
 import com.example.telecare.model.Patient;
@@ -12,8 +13,6 @@ import com.example.telecare.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class PatientServiceImpl implements PatientService {
     @Autowired
@@ -23,7 +22,7 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     AddressRepository addressRepository;
     @Override
-    public PatientDTO findPatientById(int uid) {
+    public PatientDTOInf findPatientById(int uid) {
         return patientRepository.findPatientById(uid);
     }
 
@@ -35,12 +34,26 @@ public class PatientServiceImpl implements PatientService {
         User user = userRepository.findById(id) .orElseThrow(()
                 -> new ResourceNotFoundException("Not found user"));
 
+        Address address = addressRepository.findById(user.getAddress().getId()) .orElseThrow(()
+                -> new ResourceNotFoundException("Not found address"));
+
         patient.setBloodType(patientDetail.getBloodType());
         patient.setHeight(patientDetail.getHeight());
         patient.setWeight(patientDetail.getWeight());
         patient.setEthnicId(patientDetail.getEthnicId());
         patient.setJob(patientDetail.getJob());
         patient.setJobPlace(patientDetail.getJobPlace());
+
+        user.setFullName(patientDetail.getFullName());
+        user.setGender(patientDetail.getGender());
+        user.setDateOfBirth(patientDetail.getDob());
+        user.setEmail(patientDetail.getEmail());
+        user.setImageUrl(patientDetail.getImageUrl());
+
+        address.setCityId(patientDetail.getCityId());
+        address.setDistricyId(patientDetail.getDistrictId());
+        address.setWardId(patientDetail.getWardId());
+        address.setStreetName(patientDetail.getStreetName());
 
         userRepository.save(user);
         patientRepository.save(patient);
