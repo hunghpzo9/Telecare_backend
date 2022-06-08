@@ -1,10 +1,12 @@
 package com.example.telecare.dto;
 
+import com.example.telecare.model.Patient;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 
 import java.util.Date;
 
-
+@JsonDeserialize(as = Patient.class)
 public interface PatientDTO {
     Integer getId();
 
@@ -33,6 +35,8 @@ public interface PatientDTO {
     String getJob();
 
     String getJobPlace();
+
+    Integer getAddressId();
 
     String getCityId();
 

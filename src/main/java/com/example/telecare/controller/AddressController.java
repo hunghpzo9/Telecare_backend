@@ -1,14 +1,14 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.model.City;
-import com.example.telecare.model.District;
-import com.example.telecare.model.Ward;
+import com.example.telecare.model.*;
 import com.example.telecare.service.DistrictService;
+import com.example.telecare.service.impl.AddressServiceImpl;
 import com.example.telecare.service.impl.CityServiceImpl;
 import com.example.telecare.service.impl.DistrictServiceImpl;
 import com.example.telecare.service.impl.WardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +23,8 @@ public class AddressController {
     DistrictServiceImpl districtService;
     @Autowired
     WardServiceImpl wardService;
+    @Autowired
+    AddressServiceImpl addressService;
 
     @Cacheable(value="allCity")
     @GetMapping(value = "/city")
@@ -38,5 +40,10 @@ public class AddressController {
     @GetMapping(value = "/ward/districtId={id}")
     public List<Ward> getWard(@PathVariable String id) {
         return wardService.findByDistrictId(id);
+    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Address>  getWard(@PathVariable("id") int id,@RequestBody Address address) {
+        addressService.updateAddress(address,id);
+        return ResponseEntity.ok(address);
     }
 }

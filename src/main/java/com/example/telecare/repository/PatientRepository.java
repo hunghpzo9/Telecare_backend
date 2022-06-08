@@ -11,7 +11,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "a.street_name as streetName,\n" +
             "e.id as ethnicId,\n" +
             "p.blood_type as bloodType,p.height as height,p.weight as weight,p.job as job,p.job_place as jobPlace,\n" +
-            "a.city_id as cityId,a.districy_id as districtId,a.ward_id as wardId\n" +
+            "a.id as addressId ,a.city_id as cityId,a.districy_id as districtId,a.ward_id as wardId\n" +
             "FROM user u left outer join patient p ON u.id = p.patient_id \n" +
             "left outer join address a on a.id = u.address_id\n" +
             "left outer join ethnic e on p.ethnic_id = e. id\n" +
