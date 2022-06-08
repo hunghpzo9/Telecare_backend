@@ -29,7 +29,6 @@ public class PatientServiceImpl implements PatientService {
         patient.setEthnicId(patientDetail.getEthnicId());
         patient.setJob(patientDetail.getJob());
         patient.setJobPlace(patientDetail.getJobPlace());
-        patient.setEthnicId(patientDetail.getEthnicId());
 
         patientRepository.save(patient);
     }
