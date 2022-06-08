@@ -52,7 +52,7 @@ public class PatientServiceImpl implements PatientService {
         user.setImageUrl(patientDetail.getImageUrl());
 
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
-        if (duplicateUserByEmail != null) {
+        if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
             throw new BadRequestException("Email đã tồn tại");
         }
         address.setCityId(patientDetail.getCityId());
