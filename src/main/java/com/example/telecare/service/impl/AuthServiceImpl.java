@@ -8,6 +8,7 @@ import com.example.telecare.model.Role;
 import com.example.telecare.model.User;
 import com.example.telecare.repository.UserRepository;
 import com.example.telecare.security.MyUserDetailsService;
+import com.example.telecare.security.PasswordHashService;
 import com.example.telecare.service.AuthService;
 import com.example.telecare.utils.JwtTokenUtil;
 import com.example.telecare.utils.ProjectStorage;
@@ -26,12 +27,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
-
+    @Autowired
+    PasswordHashService passwordEncoder;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
@@ -81,5 +84,25 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-
+    @Override
+    public void changeOldPassword(String id, String oldPassword,String newPassword) {
+        User user = userRepository.findUserById(id);
+        if(!oldPassword.equals(decodePassword(user))){
+            throw new ForbiddenException("Mật khẩu ban đầu không đúng");
+        }else{
+            encodePassword(user,newPassword);
+            userRepository.save(user);
+        }
+    }
+    private void encodePassword(User user,String newPassword) {
+        UUID randomUUID = UUID.randomUUID();
+        String salt = randomUUID.toString().replaceAll("-", "").substring(0, 7);
+        String encodePass = passwordEncoder.encodePasswordAlgorithm(salt, newPassword);
+        user.setPassword(encodePass);
+        user.setPasswordSalt(salt);
+    }
+    private String decodePassword(User user) {
+        String decodePass = passwordEncoder.decodePasswordAlgorithm(user.getPassword());
+        return decodePass.substring(7);
+    }
 }

@@ -5,8 +5,6 @@ import com.example.telecare.model.User;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.service.impl.AuthServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +40,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         return authService.createToken(authenticationRequest);
+    }
+
+    @PutMapping("/changePassword/{id}/{password}/{newPassword}")
+    public void changeOldPassword(@PathVariable String id, @PathVariable String password, @PathVariable String newPassword) {
+        authService.changeOldPassword(id,password,newPassword);
     }
 
     @GetMapping("/token/refresh")
