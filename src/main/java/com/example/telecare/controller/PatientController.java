@@ -33,7 +33,7 @@ public class PatientController {
       return  patientService.findPatientById(id);
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable("id") int id,@RequestBody Patient patientDetail) {
+    public ResponseEntity<PatientDTO> updatePatient(@PathVariable("id") int id,@RequestBody PatientDTO patientDetail) {
         patientService.updatePatient(patientDetail,id);
         return ResponseEntity.ok(patientDetail);
     }

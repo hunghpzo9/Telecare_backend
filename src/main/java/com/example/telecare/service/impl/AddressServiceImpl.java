@@ -18,9 +18,13 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not found address"));
     }
 
-
     @Override
-    public void updateAddress(Address address, int id) {
-
+    public void updateAddress(Address addressDetails, int id) {
+        Address address = addressRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Not found address"));
+        address.setStreetName(address.getStreetName());
+        address.setWardId(address.getWardId());
+        address.setCityId(address.getCityId());
+        address.setDistricyId(address.getDistricyId());
     }
 }

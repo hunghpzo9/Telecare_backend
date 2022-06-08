@@ -6,5 +6,5 @@ import com.example.telecare.model.Patient;
 public interface PatientService {
     PatientDTO findPatientById(int uid);
 
-    void updatePatient(Patient patient,int id);
+    void updatePatient(PatientDTO patient,int id);
 }
