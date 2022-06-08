@@ -26,9 +26,12 @@ public class Feedback {
     @Basic
     @Column(name = "is_hidden")
     private Byte isHidden;
-
+    @Basic
+    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    @Basic
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
 

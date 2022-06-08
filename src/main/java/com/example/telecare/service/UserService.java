@@ -6,5 +6,5 @@ public interface UserService {
 
     User registerPatient(User user);
     User registerDoctor(User user);
-
+    void updateUser(User user);
 }

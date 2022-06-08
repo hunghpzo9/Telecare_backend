@@ -23,11 +23,15 @@ public class Report {
     @Basic
     @Column(name = "reason_id")
     private Integer reasonId;
-
+    @Basic
+    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    @Basic
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
 
 
     @Override

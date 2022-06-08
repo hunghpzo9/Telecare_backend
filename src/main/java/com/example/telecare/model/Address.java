@@ -30,14 +30,16 @@ public class Address {
     @Basic
     @Column(name = "street_name")
     private String streetName;
+    @Basic
+    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    @Basic
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
     @OneToOne(mappedBy = "address")
     private User user;
-
 
     @Override
     public boolean equals(Object o) {
