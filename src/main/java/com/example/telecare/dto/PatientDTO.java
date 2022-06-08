@@ -22,7 +22,7 @@ public interface PatientDTO {
 
     String getStreetName();
 
-    String getEthnic();
+    String getEthnicId();
 
     String getBloodType();
 
