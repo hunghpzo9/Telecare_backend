@@ -20,7 +20,6 @@ public class Doctor {
     @Basic
     @Column(name = "job_place")
     private String jobPlace;
-
     @JsonIgnore
     @OneToOne
     @MapsId
@@ -29,8 +28,41 @@ public class Doctor {
     @Basic
     @Column(name = "position")
     private String position;
+    @Basic
+    @Column(name = "identification")
+    private String identification;
 
+    public int getDoctorId() {
+        return doctorId;
+    }
 
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
+
+    public String getJobPlace() {
+        return jobPlace;
+    }
+
+    public void setJobPlace(String jobPlace) {
+        this.jobPlace = jobPlace;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -54,4 +86,11 @@ public class Doctor {
         return result;
     }
 
+    public String getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(String identification) {
+        this.identification = identification;
+    }
 }

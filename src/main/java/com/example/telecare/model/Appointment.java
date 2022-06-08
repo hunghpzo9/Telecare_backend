@@ -29,11 +29,15 @@ public class Appointment {
     @Basic
     @Column(name = "relative_id")
     private Integer relativeId;
-
+    @Basic
+    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    @Basic
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
 
 
     @Override

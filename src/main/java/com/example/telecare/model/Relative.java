@@ -41,8 +41,12 @@ public class Relative {
     @Basic
     @Column(name = "image_url")
     private String imageUrl;
+    @Basic
+    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    @Basic
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
 

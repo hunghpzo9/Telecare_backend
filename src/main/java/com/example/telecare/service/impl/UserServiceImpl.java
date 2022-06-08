@@ -90,6 +90,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void updateUser(User user) {
+
+    }
+
 
     private void encodePassword(User user) {
         UUID randomUUID = UUID.randomUUID();

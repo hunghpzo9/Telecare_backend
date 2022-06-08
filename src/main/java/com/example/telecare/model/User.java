@@ -58,18 +58,17 @@ public class User {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Patient patient;
-
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
     private Doctor doctor;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
+
+
 
     @Override
     public boolean equals(Object o) {

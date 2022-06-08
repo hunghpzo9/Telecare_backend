@@ -24,11 +24,16 @@ public class MedicalRecord {
     @Basic
     @Column(name = "appointment_id")
     private int appointmentId;
-
+    @Basic
+    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+    @Basic
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
+
+
 
     @Override
     public boolean equals(Object o) {
