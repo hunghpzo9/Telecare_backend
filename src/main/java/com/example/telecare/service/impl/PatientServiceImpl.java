@@ -2,6 +2,7 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.PatientDTOInf;
+import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Address;
 import com.example.telecare.model.Patient;
@@ -50,6 +51,10 @@ public class PatientServiceImpl implements PatientService {
         user.setEmail(patientDetail.getEmail());
         user.setImageUrl(patientDetail.getImageUrl());
 
+        User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
+        if (duplicateUserByEmail != null) {
+            throw new BadRequestException("Email đã tồn tại");
+        }
         address.setCityId(patientDetail.getCityId());
         address.setDistricyId(patientDetail.getDistrictId());
         address.setWardId(patientDetail.getWardId());
