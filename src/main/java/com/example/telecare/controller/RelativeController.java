@@ -21,4 +21,10 @@ public class RelativeController {
     public List<Relative> getAllRelative(@PathVariable int id) {
         return relativeService.findAllRelativeByPatientId(id);
     }
+
+    @PostMapping("/addNew")
+    public Relative addRelative(@RequestBody Relative relative){
+        Relative addNewRelative =  relativeService.addRelative(relative);
+        return  addNewRelative;
+    }
 }

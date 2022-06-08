@@ -19,4 +19,11 @@ public class RelativeServiceImpl implements RelativeService {
         return relativeRepository.findRelativesByPatientId(patientId);
     }
 
+    @Override
+    public Relative addRelative(Relative relative) {
+
+        return relativeRepository.save(relative);
+    }
+
+
 }

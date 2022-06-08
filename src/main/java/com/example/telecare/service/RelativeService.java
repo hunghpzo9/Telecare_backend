@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface RelativeService {
     List<Relative> findAllRelativeByPatientId(int patientId);
+    Relative addRelative(Relative relative);
 }
