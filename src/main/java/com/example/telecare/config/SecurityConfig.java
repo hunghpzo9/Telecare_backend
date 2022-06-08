@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/auth/changePassword/**").permitAll()
                 .antMatchers("/api/v1/patient/**").permitAll()
                 .antMatchers("/api/v1/ethnic/**").permitAll()
+                .antMatchers("/api/v1/relative/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
                 .antMatchers(HttpMethod.GET, "/api/v1/address/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
