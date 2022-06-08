@@ -34,9 +34,9 @@ public interface PatientDTO {
 
     String getJobPlace();
 
-    Integer getCityId();
+    String getCityId();
 
-    Integer getDistrictId();
+    String getDistrictId();
 
-    Integer getWardId();
+    String getWardId();
 }
