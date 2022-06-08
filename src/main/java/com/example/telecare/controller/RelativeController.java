@@ -16,7 +16,6 @@ public class RelativeController {
     @Autowired
     RelativeServiceImpl relativeService;
 
-    @Cacheable(value = "allRelative")
     @GetMapping(value = "/patientId={id}")
     public List<Relative> getAllRelative(@PathVariable int id) {
         return relativeService.findAllRelativeByPatientId(id);
