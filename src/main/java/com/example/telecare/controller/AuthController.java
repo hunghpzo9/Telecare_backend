@@ -43,8 +43,8 @@ public class AuthController {
     }
 
     @PutMapping("/changePassword/{id}/{password}/{newPassword}")
-    public void changeOldPassword(@PathVariable String id, @PathVariable String password, @PathVariable String newPassword) {
-        authService.changeOldPassword(id,password,newPassword);
+    public ResponseEntity<?> changeOldPassword(@PathVariable String id, @PathVariable String password, @PathVariable String newPassword) {
+        return authService.changeOldPassword(id,password,newPassword);
     }
 
     @GetMapping("/token/refresh")
