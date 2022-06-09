@@ -4,6 +4,7 @@ import com.example.telecare.model.Relative;
 import com.example.telecare.service.impl.RelativeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +22,21 @@ public class RelativeController {
         return relativeService.findAllRelativeByPatientId(id);
     }
 
+    @GetMapping(value = "/{id}")
+    public Relative getRelativeById(@PathVariable int id){
+        return relativeService.findRelativeById(id);
+    }
+
     @PostMapping("/addNew")
     public Relative addRelative(@RequestBody Relative relative){
         Relative addNewRelative =  relativeService.addRelative(relative);
         return  addNewRelative;
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Relative> updateRelative(@RequestBody Relative relative, @PathVariable int id) {
+         relativeService.updateRelativeById(relative,id);
+         return ResponseEntity.ok(relative);
+    }
+
 }
