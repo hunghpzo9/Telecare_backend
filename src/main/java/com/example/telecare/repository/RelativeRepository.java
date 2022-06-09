@@ -10,4 +10,8 @@ public interface RelativeRepository extends JpaRepository<Relative, Integer> {
 
     @Query(value = "SELECT * from relative where patient_id = ?1", nativeQuery = true)
     List<Relative> findRelativesByPatientId(int id);
+
+    @Query(value = "SELECT * from relative where id = ?1", nativeQuery = true)
+    Relative findRelativesByID(int id);
+
 }
