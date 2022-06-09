@@ -24,6 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
@@ -40,24 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/login/**").permitAll()
-
                 .antMatchers("/api/v1/auth/register/**").permitAll()
-
                 .antMatchers("/api/v1/auth/changePassword/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
-                        ProjectStorage.ROLE_ADMIN,ProjectStorage.ROLE_DOCTOR)
-
-                .antMatchers("/api/v1/patient/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
-                        ProjectStorage.ROLE_ADMIN,ProjectStorage.ROLE_DOCTOR)
-
-                .antMatchers(HttpMethod.PUT,"/api/v1/patient/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
-
-                .antMatchers("/api/v1/ethnic/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
-                        ProjectStorage.ROLE_ADMIN,ProjectStorage.ROLE_DOCTOR)
-
+                        ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
                 .antMatchers("/api/v1/relative/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
-                .antMatchers( "/api/v1/address/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
-                        ProjectStorage.ROLE_ADMIN,ProjectStorage.ROLE_DOCTOR)
-
+                .antMatchers("/api/v1/patient/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
+                        ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
+                .antMatchers(HttpMethod.PUT, "/api/v1/patient/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
+                .antMatchers("/api/v1/ethnic/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
+                        ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
+                .antMatchers("/api/v1/specialty/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
+                        ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
+                .antMatchers("/api/v1/relative/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT, ProjectStorage.ROLE_ADMIN)
+                .antMatchers("/api/v1/address/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
+                        ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
