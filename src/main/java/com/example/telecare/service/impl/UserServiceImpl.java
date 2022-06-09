@@ -1,11 +1,10 @@
 package com.example.telecare.service.impl;
 
+import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.*;
-import com.example.telecare.repository.PatientRepository;
-import com.example.telecare.repository.RoleRepository;
-import com.example.telecare.repository.UserRepository;
-import com.example.telecare.repository.UserRoleRepository;
+import com.example.telecare.repository.*;
 import com.example.telecare.security.PasswordHashService;
 import com.example.telecare.service.UserService;
 import com.example.telecare.utils.ProjectStorage;
@@ -20,6 +19,14 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
+
+    @Autowired
+    SpecialtyRepository specialtyRepository;
+    @Autowired
+    DoctorRepository doctorRepository;
 
     @Autowired
     PasswordHashService passwordEncoder;
@@ -63,30 +70,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerDoctor(User user) {
-        User duplicateUserByPhone = userRepository.findUserByPhone(user.getPhone());
-        User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
+    public void registerDoctor(DoctorDTO doctorDTO) {
+        User duplicateUserByPhone = userRepository.findUserByPhone(doctorDTO.getPhone());
+        User duplicateUserByEmail = userRepository.findUserByEmail(doctorDTO.getEmail());
         if (duplicateUserByPhone != null) {
             logger.error("{} is existed", duplicateUserByPhone.getPhone());
             throw new BadRequestException("Số điện thoại đã tồn tại");
         } else if (duplicateUserByEmail != null) {
             logger.error("{} is existed", duplicateUserByEmail.getEmail());
             throw new BadRequestException("Email đã tồn tại");
-        }  else {
-
+        } else {
+//add address
             Address address = new Address();
             logger.info("Save address to database");
-            user.setAddress(address);
+            addressRepository.save(address);
 
+//add user
+            User user = new User();
+            user.setFullName(doctorDTO.getFullName());
+            user.setEmail(doctorDTO.getEmail());
+            user.setPhone(doctorDTO.getPhone());
+            user.setPassword(doctorDTO.getPassword());
             encodePassword(user);
-            logger.info("Save user to database");
+            user.setIsActive(doctorDTO.getIsActive());
             Role roleDoctor = roleRepository.findByName(ProjectStorage.ROLE_DOCTOR);
             user.addRole(roleDoctor);
+            user.setAddress(address);
+            logger.info("Save user to database");
+            userRepository.save(user);
 
+            //add doctor
             Doctor doctor = new Doctor();
             doctor.setUser(user);
-            user.setDoctor(doctor);
-            return userRepository.save(user);
+            doctor.setCertificate(doctorDTO.getCertificate());
+            doctor.setJobPlace(doctorDTO.getJobPlace());
+            doctor.setPosition(doctorDTO.getPosition());
+            doctor.setIdentificationFront(doctorDTO.getIdentificationFront());
+            doctor.setIdentificationBack(doctorDTO.getIdentificationBack());
+
+            Specialty specialty = specialtyRepository.findById(doctorDTO.getSpecialtyId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found patient"));
+            doctor.addSpecialty(specialty);
+            doctorRepository.save(doctor);
+
         }
     }
 

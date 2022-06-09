@@ -5,11 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 public class Doctor {
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "doctor_specialty", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
+    public List<Specialty> specialties = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "doctor_id")
@@ -35,6 +42,7 @@ public class Doctor {
     @Column(name = "identification_back")
     private String identificationBack;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,6 +63,9 @@ public class Doctor {
         result = 31 * result + (certificate != null ? certificate.hashCode() : 0);
         result = 31 * result + (jobPlace != null ? jobPlace.hashCode() : 0);
         return result;
+    }
+    public void addSpecialty(Specialty specialty) {
+        this.specialties.add(specialty);
     }
 
 }
