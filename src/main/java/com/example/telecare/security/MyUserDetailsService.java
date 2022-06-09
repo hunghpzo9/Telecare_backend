@@ -33,7 +33,7 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found in database");
         }
         if(user.getIsActive() == ProjectStorage.IS_NOT_ACTIVE){
-            throw new ForbiddenException("Tài khoản của bạn đang chưa được kích hoạt");
+            throw new ForbiddenException("Tài khoản của bạn chưa được kích hoạt");
         }
         if(user.getIsActive() == ProjectStorage.IS_BAN){
             throw new ForbiddenException("Tài khoản của bạn đang bị khoá");

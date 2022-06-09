@@ -48,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/relative/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
                 .antMatchers("/api/v1/patient/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
                         ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
+                .antMatchers("/api/v1/doctor/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
+                        ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
                 .antMatchers(HttpMethod.PUT, "/api/v1/patient/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
                 .antMatchers("/api/v1/ethnic/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
                         ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
