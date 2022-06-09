@@ -41,9 +41,4 @@ public class AddressController {
     public List<Ward> getWard(@PathVariable String id) {
         return wardService.findByDistrictId(id);
     }
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Address>  getWard(@PathVariable("id") int id,@RequestBody Address address) {
-        addressService.updateAddress(address,id);
-        return ResponseEntity.ok(address);
-    }
 }

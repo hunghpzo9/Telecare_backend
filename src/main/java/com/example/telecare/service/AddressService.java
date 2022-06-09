@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface AddressService {
     Address findAddressById(int id);
 
-    void updateAddress(Address address, int id);
 }
