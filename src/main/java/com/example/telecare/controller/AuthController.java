@@ -1,6 +1,7 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.AuthenticationRequest;
+import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.model.User;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.service.impl.AuthServiceImpl;
@@ -32,9 +33,9 @@ public class AuthController {
     }
 
     @PostMapping("/register/doctor")
-    public User registerUserDoctor(@RequestBody User user) {
-        User registeredUser = userService.registerDoctor(user);
-        return registeredUser;
+    public ResponseEntity<?> registerUserDoctor(@RequestBody DoctorDTO doctorDTO) {
+      userService.registerDoctor(doctorDTO);
+        return ResponseEntity.ok(doctorDTO);
     }
 
     @PostMapping("/login")

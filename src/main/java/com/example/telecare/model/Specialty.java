@@ -3,7 +3,7 @@ package com.example.telecare.model;
 import javax.persistence.*;
 
 @Entity
-public class Spceialty {
+public class Specialty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -33,10 +33,10 @@ public class Spceialty {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Spceialty spceialty = (Spceialty) o;
+        Specialty specialty = (Specialty) o;
 
-        if (id != spceialty.id) return false;
-        if (name != null ? !name.equals(spceialty.name) : spceialty.name != null) return false;
+        if (id != specialty.id) return false;
+        if (name != null ? !name.equals(specialty.name) : specialty.name != null) return false;
 
         return true;
     }
