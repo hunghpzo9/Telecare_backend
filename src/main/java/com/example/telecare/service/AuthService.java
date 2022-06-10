@@ -12,4 +12,8 @@ public interface AuthService {
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
     ResponseEntity<?> changeOldPassword(String id, String oldPassword,String newPassword);
+
+    ResponseEntity<?> checkEmailExisted(String email);
+
+    ResponseEntity<?> checkPhoneExisted(String phone);
 }

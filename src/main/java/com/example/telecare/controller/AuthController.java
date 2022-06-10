@@ -43,6 +43,16 @@ public class AuthController {
         return authService.createToken(authenticationRequest);
     }
 
+    @PostMapping("/checkEmailExisted/{email}")
+    public ResponseEntity<?> checkEmailExisted(@PathVariable String email)  {
+        return authService.checkEmailExisted(email);
+    }
+
+    @PostMapping("/checkPhoneExisted/{phone}")
+    public ResponseEntity<?> checkPhoneExisted(@PathVariable String phone)  {
+        return authService.checkPhoneExisted(phone);
+    }
+
     @PutMapping("/changePassword/{id}/{password}/{newPassword}")
     public ResponseEntity<?> changeOldPassword(@PathVariable String id, @PathVariable String password, @PathVariable String newPassword) {
         return authService.changeOldPassword(id,password,newPassword);

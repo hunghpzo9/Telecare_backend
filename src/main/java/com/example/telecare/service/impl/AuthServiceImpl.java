@@ -97,6 +97,25 @@ public class AuthServiceImpl implements AuthService {
             return ResponseEntity.ok(new ResponseOkMessage("Mật khẩu đã được thay đổi",new Date()));
         }
     }
+
+    @Override
+    public ResponseEntity<?> checkEmailExisted(String email) {
+        User duplicateUserByEmail = userRepository.findUserByEmail(email);
+        if (duplicateUserByEmail != null) {
+            throw new BadRequestException("Email đã tồn tại");
+        }
+        return ResponseEntity.ok(new ResponseOkMessage("Email có thể dùng được",new Date()));
+    }
+
+    @Override
+    public ResponseEntity<?> checkPhoneExisted(String phone) {
+        User duplicatUserByPhone = userRepository.findUserByPhone(phone);
+        if (duplicatUserByPhone != null) {
+            throw new BadRequestException("Số điện thoại đã tồn tại");
+        }
+        return ResponseEntity.ok(new ResponseOkMessage("Số điện thoại có thể dùng được",new Date()));
+    }
+
     private void encodePassword(User user,String newPassword) {
         UUID randomUUID = UUID.randomUUID();
         String salt = randomUUID.toString().replaceAll("-", "").substring(0, 7);
