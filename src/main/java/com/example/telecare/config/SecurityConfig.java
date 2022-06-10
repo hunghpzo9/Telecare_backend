@@ -41,8 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/api/v1/auth/login/**").permitAll()
-                .antMatchers("/api/v1/auth/register/**").permitAll()
+                .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/auth/changePassword/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT,
                         ProjectStorage.ROLE_ADMIN, ProjectStorage.ROLE_DOCTOR)
                 .antMatchers("/api/v1/relative/**").hasAnyAuthority(ProjectStorage.ROLE_PATIENT)
