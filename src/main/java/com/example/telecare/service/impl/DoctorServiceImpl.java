@@ -17,8 +17,14 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorDTOInf> listAllDoctor(int pageNo,String search) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(pageNo,search);
+    public List<DoctorDTOInf> listAllDoctor(String search,int page) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search,page);
+        return doctorPage;
+    }
+
+    @Override
+    public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, int specialtyId, int page) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search,specialtyId,page);
         return doctorPage;
     }
 }

@@ -21,7 +21,11 @@ public class DoctorController {
 
     @GetMapping(value = "/search={search}/pageNo={pageNo}")
     public List<DoctorDTOInf> findDoctor(@PathVariable String search, @PathVariable int pageNo) {
+        return doctorService.listAllDoctor("%" + search + "%", pageNo);
+    }
 
-        return doctorService.listAllDoctor(pageNo,"%"+search+"%");
+    @GetMapping(value = "/search={search}/specialtyId={specialtyId}/pageNo={pageNo}")
+    public List<DoctorDTOInf> findDoctorBySpecialty(@PathVariable String search, @PathVariable int specialtyId, @PathVariable int pageNo) {
+        return doctorService.listAllDoctorBySpecialty("%" + search + "%", specialtyId, pageNo);
     }
 }
