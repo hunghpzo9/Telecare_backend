@@ -7,5 +7,7 @@ import java.util.List;
 public interface DoctorService {
     DoctorDTOInf findDoctorById(int uid);
 
-    List<DoctorDTOInf> listAllDoctor( int page,String search);
+    List<DoctorDTOInf> listAllDoctor(String search, int page);
+
+    List<DoctorDTOInf> listAllDoctorBySpecialty(String search,int specialtyId, int page);
 }
