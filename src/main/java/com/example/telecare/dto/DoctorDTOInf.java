@@ -12,4 +12,5 @@ public interface DoctorDTOInf {
     String getEmail();
     String getPosition();
     String getJobPlace();
+    String getSpecialty();
 }
