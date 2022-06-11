@@ -11,6 +11,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "appointment_details", schema = "telecare", catalog = "")
 public class AppointmentDetails {
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "appointment_id")

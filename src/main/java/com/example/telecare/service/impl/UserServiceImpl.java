@@ -117,8 +117,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
+    public User registerAdmin(User user) {
+        User duplicateUserByPhone = userRepository.findUserByPhone(user.getPhone());
+        User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
+        if (duplicateUserByPhone != null) {
+            logger.error("{} is existed", duplicateUserByPhone.getPhone());
+            throw new BadRequestException("Số điện thoại đã tồn tại");
+        } else if (duplicateUserByEmail != null) {
+            logger.error("{} is existed", duplicateUserByEmail.getEmail());
+            throw new BadRequestException("Email đã tồn tại");
+        } else {
 
+            Address address = new Address();
+            logger.info("Save address to database");
+            user.setAddress(address);
+
+            encodePassword(user);
+            logger.info("Save user to database");
+            Role roleAdmin = roleRepository.findByName(ProjectStorage.ROLE_ADMIN);
+            user.addRole(roleAdmin);
+
+            return userRepository.save(user);
+        }
     }
 
 
