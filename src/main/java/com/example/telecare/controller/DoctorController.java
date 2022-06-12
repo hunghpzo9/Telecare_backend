@@ -3,6 +3,7 @@ package com.example.telecare.controller;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class DoctorController {
     DoctorServiceImpl doctorService;
 
     @GetMapping(value = "/{id}")
+    @Cacheable(key = "#id", value = "doctorDetail{id}")
     public DoctorDTOInf findDoctor(@PathVariable int id) {
         return doctorService.findDoctorById(id);
     }
