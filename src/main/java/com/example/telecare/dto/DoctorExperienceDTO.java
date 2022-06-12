@@ -1,6 +1,6 @@
 package com.example.telecare.dto;
 
 public interface DoctorExperienceDTO {
-    String getId();
+    int getId();
     String getExperience();
 }
