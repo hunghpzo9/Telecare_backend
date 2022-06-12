@@ -1,6 +1,6 @@
 package com.example.telecare.dto;
 
 public interface DoctorAchievementDTO {
-    String getId();
+    int getId();
     String getAchievement();
 }
