@@ -1,6 +1,10 @@
 package com.example.telecare.dto;
 
+import com.example.telecare.model.Specialty;
+
 import java.util.Date;
+import java.util.List;
+
 
 public interface DoctorDTOInf {
     Integer getId();
@@ -13,4 +17,7 @@ public interface DoctorDTOInf {
     String getPosition();
     String getJobPlace();
     String getSpecialty();
+    List<Specialty> getListSpecialty();
+    List<DoctorAchievementDTO> getListAchievement();
+    List<DoctorExperienceDTO> getListExperience();
 }

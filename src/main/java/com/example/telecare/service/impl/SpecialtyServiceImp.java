@@ -17,4 +17,9 @@ public class SpecialtyServiceImp implements SpecialtyService {
     public List<Specialty> findAllSpecialty() {
         return specialtyRepository.findAll();
     }
+
+    @Override
+    public List<Specialty> findAllSpecialtyByDoctorId(int doctorId) {
+        return specialtyRepository.findAllSpecialtyByDoctorId(doctorId);
+    }
 }
