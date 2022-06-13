@@ -55,6 +55,7 @@ public class PatientServiceImpl implements PatientService {
         if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
             throw new BadRequestException("Email đã tồn tại");
         }
+
         address.setCityId(patientDetail.getCityId());
         address.setDistricyId(patientDetail.getDistrictId());
         address.setWardId(patientDetail.getWardId());
