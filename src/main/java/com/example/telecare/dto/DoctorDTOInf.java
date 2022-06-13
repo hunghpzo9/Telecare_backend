@@ -17,6 +17,7 @@ public interface DoctorDTOInf {
     String getPosition();
     String getJobPlace();
     String getSpecialty();
+    Integer getAppointmentDoneCount();
     List<Specialty> getListSpecialty();
     List<DoctorAchievementDTO> getListAchievement();
     List<DoctorExperienceDTO> getListExperience();
