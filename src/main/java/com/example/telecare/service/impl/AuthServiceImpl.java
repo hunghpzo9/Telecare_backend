@@ -45,7 +45,21 @@ public class AuthServiceImpl implements AuthService {
     UserRepository userRepository;
 
     @Override
-    public ResponseEntity<?> createToken(AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> login(AuthenticationRequest authenticationRequest) throws Exception {
+        AuthenticationResponse  authenticationResponse=getUser(authenticationRequest);
+        return ResponseEntity.ok(authenticationResponse);
+    }
+
+    @Override
+    public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest) throws Exception {
+        AuthenticationResponse  authenticationResponse=getUser(authenticationRequest);
+        if(!authenticationResponse.getRole().equals(ProjectStorage.ROLE_ADMIN)){
+            throw new ForbiddenException("Bạn không có quyền vào trang này");
+        }
+        return ResponseEntity.ok(authenticationResponse);
+    }
+
+    private AuthenticationResponse getUser(AuthenticationRequest authenticationRequest){
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getPhone(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
@@ -56,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
         final String refresh_token = jwtTokenUtil.generateRefreshToken(userDetails);
         User user = userRepository.findUserByPhone(authenticationRequest.getPhone());
         Role user_role = user.getRoles().stream().reduce((first, second) -> first).orElse(null);
-        return ResponseEntity.ok(new AuthenticationResponse(access_token, refresh_token, user.getId(),user_role.getName()));
+        return new AuthenticationResponse(access_token, refresh_token, user.getId(),user_role.getName());
     }
 
     @Override

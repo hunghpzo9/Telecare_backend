@@ -46,7 +46,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        return authService.createToken(authenticationRequest);
+        return authService.login(authenticationRequest);
+    }
+    @PostMapping("/loginForAdmin")
+    public ResponseEntity<?> loginForAdmin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        return authService.loginForAdmin(authenticationRequest);
     }
 
     @PostMapping("/checkEmailExisted/{email}")

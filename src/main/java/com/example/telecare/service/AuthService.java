@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface AuthService {
-    ResponseEntity<?> createToken(AuthenticationRequest authenticationRequest) throws Exception;
+    ResponseEntity<?> login(AuthenticationRequest authenticationRequest) throws Exception;
+
+    ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest) throws Exception;
 
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception;
 
