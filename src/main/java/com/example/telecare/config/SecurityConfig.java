@@ -1,7 +1,6 @@
 package com.example.telecare.config;
 
 
-import com.example.telecare.filter.CustomAuthenticationFilter;
 import com.example.telecare.filter.CustomAuthorizationFilter;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.utils.ProjectStorage;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
