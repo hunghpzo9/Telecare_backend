@@ -4,7 +4,6 @@ import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
