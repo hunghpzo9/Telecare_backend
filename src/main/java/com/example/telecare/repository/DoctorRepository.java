@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface DoctorRepository  extends JpaRepository<Doctor,Integer> {
+public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
             "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty FROM telecare.user u\n" +
             "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
@@ -24,12 +24,12 @@ public interface DoctorRepository  extends JpaRepository<Doctor,Integer> {
             "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
             "            left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
             "            left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
-            "            where (u.full_name like ?1 or d.job_place like ?1) and  s.id = ?2\n" +
+                "            where (u.full_name like ?1 or d.job_place like ?1) and  s.id in (?2)\n" +
             "            group by u.id \n" +
             "            limit 3\n" +
             "            offset ?3",
             nativeQuery = true)
-    List<DoctorDTOInf> listAllDoctorBySpecialty(String search,int specialtyId,int page);
+    List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page);
 
     @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
             "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty FROM telecare.user u\n" +
@@ -41,7 +41,7 @@ public interface DoctorRepository  extends JpaRepository<Doctor,Integer> {
             "            limit 3\n" +
             "            offset ?2",
             nativeQuery = true)
-    List<DoctorDTOInf> listAllDoctor(String search,int page);
+    List<DoctorDTOInf> listAllDoctor(String search, int page);
 
     @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
             " ,d.position as position ,d.job_place as jobPlace,s.name as specialty ,Count(a.id) as appointmentCount  \n" +
@@ -54,5 +54,5 @@ public interface DoctorRepository  extends JpaRepository<Doctor,Integer> {
             "left outer join telecare.appointment_status apt on ad.status_id = apt.id\n" +
             "group by d.doctor_id ,s.name\n",
             nativeQuery = true)
-    DoctorDTOInf findDoctorProfile(String search,int page);
+    DoctorDTOInf findDoctorProfile(String search, int page);
 }

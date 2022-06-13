@@ -9,5 +9,5 @@ public interface DoctorService {
 
     List<DoctorDTOInf> listAllDoctor(String search, int page);
 
-    List<DoctorDTOInf> listAllDoctorBySpecialty(String search,int specialtyId, int page);
+    List<DoctorDTOInf> listAllDoctorBySpecialty(String search,List<Integer> specialtyId, int page);
 }

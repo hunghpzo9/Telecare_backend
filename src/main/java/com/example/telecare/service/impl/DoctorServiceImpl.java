@@ -1,13 +1,11 @@
 package com.example.telecare.service.impl;
+
 import com.example.telecare.dto.DoctorAchievementDTO;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.DoctorExperienceDTO;
-import com.example.telecare.model.DoctorAchievement;
-import com.example.telecare.model.DoctorExperience;
 import com.example.telecare.model.Specialty;
 import com.example.telecare.repository.DoctorRepository;
 import com.example.telecare.service.DoctorService;
-import com.example.telecare.service.ExperienceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,8 +103,6 @@ public class DoctorServiceImpl implements DoctorService {
                 }
                 return doctorExperiences;
             }
-
-
         };
         return returnDtoInf;
     }
@@ -114,11 +110,12 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<DoctorDTOInf> listAllDoctor(String search,int page) {
         List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search,page);
+
         return doctorPage;
     }
 
     @Override
-    public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, int specialtyId, int page) {
+    public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page) {
         List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search,specialtyId,page);
         return doctorPage;
     }
