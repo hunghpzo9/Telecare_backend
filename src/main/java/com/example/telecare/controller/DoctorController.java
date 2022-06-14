@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(maxAge = 60 * 60 * 24 * 30)
+@CrossOrigin(origins = "http://localhost:4200",maxAge = 60 * 60 * 24 * 30)
 @RestController
 @RequestMapping("/api/v1/doctor")
 public class DoctorController {
