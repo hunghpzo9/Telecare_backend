@@ -3,6 +3,8 @@ package com.example.telecare.service.impl;
 import com.example.telecare.dto.DoctorAchievementDTO;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.DoctorExperienceDTO;
+import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Specialty;
 import com.example.telecare.repository.DoctorRepository;
 import com.example.telecare.service.DoctorService;
@@ -26,6 +28,9 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorDTOInf findDoctorById(int uid) {
         DoctorDTOInf doctorDTOInf = doctorRepository.findDoctorById(uid);
+        if(doctorDTOInf == null) {
+            throw new NotFoundException("Không tìm thấy bác sĩ");
+        }
         DoctorDTOInf returnDtoInf = new DoctorDTOInf() {
             @Override
             public Integer getId() {

@@ -20,9 +20,6 @@ public class AppointmentDetails {
     @Column(name = "status")
     private Byte status;
     @Basic
-    @Column(name = "desription")
-    private String desription;
-    @Basic
     @Column(name = "prescription_id")
     private Integer prescriptionId;
     @Basic
@@ -34,54 +31,10 @@ public class AppointmentDetails {
     @Basic
     @Column(name = "time")
     private Date time;
+    @Basic
+    @Column(name = "description")
+    private String description;
 
-    public int getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
-    public String getDesription() {
-        return desription;
-    }
-
-    public void setDesription(String desription) {
-        this.desription = desription;
-    }
-
-    public Integer getPrescriptionId() {
-        return prescriptionId;
-    }
-
-    public void setPrescriptionId(Integer prescriptionId) {
-        this.prescriptionId = prescriptionId;
-    }
-
-    public Integer getMedicalRecordId() {
-        return medicalRecordId;
-    }
-
-    public void setMedicalRecordId(Integer medicalRecordId) {
-        this.medicalRecordId = medicalRecordId;
-    }
-
-    public Integer getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
 
 
     @Override
@@ -93,7 +46,7 @@ public class AppointmentDetails {
 
         if (appointmentId != that.appointmentId) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
-        if (desription != null ? !desription.equals(that.desription) : that.desription != null) return false;
+
         if (prescriptionId != null ? !prescriptionId.equals(that.prescriptionId) : that.prescriptionId != null)
             return false;
         if (medicalRecordId != null ? !medicalRecordId.equals(that.medicalRecordId) : that.medicalRecordId != null)
@@ -106,7 +59,6 @@ public class AppointmentDetails {
     public int hashCode() {
         int result = appointmentId;
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (desription != null ? desription.hashCode() : 0);
         result = 31 * result + (prescriptionId != null ? prescriptionId.hashCode() : 0);
         result = 31 * result + (medicalRecordId != null ? medicalRecordId.hashCode() : 0);
         return result;
