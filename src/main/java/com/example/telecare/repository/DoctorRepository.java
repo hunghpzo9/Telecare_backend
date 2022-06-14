@@ -43,7 +43,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             nativeQuery = true)
     List<DoctorDTOInf> listAllDoctor(String search, int page);
 
-    @Query(value = "SELECT  Sum(CASE WHEN ad.status_id = 1 THEN 1 ELSE 0 END )\n" +
+    @Query(value = "SELECT  Sum(CASE WHEN ad.status_id = 3 THEN 1 ELSE 0 END )\n" +
             "as appointmentDoneCount\n" +
             "FROM telecare.user u\n" +
             "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
@@ -55,4 +55,17 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             "         ",
             nativeQuery = true)
     Integer getNumberDoneAppointment(int uid);
+
+    @Query(value = "SELECT  Sum(CASE WHEN ad.status_id = 3 or ad.status_id = 2 THEN 1 ELSE 0 END )\n" +
+            "as appointmentDoneCount\n" +
+            "FROM telecare.user u\n" +
+            "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
+            "            left outer join telecare.appointment a on d.doctor_id = a.doctor_id\n" +
+            "            left outer join telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "            left outer join telecare.appointment_status apt on ad.status_id = apt.id\n" +
+            "            where d.doctor_id = ?1\n" +
+            "            group by d.doctor_id\n" +
+            "         ",
+            nativeQuery = true)
+    Integer getNumberPatient(int uid);
 }

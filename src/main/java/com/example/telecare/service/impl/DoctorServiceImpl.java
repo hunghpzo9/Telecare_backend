@@ -83,6 +83,11 @@ public class DoctorServiceImpl implements DoctorService {
             }
 
             @Override
+            public Integer getPatientCount() {
+                return doctorRepository.getNumberPatient(uid);
+            }
+
+            @Override
             public List<Specialty> getListSpecialty() {
                 List<Specialty> specialties = new ArrayList<>();
                 for(Specialty s : specialtyServiceImp.findAllSpecialtyByDoctorId(uid)){
