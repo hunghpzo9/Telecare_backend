@@ -10,4 +10,6 @@ public interface SpecialtyRepository extends JpaRepository<Specialty,Integer> {
     @Query(value = "SELECT s.id,s.name FROM telecare.specialty s left outer join telecare.doctor_specialty ds \n" +
             "on ds.specialty_id = s.id where ds.doctor_id = ?1",nativeQuery = true)
     List<Specialty> findAllSpecialtyByDoctorId(int id);
+
+
 }

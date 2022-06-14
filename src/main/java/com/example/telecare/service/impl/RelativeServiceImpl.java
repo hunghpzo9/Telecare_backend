@@ -1,7 +1,5 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.exception.ResourceNotFoundException;
-import com.example.telecare.model.Patient;
 import com.example.telecare.model.Relative;
 import com.example.telecare.repository.RelativeRepository;
 import com.example.telecare.service.RelativeService;

@@ -1,10 +1,10 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.DoctorAchievementDTO;
-import com.example.telecare.dto.DoctorDTOInf;
-import com.example.telecare.dto.DoctorExperienceDTO;
-import com.example.telecare.model.Specialty;
-import com.example.telecare.repository.DoctorRepository;
+import com.example.telecare.dto.*;
+import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.model.*;
+import com.example.telecare.repository.*;
 import com.example.telecare.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,9 @@ public class DoctorServiceImpl implements DoctorService {
     AchievementServiceImpl achievementService;
     @Autowired
     ExperienceServiceImpl experienceService;
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public DoctorDTOInf findDoctorById(int uid) {
         DoctorDTOInf doctorDTOInf = doctorRepository.findDoctorById(uid);
@@ -54,7 +57,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             @Override
             public String getFullName() {
-                return  doctorDTOInf.getFullName();
+                return doctorDTOInf.getFullName();
             }
 
             @Override
@@ -80,7 +83,7 @@ public class DoctorServiceImpl implements DoctorService {
             @Override
             public List<Specialty> getListSpecialty() {
                 List<Specialty> specialties = new ArrayList<>();
-                for(Specialty s : specialtyServiceImp.findAllSpecialtyByDoctorId(uid)){
+                for (Specialty s : specialtyServiceImp.findAllSpecialtyByDoctorId(uid)) {
                     specialties.add(s);
                 }
                 return specialties;
@@ -89,7 +92,7 @@ public class DoctorServiceImpl implements DoctorService {
             @Override
             public List<DoctorAchievementDTO> getListAchievement() {
                 List<DoctorAchievementDTO> doctorAchievements = new ArrayList<>();
-                for(DoctorAchievementDTO d : achievementService.findAllAchievementByDoctorId(uid)){
+                for (DoctorAchievementDTO d : achievementService.findAllAchievementByDoctorId(uid)) {
                     doctorAchievements.add(d);
                 }
                 return doctorAchievements;
@@ -98,7 +101,7 @@ public class DoctorServiceImpl implements DoctorService {
             @Override
             public List<DoctorExperienceDTO> getListExperience() {
                 List<DoctorExperienceDTO> doctorExperiences = new ArrayList<>();
-                for(DoctorExperienceDTO d : experienceService.findAllExperienceByDoctorId(uid)){
+                for (DoctorExperienceDTO d : experienceService.findAllExperienceByDoctorId(uid)) {
                     doctorExperiences.add(d);
                 }
                 return doctorExperiences;
@@ -108,15 +111,42 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorDTOInf> listAllDoctor(String search,int page) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search,page);
+    public List<DoctorDTOInf> listAllDoctor(String search, int page) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search, page);
 
         return doctorPage;
     }
 
     @Override
     public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search,specialtyId,page);
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search, specialtyId, page);
         return doctorPage;
     }
+
+    @Override
+    public void updateDoctor(DoctorUpdateDTO doctorDetail, int id) {
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Not found doctor"));
+
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Not found user"));
+
+        user.setFullName(doctorDetail.getFullName());
+        user.setDateOfBirth(doctorDetail.getDob());
+        user.setGender(doctorDetail.getGender());
+        user.setEmail(doctorDetail.getEmail());
+
+        User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
+        if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
+            throw new BadRequestException("Email đã tồn tại");
+        }
+
+        doctor.setPosition(doctorDetail.getPosition());
+        doctor.setJobPlace(doctorDetail.getJobPlace());
+
+        userRepository.save(user);
+        doctorRepository.save(doctor);
+    }
+
+
 }
