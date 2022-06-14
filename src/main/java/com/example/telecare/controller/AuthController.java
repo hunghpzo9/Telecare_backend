@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@CrossOrigin(maxAge = 60 * 60 * 24 * 30)
+@CrossOrigin("http:/localhost:4200")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
