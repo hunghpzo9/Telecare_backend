@@ -3,8 +3,6 @@ package com.example.telecare.service.impl;
 import com.example.telecare.dto.DoctorAchievementDTO;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.DoctorExperienceDTO;
-import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Specialty;
 import com.example.telecare.repository.DoctorRepository;
 import com.example.telecare.service.DoctorService;
@@ -25,6 +23,9 @@ public class DoctorServiceImpl implements DoctorService {
     AchievementServiceImpl achievementService;
     @Autowired
     ExperienceServiceImpl experienceService;
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public DoctorDTOInf findDoctorById(int uid) {
         DoctorDTOInf doctorDTOInf = doctorRepository.findDoctorById(uid);
@@ -134,4 +135,31 @@ public class DoctorServiceImpl implements DoctorService {
         List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search,specialtyId,page);
         return doctorPage;
     }
+
+    @Override
+    public void updateDoctor(DoctorUpdateDTO doctorDetail, int id) {
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Not found doctor"));
+
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Not found user"));
+
+        user.setFullName(doctorDetail.getFullName());
+        user.setDateOfBirth(doctorDetail.getDob());
+        user.setGender(doctorDetail.getGender());
+        user.setEmail(doctorDetail.getEmail());
+
+        User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
+        if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
+            throw new BadRequestException("Email đã tồn tại");
+        }
+
+        doctor.setPosition(doctorDetail.getPosition());
+        doctor.setJobPlace(doctorDetail.getJobPlace());
+
+        userRepository.save(user);
+        doctorRepository.save(doctor);
+    }
+
+
 }
