@@ -25,5 +25,5 @@ public interface AppointmentDTOInf {
     String getDoctorSpecialty();
     String getDoctorPhone();
     String getDoctorEmail();
-    String getPDoctorJobPlace();
+    String getDoctorJobPlace();
 }
