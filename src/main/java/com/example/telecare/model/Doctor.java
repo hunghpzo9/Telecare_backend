@@ -41,7 +41,57 @@ public class Doctor {
     @Basic
     @Column(name = "identification_back")
     private String identificationBack;
+    @Basic
+    @Column(name = "signature")
+    private String signature;
 
+    public int getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
+
+    public String getJobPlace() {
+        return jobPlace;
+    }
+
+    public void setJobPlace(String jobPlace) {
+        this.jobPlace = jobPlace;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getIdentificationFront() {
+        return identificationFront;
+    }
+
+    public void setIdentificationFront(String identificationFront) {
+        this.identificationFront = identificationFront;
+    }
+
+    public String getIdentificationBack() {
+        return identificationBack;
+    }
+
+    public void setIdentificationBack(String identificationBack) {
+        this.identificationBack = identificationBack;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,8 +114,16 @@ public class Doctor {
         result = 31 * result + (jobPlace != null ? jobPlace.hashCode() : 0);
         return result;
     }
+
     public void addSpecialty(Specialty specialty) {
         this.specialties.add(specialty);
     }
 
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
 }

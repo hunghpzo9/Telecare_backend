@@ -1,9 +1,12 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.DoctorDTOInf;
+import com.example.telecare.dto.DoctorUpdateDTO;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +18,21 @@ public class DoctorController {
     @Autowired
     DoctorServiceImpl doctorService;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/doctorDetail/{id}")
     @Cacheable(key = "#id", value = "doctorDetail{id}")
     public DoctorDTOInf findDoctor(@PathVariable int id) {
         return doctorService.findDoctorById(id);
+    }
+
+    @GetMapping(value = "/{id}")
+    public DoctorDTOInf findDoctorDetail(@PathVariable int id) {
+        return doctorService.findDoctorById(id);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<DoctorUpdateDTO> updateDoctor(@PathVariable("id") int id, @RequestBody DoctorUpdateDTO doctorDetail) {
+        doctorService.updateDoctor(doctorDetail ,id);
+        return ResponseEntity.ok(doctorDetail);
     }
 
     @GetMapping(value = "/search={search}/pageNo={pageNo}")

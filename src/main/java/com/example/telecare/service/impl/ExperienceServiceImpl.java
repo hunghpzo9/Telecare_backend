@@ -18,4 +18,9 @@ public class ExperienceServiceImpl implements ExperienceService {
     public List<DoctorExperienceDTO> findAllExperienceByDoctorId(int id) {
         return experienceRepository.findAllExperienceByDoctorId(id);
     }
+
+    @Override
+    public DoctorExperience addDoctorExperience(DoctorExperience doctorExperience) {
+        return experienceRepository.save(doctorExperience);
+    }
 }
