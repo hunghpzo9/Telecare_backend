@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
-    @Query(value = "SELECT a.id , u.id as doctorId , u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
+    @Query(value = "SELECT a.id , u.id as doctorId, u.image_url as doctorImageUrl ," +
+            " u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
             "ad.description ,s.time as schedule,ad.time,aps.name as status,aps.id as statusId\n" +
             "FROM telecare.appointment a\n" +
             "left outer join telecare.patient p on a.patient_id = p.patient_id\n" +
@@ -19,7 +20,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left outer join telecare.schedule s on a.scheduele_id = s.id\n" +
             "left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
             "where p.patient_id = ?1 and aps.id in (?2)\n" +
-            "group by a.doctor_id ",
+            "group by a.doctor_id",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
 
