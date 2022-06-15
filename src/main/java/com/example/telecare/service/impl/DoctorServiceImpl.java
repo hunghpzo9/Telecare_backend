@@ -135,6 +135,7 @@ public class DoctorServiceImpl implements DoctorService {
         user.setDateOfBirth(doctorDetail.getDob());
         user.setGender(doctorDetail.getGender());
         user.setEmail(doctorDetail.getEmail());
+        user.setImageUrl(doctorDetail.getImageUrl());
 
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
@@ -147,6 +148,5 @@ public class DoctorServiceImpl implements DoctorService {
         userRepository.save(user);
         doctorRepository.save(doctor);
     }
-
 
 }
