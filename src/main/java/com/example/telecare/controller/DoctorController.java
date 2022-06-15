@@ -18,9 +18,14 @@ public class DoctorController {
     @Autowired
     DoctorServiceImpl doctorService;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/doctorDetail/{id}")
     @Cacheable(key = "#id", value = "doctorDetail{id}")
     public DoctorDTOInf findDoctor(@PathVariable int id) {
+        return doctorService.findDoctorById(id);
+    }
+
+    @GetMapping(value = "/{id}")
+    public DoctorDTOInf findDoctorDetail(@PathVariable int id) {
         return doctorService.findDoctorById(id);
     }
 
