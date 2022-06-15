@@ -13,6 +13,7 @@ public interface AppointmentDTOInf {
     Integer getStatusId();
 
     String getPatientName();
+    String getPatientImageUrl();
     Byte getPatientGender();
     String getPatientPhone();
     Date getPatientDob();
@@ -21,6 +22,7 @@ public interface AppointmentDTOInf {
     String getPatientJobPlace();
 
     String getDoctorName();
+    String getDoctorImageUrl();
     Byte getDoctorGender();
     String getDoctorSpecialty();
     String getDoctorPhone();
