@@ -3,11 +3,16 @@ package com.example.telecare.service.impl;
 import com.example.telecare.dto.DoctorAchievementDTO;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.DoctorExperienceDTO;
+
 import com.example.telecare.dto.DoctorUpdateDTO;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Doctor;
+
+import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.NotFoundException;
+
 import com.example.telecare.model.Specialty;
 import com.example.telecare.model.User;
 import com.example.telecare.repository.DoctorRepository;
