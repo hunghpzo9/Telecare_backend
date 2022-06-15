@@ -141,7 +141,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public String getPDoctorJobPlace() {
+            public String getDoctorJobPlace() {
                 return doctor.getJobPlace();
             }
         };
