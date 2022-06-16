@@ -19,7 +19,7 @@ public interface AppointmentDTOInf {
     Date getPatientDob();
     String getPatientEthnic();
     String getPatientEmail();
-    String getPatientJobPlace();
+    String getPatientAddress();
 
     String getDoctorName();
     String getDoctorImageUrl();
