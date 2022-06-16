@@ -4,6 +4,7 @@ import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.exception.NotFoundException;
+import com.example.telecare.model.Address;
 import com.example.telecare.repository.AppointmentRepository;
 import com.example.telecare.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     EthnicServiceImpl ethnicService;
+
+    @Autowired
+    AddressServiceImpl addressService;
 
     @Override
     public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
@@ -117,7 +121,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPatientJobPlace() {
-                return patient.getJobPlace();
+                Address address = addressService.findAddressById(patient.getAddressId());
+                return address.getStreetName();
             }
 
             @Override
