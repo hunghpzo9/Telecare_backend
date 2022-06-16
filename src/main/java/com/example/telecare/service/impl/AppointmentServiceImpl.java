@@ -120,7 +120,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public String getPatientJobPlace() {
+            public String getPatientAddress() {
                 Address address = addressService.findAddressById(patient.getAddressId());
                 return address.getStreetName();
             }
