@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
-    @Query(value = "SELECT a.id , u.id as doctorId, u.image_url as doctorImageUrl ," +
+    @Query(value = "SELECT a.id , u.id as doctorId,p.patient_id as patientId, u.image_url as doctorImageUrl ," +
             " u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
             "ad.description ,s.time as schedule,ad.time,aps.name as status,aps.id as statusId\n" +
             "FROM telecare.appointment a\n" +
