@@ -17,6 +17,9 @@ public class DoctorUpdateDTO {
     Date dob;
     Byte gender;
     String email;
+    String imageUrl;
+    String signatureUrl;
     String position;
     String jobPlace;
+    Integer specialtyId;
 }

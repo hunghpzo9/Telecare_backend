@@ -2,6 +2,7 @@ package com.example.telecare.controller;
 
 import com.example.telecare.model.DoctorExperience;
 import com.example.telecare.repository.ExperienceRepository;
+import com.example.telecare.service.impl.ExperienceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 public class ExperienceController {
     @Autowired
-    ExperienceRepository experienceRepository;
+    ExperienceServiceImpl experienceService;
 
     @PutMapping(value = "/addExp")
     public DoctorExperience addDoctorExperience(@RequestBody DoctorExperience doctorExperience){
-        DoctorExperience experience = experienceRepository.save(doctorExperience);
+        DoctorExperience experience = experienceService.addDoctorExperience(doctorExperience);
         return experience;
     }
 }
