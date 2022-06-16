@@ -10,6 +10,7 @@ import com.example.telecare.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +30,138 @@ public class AppointmentServiceImpl implements AppointmentService {
     AddressServiceImpl addressService;
 
     @Override
-    public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
-        return appointmentRepository.findAppointmentByPatient(id, statusId);
+    public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId)
+    {
+
+        List<AppointmentDTOInf> appointmentList = appointmentRepository.findAppointmentByPatient(id, statusId);
+        List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
+        for (AppointmentDTOInf appointmentDTO : appointmentList){
+            PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
+            DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());
+            AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
+            appointmentDTO = new AppointmentDTOInf() {
+                @Override
+                public Integer getId() {
+                    return finalAppointmentDTO.getId();
+                }
+
+                @Override
+                public Integer getDoctorId() {
+                    return finalAppointmentDTO.getDoctorId();
+                }
+
+                @Override
+                public Integer getPatientId() {
+                    return finalAppointmentDTO.getPatientId();
+                }
+
+                @Override
+                public String getDescription() {
+                    return finalAppointmentDTO.getDescription();
+                }
+
+                @Override
+                public String getSchedule() {
+                    return finalAppointmentDTO.getSchedule();
+                }
+
+                @Override
+                public Date getTime() {
+                    return finalAppointmentDTO.getTime();
+                }
+
+                @Override
+                public String getStatus() {
+                    return finalAppointmentDTO.getStatus();
+                }
+
+                @Override
+                public Integer getStatusId() {
+                    return finalAppointmentDTO.getStatusId();
+                }
+
+                @Override
+                public String getPatientName() {
+                    return patient.getFullName();
+                }
+
+                @Override
+                public String getPatientImageUrl() {
+                    return patient.getImageUrl();
+                }
+
+                @Override
+                public Byte getPatientGender() {
+                    return patient.getGender();
+                }
+
+                @Override
+                public String getPatientPhone() {
+                    return patient.getPhone();
+                }
+
+                @Override
+                public Date getPatientDob() {
+                    return patient.getDob();
+                }
+
+                @Override
+                public String getPatientEthnic() {
+
+                    return patient.getEthnicId() == null ? null
+                            : ethnicService.findEthnicById(patient.getEthnicId()).getName();
+                }
+
+                @Override
+                public String getPatientEmail() {
+                    return patient.getEmail();
+                }
+
+                @Override
+                public String getPatientAddress() {
+                    Address address = addressService.findAddressById(patient.getAddressId());
+                    return address.getStreetName();
+                }
+
+                @Override
+                public String getDoctorName() {
+                    return doctor.getFullName();
+                }
+
+                @Override
+                public String getDoctorImageUrl() {
+                    return doctor.getImageUrl();
+                }
+
+                @Override
+                public Byte getDoctorGender() {
+                    return doctor.getGender();
+                }
+
+                @Override
+                public String getDoctorSpecialty() {
+                    return doctor.getSpecialty();
+                }
+
+                @Override
+                public String getDoctorPhone() {
+                    return doctor.getPhone();
+                }
+
+                @Override
+                public String getDoctorEmail() {
+                    return doctor.getEmail();
+                }
+
+                @Override
+                public String getDoctorJobPlace() {
+                    return doctor.getJobPlace();
+                }
+
+            };
+            returnAppointmentList.add(appointmentDTO);
+        }
+        return returnAppointmentList;
     }
 
     @Override
