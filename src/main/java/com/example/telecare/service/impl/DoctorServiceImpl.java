@@ -106,6 +106,11 @@ public class DoctorServiceImpl implements DoctorService {
             }
 
             @Override
+            public Double getRating() {
+                return doctorRepository.getAverageRating(uid);
+            }
+
+            @Override
             public List<Specialty> getListSpecialty() {
                 List<Specialty> specialties = new ArrayList<>();
                 for(Specialty s : specialtyServiceImp.findAllSpecialtyByDoctorId(uid)){
