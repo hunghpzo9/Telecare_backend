@@ -16,4 +16,7 @@ public interface DoctorService {
     List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page);
 
     void updateDoctor(DoctorUpdateDTO doctorDetail, int id);
+
+    void addDoctorSpecialty(int doctor, int specialtyId);
+
 }
