@@ -1,8 +1,7 @@
 package com.example.telecare.controller;
-
-import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.DoctorUpdateDTO;
+import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
