@@ -13,6 +13,7 @@ import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Specialty;
 import com.example.telecare.model.User;
 import com.example.telecare.repository.DoctorRepository;
+import com.example.telecare.repository.SpecialtyRepository;
 import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,7 +183,7 @@ public class DoctorServiceImpl implements DoctorService {
         user.setGender(doctorDetail.getGender());
         user.setEmail(doctorDetail.getEmail());
         user.setImageUrl(doctorDetail.getImageUrl());
-//        user.setSignatureUrl(doctorDetail.getSignatureUrl());
+
 
         System.out.println(user.getEmail());
 
@@ -194,6 +195,7 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setPosition(doctorDetail.getPosition());
         doctor.addSpecialty(specialtyRepository.findSpecialtyById(doctorDetail.getSpecialtyId()));
         doctor.setJobPlace(doctorDetail.getJobPlace());
+        doctor.setSignature(doctorDetail.getSignatureUrl());
 
         userRepository.save(user);
         doctorRepository.save(doctor);
