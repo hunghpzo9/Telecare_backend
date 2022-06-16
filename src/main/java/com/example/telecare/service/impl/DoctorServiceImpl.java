@@ -25,6 +25,8 @@ public class DoctorServiceImpl implements DoctorService {
     ExperienceServiceImpl experienceService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    SpecialtyRepository specialtyRepository;
 
     @Override
     public DoctorDTOInf findDoctorById(int uid) {
@@ -131,11 +133,13 @@ public class DoctorServiceImpl implements DoctorService {
         User user = userRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Not found user"));
 
+
         user.setFullName(doctorDetail.getFullName());
         user.setDateOfBirth(doctorDetail.getDob());
         user.setGender(doctorDetail.getGender());
         user.setEmail(doctorDetail.getEmail());
         user.setImageUrl(doctorDetail.getImageUrl());
+//        user.setSignatureUrl(doctorDetail.getSignatureUrl());
 
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
@@ -143,10 +147,23 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
         doctor.setPosition(doctorDetail.getPosition());
+        doctor.addSpecialty(specialtyRepository.findSpecialtyById(doctorDetail.getSpecialtyId()));
         doctor.setJobPlace(doctorDetail.getJobPlace());
 
         userRepository.save(user);
         doctorRepository.save(doctor);
     }
+
+    @Override
+    public void addDoctorSpecialty(int doctorId, int specialtyId) {
+
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()
+                -> new ResourceNotFoundException("Not found doctor"));
+
+        doctor.addSpecialty(specialtyRepository.findSpecialtyById(specialtyId));
+
+        doctorRepository.save(doctor);
+    }
+
 
 }

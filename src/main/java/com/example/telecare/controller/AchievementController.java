@@ -2,6 +2,7 @@ package com.example.telecare.controller;
 
 import com.example.telecare.model.DoctorAchievement;
 import com.example.telecare.repository.AchievementRepository;
+import com.example.telecare.service.impl.AchievementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class AchievementController {
 
     @Autowired
-    AchievementRepository achievementRepository;
+    AchievementServiceImpl achievementService;
 
     @PutMapping(value = "/addAchievement")
     public DoctorAchievement addAchievement(@RequestBody DoctorAchievement doctorAchievement) {
-        DoctorAchievement achievement = achievementRepository.save(doctorAchievement);
+        DoctorAchievement achievement = achievementService.addDoctorAchievement(doctorAchievement);
         return achievement;
     }
 

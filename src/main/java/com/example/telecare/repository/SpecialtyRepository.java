@@ -1,5 +1,6 @@
 package com.example.telecare.repository;
 
+import com.example.telecare.model.Role;
 import com.example.telecare.model.Specialty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,5 +12,6 @@ public interface SpecialtyRepository extends JpaRepository<Specialty,Integer> {
             "on ds.specialty_id = s.id where ds.doctor_id = ?1",nativeQuery = true)
     List<Specialty> findAllSpecialtyByDoctorId(int id);
 
-
+    @Query(value = "SELECT * from telecare.specialty WHERE id = ?1", nativeQuery = true)
+    Specialty findSpecialtyById(int id);
 }
