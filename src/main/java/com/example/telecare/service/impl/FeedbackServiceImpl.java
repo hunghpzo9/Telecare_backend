@@ -13,7 +13,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     FeedbackRepository feedbackRepository;
     @Override
-    public List<FeedbackDTOInf> getListFeedBackByDoctor(int uid) {
-        return feedbackRepository.getListFeedBackByDoctor(uid);
+    public List<FeedbackDTOInf> getListFeedBackByDoctor(int uid,int index) {
+        return feedbackRepository.getListFeedBackByDoctor(uid,index);
     }
 }
