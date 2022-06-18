@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FeedbackRepository extends JpaRepository<Feedback,Integer> {
-    @Query(value = "SELECT a.id,u.full_name as fullName,u.image_url as imageUrl,f.comment,f.rating,f.updated_at as time FROM \n" +
+    @Query(value = "SELECT a.id,u.full_name as fullName,u.image_url as imageUrl,f.comment,f.rating" +
+            ",DATE_FORMAT (f.updated_at,'%d-%m-%Y') as time FROM \n" +
             "telecare.feedback f\n" +
             "left outer join telecare.feedback_appointment fa on f.id = fa.feedback_id\n" +
             "left outer join telecare.appointment a on a.id = fa.apointment_id\n" +

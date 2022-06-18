@@ -8,7 +8,7 @@ public interface AppointmentDTOInf {
     Integer getPatientId();
     String getDescription();
     String getSchedule();
-    Date getTime();
+    String getTime();
     String getStatus();
     Integer getStatusId();
 
