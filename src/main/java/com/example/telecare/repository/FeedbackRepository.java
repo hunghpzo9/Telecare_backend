@@ -13,7 +13,9 @@ public interface FeedbackRepository extends JpaRepository<Feedback,Integer> {
             "left outer join telecare.feedback_appointment fa on f.id = fa.feedback_id\n" +
             "left outer join telecare.appointment a on a.id = fa.apointment_id\n" +
             "left outer join telecare.patient p on p.patient_id = a.patient_id\n" +
-            "left outer join telecare.user u on u.id = p.patient_id where a.doctor_id = ?1 and f.is_hidden = 1",
+            "left outer join telecare.user u on u.id = p.patient_id where a.doctor_id = ?1 and f.is_hidden = 1 " +
+            "limit 3\n" +
+            "offset ?2",
             nativeQuery = true)
-    List<FeedbackDTOInf> getListFeedBackByDoctor(int uid);
+    List<FeedbackDTOInf> getListFeedBackByDoctor(int uid,int index);
 }
