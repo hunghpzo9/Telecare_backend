@@ -17,4 +17,10 @@ public class AchievementServiceImpl implements AchievementService {
     public List<DoctorAchievementDTO> findAllAchievementByDoctorId(int id) {
         return achievementRepository.findAllAchievementByDoctorId(id);
     }
+
+    @Override
+    public DoctorAchievement addDoctorAchievement(DoctorAchievement achievement) {
+        return achievementRepository.save(achievement);
+    }
+
 }

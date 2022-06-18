@@ -23,9 +23,6 @@ public class AuthController {
     @Autowired
     private AuthServiceImpl authService;
 
-    @Autowired
-    MyUserDetailsService userDetailsService;
-
     @PostMapping("/register/patient")
     public User registerUserPatient(@RequestBody User user) {
         User registeredUser = userService.registerPatient(user);

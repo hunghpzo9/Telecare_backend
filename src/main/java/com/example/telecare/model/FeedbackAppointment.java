@@ -22,30 +22,6 @@ public class FeedbackAppointment {
     @Column(name = "apointment_id")
     private Integer apointmentId;
 
-    public Integer getFeedbackId() {
-        return feedbackId;
-    }
-
-    public void setFeedbackId(int feedbackId) {
-        this.feedbackId = feedbackId;
-    }
-
-    public void setFeedbackId(Integer feedbackId) {
-        this.feedbackId = feedbackId;
-    }
-
-    public Integer getApointmentId() {
-        return apointmentId;
-    }
-
-    public void setApointmentId(int apointmentId) {
-        this.apointmentId = apointmentId;
-    }
-
-    public void setApointmentId(Integer apointmentId) {
-        this.apointmentId = apointmentId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EthnicService {
     List<Ethnic> findAllEthnic();
+
+    Ethnic findEthnicById(int id);
 }

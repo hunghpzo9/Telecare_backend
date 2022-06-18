@@ -1,10 +1,18 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.DoctorAchievementDTO;
-import com.example.telecare.dto.DoctorDTOInf;
-import com.example.telecare.dto.DoctorExperienceDTO;
+import com.example.telecare.dto.*;
+
+import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.NotFoundException;
+import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.model.Doctor;
+
+
 import com.example.telecare.model.Specialty;
+import com.example.telecare.model.User;
 import com.example.telecare.repository.DoctorRepository;
+import com.example.telecare.repository.SpecialtyRepository;
+import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +31,21 @@ public class DoctorServiceImpl implements DoctorService {
     AchievementServiceImpl achievementService;
     @Autowired
     ExperienceServiceImpl experienceService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    SpecialtyRepository specialtyRepository;
+
     @Override
     public DoctorDTOInf findDoctorById(int uid) {
         DoctorDTOInf doctorDTOInf = doctorRepository.findDoctorById(uid);
+        if (doctorDTOInf == null) {
+            throw new NotFoundException("Không tìm thấy bác sĩ");
+        }
+        return setReturnDoctor(doctorDTOInf);
+    }
+
+    private DoctorDTOInf setReturnDoctor(DoctorDTOInf doctorDTOInf) {
         DoctorDTOInf returnDtoInf = new DoctorDTOInf() {
             @Override
             public Integer getId() {
@@ -54,7 +74,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             @Override
             public String getFullName() {
-                return  doctorDTOInf.getFullName();
+                return doctorDTOInf.getFullName();
             }
 
             @Override
@@ -78,19 +98,30 @@ public class DoctorServiceImpl implements DoctorService {
             }
 
             @Override
+            public String getSignature() {
+                return doctorDTOInf.getSignature();
+            }
+
+            @Override
             public Integer getAppointmentDoneCount() {
-                return doctorRepository.getNumberDoneAppointment(uid);
+                return doctorRepository.getNumberDoneAppointment(doctorDTOInf.getId());
             }
 
             @Override
             public Integer getPatientCount() {
-                return doctorRepository.getNumberPatient(uid);
+                return doctorRepository.getNumberPatient(doctorDTOInf.getId());
+            }
+
+            @Override
+            public Double getRating() {
+                return doctorRepository.getAverageRating(doctorDTOInf.getId()) == null
+                        ? 0 : doctorRepository.getAverageRating(doctorDTOInf.getId());
             }
 
             @Override
             public List<Specialty> getListSpecialty() {
                 List<Specialty> specialties = new ArrayList<>();
-                for(Specialty s : specialtyServiceImp.findAllSpecialtyByDoctorId(uid)){
+                for (Specialty s : specialtyServiceImp.findAllSpecialtyByDoctorId(doctorDTOInf.getId())) {
                     specialties.add(s);
                 }
                 return specialties;
@@ -99,7 +130,7 @@ public class DoctorServiceImpl implements DoctorService {
             @Override
             public List<DoctorAchievementDTO> getListAchievement() {
                 List<DoctorAchievementDTO> doctorAchievements = new ArrayList<>();
-                for(DoctorAchievementDTO d : achievementService.findAllAchievementByDoctorId(uid)){
+                for (DoctorAchievementDTO d : achievementService.findAllAchievementByDoctorId(doctorDTOInf.getId())) {
                     doctorAchievements.add(d);
                 }
                 return doctorAchievements;
@@ -108,7 +139,7 @@ public class DoctorServiceImpl implements DoctorService {
             @Override
             public List<DoctorExperienceDTO> getListExperience() {
                 List<DoctorExperienceDTO> doctorExperiences = new ArrayList<>();
-                for(DoctorExperienceDTO d : experienceService.findAllExperienceByDoctorId(uid)){
+                for (DoctorExperienceDTO d : experienceService.findAllExperienceByDoctorId(doctorDTOInf.getId())) {
                     doctorExperiences.add(d);
                 }
                 return doctorExperiences;
@@ -118,15 +149,70 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorDTOInf> listAllDoctor(String search,int page) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search,page);
-
-        return doctorPage;
+    public List<DoctorDTOInf> listAllDoctor(String search, int page) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search, page);
+        List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
+        for (DoctorDTOInf doctorDTOInf : doctorPage) {
+            DoctorDTOInf finalDoctorDTO = doctorDTOInf;
+            doctorDTOInf = setReturnDoctor(finalDoctorDTO);
+            returnDoctorPage.add(doctorDTOInf);
+        }
+        return returnDoctorPage;
     }
 
     @Override
     public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search,specialtyId,page);
-        return doctorPage;
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search, specialtyId, page);
+        List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
+        for (DoctorDTOInf doctorDTOInf : doctorPage) {
+            DoctorDTOInf finalDoctorDTO = doctorDTOInf;
+            doctorDTOInf = setReturnDoctor(finalDoctorDTO);
+            returnDoctorPage.add(doctorDTOInf);
+        }
+        return returnDoctorPage;
     }
+
+    @Override
+    public void updateDoctor(DoctorUpdateDTO doctorDetail, int id) {
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Not found doctor"));
+
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Not found user"));
+
+
+        user.setFullName(doctorDetail.getFullName());
+        user.setDateOfBirth(doctorDetail.getDob());
+        user.setGender(doctorDetail.getGender());
+        user.setEmail(doctorDetail.getEmail());
+        user.setImageUrl(doctorDetail.getImageUrl());
+
+
+        System.out.println(user.getEmail());
+
+        User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
+        if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
+            throw new BadRequestException("Email đã tồn tại");
+        }
+
+        doctor.setPosition(doctorDetail.getPosition());
+        doctor.setJobPlace(doctorDetail.getJobPlace());
+        doctor.setSignature(doctorDetail.getSignatureUrl());
+
+        userRepository.save(user);
+        doctorRepository.save(doctor);
+    }
+
+    @Override
+    public void addDoctorSpecialty(int doctorId, int specialtyId) {
+
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()
+                -> new ResourceNotFoundException("Not found doctor"));
+
+        doctor.addSpecialty(specialtyRepository.findSpecialtyById(specialtyId));
+
+        doctorRepository.save(doctor);
+    }
+
+
 }
