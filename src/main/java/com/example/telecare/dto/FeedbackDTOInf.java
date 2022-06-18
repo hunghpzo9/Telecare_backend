@@ -8,5 +8,5 @@ public interface FeedbackDTOInf {
     String getImageUrl();
     String getComment();
     Double getRating();
-    Date getTime();
+    String getTime();
 }
