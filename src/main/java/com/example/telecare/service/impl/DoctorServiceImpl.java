@@ -7,8 +7,6 @@ import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Doctor;
 
-import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.exception.NotFoundException;
 
 import com.example.telecare.model.Specialty;
 import com.example.telecare.model.User;
@@ -97,6 +95,11 @@ public class DoctorServiceImpl implements DoctorService {
             @Override
             public String getSpecialty() {
                 return doctorDTOInf.getSpecialty();
+            }
+
+            @Override
+            public String getSignature() {
+                return doctorDTOInf.getSignature();
             }
 
             @Override
