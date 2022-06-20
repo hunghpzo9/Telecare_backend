@@ -18,4 +18,8 @@ public interface FeedbackRepository extends JpaRepository<Feedback,Integer> {
             "offset ?2",
             nativeQuery = true)
     List<FeedbackDTOInf> getListFeedBackByDoctor(int uid,int index);
+
+    @Query(value = "SELECT * FROM telecare.feedback f where f.appointment_id = ?1",
+            nativeQuery = true)
+    Feedback findFeedbackByAppointmentId(int id);
 }
