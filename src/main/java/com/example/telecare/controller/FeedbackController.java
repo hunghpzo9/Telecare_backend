@@ -23,8 +23,13 @@ public class FeedbackController {
         return feedbackService.getListFeedBackByDoctor(id,index);
     }
     @PostMapping(value = "/save")
-    public ResponseEntity<?> getListFeedBackByDoctor(@RequestBody Feedback feedback) {
+    public ResponseEntity<?> postNewFeedback(@RequestBody Feedback feedback) {
          feedbackService.saveNewFeedback(feedback);
+        return ResponseEntity.ok(feedback);
+    }
+    @PutMapping(value = "/update")
+    public ResponseEntity<?> updateFeedback(@RequestBody Feedback feedback,@Param("isDelete") boolean isDelete) {
+        feedbackService.updateFeedback(feedback,isDelete);
         return ResponseEntity.ok(feedback);
     }
 }

@@ -10,4 +10,6 @@ public interface FeedbackService {
     List<FeedbackDTOInf> getListFeedBackByDoctor(int uid,int index);
 
     Feedback saveNewFeedback(Feedback feedback);
+
+    void updateFeedback(Feedback feedback,boolean isDelete);
 }
