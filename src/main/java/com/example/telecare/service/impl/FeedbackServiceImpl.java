@@ -39,4 +39,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         feedbackRepository.save(currentFeedback);
     }
+
+    @Override
+    public Feedback findFeedBackByAppointmentId(int aid) {
+        return feedbackRepository.findFeedbackByAppointmentId(aid);
+    }
 }

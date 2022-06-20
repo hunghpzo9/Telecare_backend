@@ -12,4 +12,6 @@ public interface FeedbackService {
     Feedback saveNewFeedback(Feedback feedback);
 
     void updateFeedback(Feedback feedback,boolean isDelete);
+
+    Feedback findFeedBackByAppointmentId(int aid);
 }

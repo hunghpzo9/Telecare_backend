@@ -32,4 +32,8 @@ public class FeedbackController {
         feedbackService.updateFeedback(feedback,isDelete);
         return ResponseEntity.ok(feedback);
     }
+    @GetMapping(value = "/appointmentId={id}")
+    public Feedback getFeedbackByAppointmentId(@PathVariable int id) {
+        return feedbackService.findFeedBackByAppointmentId(id);
+    }
 }
