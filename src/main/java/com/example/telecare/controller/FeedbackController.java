@@ -1,9 +1,11 @@
 package com.example.telecare.controller;
 import com.example.telecare.dto.FeedbackDTOInf;
+import com.example.telecare.model.Feedback;
 import com.example.telecare.service.impl.FeedbackServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,9 +16,15 @@ import java.util.List;
 public class FeedbackController {
     @Autowired
     FeedbackServiceImpl feedbackService;
+
     @GetMapping(value = "/doctorId={id}")
     @Cacheable(value = "feedback")
     public List<FeedbackDTOInf> getListFeedBackByDoctor(@PathVariable int id, @Param("index") int index) {
         return feedbackService.getListFeedBackByDoctor(id,index);
+    }
+    @PostMapping(value = "/save")
+    public ResponseEntity<?> getListFeedBackByDoctor(@RequestBody Feedback feedback) {
+         feedbackService.saveNewFeedback(feedback);
+        return ResponseEntity.ok(feedback);
     }
 }

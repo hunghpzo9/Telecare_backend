@@ -7,12 +7,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 public class Appointment {
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "feedback_appointment", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "feedback_id"))
+    public List<Feedback> feedbacks = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -37,7 +42,9 @@ public class Appointment {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
+    public void addFeedback(Feedback feedback) {
+        this.feedbacks.add(feedback);
+    }
 
 
     @Override
