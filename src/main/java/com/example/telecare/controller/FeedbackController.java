@@ -12,13 +12,12 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
-@RequestMapping("/api/v1/feedback")
+    @RequestMapping("/api/v1/feedback")
 public class FeedbackController {
     @Autowired
     FeedbackServiceImpl feedbackService;
 
     @GetMapping(value = "/doctorId={id}")
-    @Cacheable(value = "feedback")
     public List<FeedbackDTOInf> getListFeedBackByDoctor(@PathVariable int id, @Param("index") int index) {
         return feedbackService.getListFeedBackByDoctor(id,index);
     }
