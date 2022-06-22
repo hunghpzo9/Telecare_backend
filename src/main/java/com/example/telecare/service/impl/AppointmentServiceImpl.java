@@ -81,7 +81,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public Date getTime() {
+            public String getTime() {
                 return appointmentDTO.getTime();
             }
 

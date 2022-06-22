@@ -31,7 +31,9 @@ public class Report {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
+    @Basic
+    @Column(name = "appointment_id")
+    private Integer appointmentId;
 
 
     @Override
@@ -58,5 +60,13 @@ public class Report {
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         return result;
+    }
+
+    public Integer getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
     }
 }
