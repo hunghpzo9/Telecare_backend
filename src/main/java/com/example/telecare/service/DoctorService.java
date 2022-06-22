@@ -18,6 +18,7 @@ public interface DoctorService {
     void updateDoctor(DoctorUpdateDTO doctorDetail, int id);
 
     void addDoctorSpecialty(int doctor, int specialtyId);
+
     List<DoctorDTOInf> getAllDoctor(int index);
 
 }
