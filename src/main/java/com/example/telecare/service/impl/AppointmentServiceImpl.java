@@ -10,6 +10,7 @@ import com.example.telecare.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +77,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public String getSchedule() {
+            public Time getSchedule() {
                 return appointmentDTO.getSchedule();
             }
 
