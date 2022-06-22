@@ -6,6 +6,7 @@ import com.example.telecare.service.impl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,9 @@ public class DoctorController {
         doctorService.addDoctorSpecialty(docId ,specialtyId);
         return ResponseEntity.ok(new ResponseOkMessage("Add successful", new Date()));
     }
-
+    @GetMapping(value = "")
+    public ResponseEntity<List<DoctorDTOInf>> getAllDoctor(@RequestParam int index) {
+        return new ResponseEntity<>(doctorService.getAllDoctor(index), HttpStatus.OK);
+    }
 
 }

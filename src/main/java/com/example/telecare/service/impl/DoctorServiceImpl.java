@@ -103,6 +103,12 @@ public class DoctorServiceImpl implements DoctorService {
             }
 
             @Override
+            public Byte getIsActive() {
+                return doctorDTOInf.getIsActive();
+            }
+
+
+            @Override
             public Integer getAppointmentDoneCount() {
                 return doctorRepository.getNumberDoneAppointment(doctorDTOInf.getId());
             }
@@ -212,6 +218,18 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.addSpecialty(specialtyRepository.findSpecialtyById(specialtyId));
 
         doctorRepository.save(doctor);
+    }
+
+    @Override
+    public List<DoctorDTOInf> getAllDoctor(int index) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.getAllDoctor(index);
+        List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
+        for (DoctorDTOInf doctorDTOInf : doctorPage) {
+            DoctorDTOInf finalDoctorDTO = doctorDTOInf;
+            doctorDTOInf = setReturnDoctor(finalDoctorDTO);
+            returnDoctorPage.add(doctorDTOInf);
+        }
+        return returnDoctorPage;
     }
 
 

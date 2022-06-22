@@ -9,5 +9,9 @@ import java.util.List;
 
 public interface MedicineRepository extends JpaRepository<Medicine,Integer> {
     @Query(value = "SELECT * FROM telecare.medicine  limit ?1,50",nativeQuery = true)
-    List<MedicineDTO> getAllMedicineDTO(int index);
+    List<Medicine> getAllMedicine(int index);
+
+    @Query(value = "SELECT count(*) FROM telecare.medicine",nativeQuery = true)
+    int getNumberOfMedicine();
+
 }

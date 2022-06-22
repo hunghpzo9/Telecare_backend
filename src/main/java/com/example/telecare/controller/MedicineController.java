@@ -1,6 +1,7 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.MedicineDTO;
+import com.example.telecare.model.Medicine;
 import com.example.telecare.service.impl.MedicineServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,19 @@ public class MedicineController {
     @Autowired
     MedicineServiceImpl medicineService;
     @GetMapping("/medicines")
-    public ResponseEntity<List<MedicineDTO>> getAllVaccine(@RequestParam int index) {
-        List<MedicineDTO> medicines = medicineService.getAllMedicineDTO(index);
+    public ResponseEntity<List<Medicine>> getAllVaccine(@RequestParam int index) {
+        List<Medicine> medicines = medicineService.getAllMedicine(index);
         if (medicines.isEmpty()) {
-            return new ResponseEntity<List<MedicineDTO>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<Medicine>>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<MedicineDTO>>(medicines, HttpStatus.OK);
+        return new ResponseEntity<List<Medicine>>(medicines, HttpStatus.OK);
+
+    }
+    @GetMapping("/numberOfMedicine")
+    public ResponseEntity<Integer> getNumberOfMedicine() {
+        int medicines = medicineService.getNumberOfMedicine();
+
+        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
 
     }
 
