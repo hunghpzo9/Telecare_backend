@@ -1,16 +1,12 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.DoctorDTOInf;
-import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import com.example.telecare.service.impl.EthnicServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)

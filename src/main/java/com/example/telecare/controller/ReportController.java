@@ -17,11 +17,14 @@ public class ReportController {
     @Autowired
     ReportServiceImpl reportService;
 
+
+    //get all report reason from database
     @Cacheable(value="allReport")
     @GetMapping(value = "/getAll")
     public List<ReportDTOInf> getAllReport() {
         return reportService.getListReport();
     }
+
 
     @PostMapping(value = "/save")
     public ResponseEntity<?> saveReport(@RequestBody Report report){
