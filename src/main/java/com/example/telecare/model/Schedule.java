@@ -1,16 +1,18 @@
 package com.example.telecare.model;
 
 import javax.persistence.*;
+import java.sql.Time;
 
 @Entity
 public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Basic
     @Column(name = "id")
     private int id;
     @Basic
     @Column(name = "time")
-    private String time;
+    private Time time;
 
     public int getId() {
         return id;
@@ -20,11 +22,11 @@ public class Schedule {
         this.id = id;
     }
 
-    public String getTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 
