@@ -10,7 +10,7 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
     @Query(value = "SELECT a.id , u.id as doctorId,p.patient_id as patientId, u.image_url as doctorImageUrl ," +
             " u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
-            "ad.description ,s.time as schedule,DATE_FORMAT (ad.time,'%d-%m-%Y') as time ,aps.name as status,aps.id as statusId\n" +
+            "ad.description ,s.start_at as startAt,s.end_at as endAt,DATE_FORMAT (ad.time,'%d-%m-%Y') as time ,aps.name as status,aps.id as statusId\n" +
             "FROM telecare.appointment a\n" +
             "left outer join telecare.patient p on a.patient_id = p.patient_id\n" +
             "left outer join telecare.doctor_specialty ds on ds.doctor_id = a.doctor_id\n" +
@@ -26,7 +26,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
 
     @Query(value = "SELECT a.id , u.id as doctorId ,p.patient_id as patientId, u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
-            "            ad.description ,s.time as schedule,ad.time,aps.name as status,aps.id as statusId\n" +
+            "            ad.description ,s.start_at as startAt,s.end_at as endAt,ad.time,aps.name as status,aps.id as statusId\n" +
             "            FROM telecare.appointment a\n" +
             "            left outer join telecare.patient p on a.patient_id = p.patient_id\n" +
             "            left outer join telecare.doctor_specialty ds on ds.doctor_id = a.doctor_id\n" +

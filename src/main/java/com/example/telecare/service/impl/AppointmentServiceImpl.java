@@ -77,9 +77,15 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public Time getSchedule() {
-                return appointmentDTO.getSchedule();
+            public Time getStartAt() {
+                return appointmentDTO.getStartAt();
             }
+
+            @Override
+            public Time getEndAt() {
+                return appointmentDTO.getEndAt();
+            }
+
 
             @Override
             public String getTime() {
