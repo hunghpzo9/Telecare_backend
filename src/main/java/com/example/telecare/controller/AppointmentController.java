@@ -32,4 +32,10 @@ public class AppointmentController {
     public AppointmentDTOInf getAppointmentById(@PathVariable int id) {
        return appointmentService.findAppointmentById(id);
     }
+
+    @GetMapping(value = "")
+    public  List<Integer> listScheduleFindByDoctorAndTime (@RequestParam("doctorId") int doctorId,
+                                                           @RequestParam("time") String time) {
+        return appointmentService.listScheduleFindByDoctorAndTime(doctorId,time);
+    }
 }
