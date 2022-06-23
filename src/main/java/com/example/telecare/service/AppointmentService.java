@@ -8,4 +8,6 @@ public interface AppointmentService {
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
 
     AppointmentDTOInf findAppointmentById(int id);
+
+    List<Integer> listScheduleFindByDoctorAndTime(int doctorId, String time);
 }

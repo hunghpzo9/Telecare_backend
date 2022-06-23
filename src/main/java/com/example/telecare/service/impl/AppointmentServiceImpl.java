@@ -52,6 +52,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return  setReturnAppointment(appointmentDTO);
     }
+
+    @Override
+    public List<Integer> listScheduleFindByDoctorAndTime(int doctorId, String time) {
+        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId,time);
+    }
+
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO){
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());

@@ -39,4 +39,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "            group by a.doctor_id",
             nativeQuery = true)
     AppointmentDTOInf findAppointmentDetailById(int id);
+    @Query(value = "SELECT a.scheduele_id FROM telecare.appointment a left outer join \n" +
+            "telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "where time = ?2 and a.doctor_id = ?1 and ad.status_id != 2\n"
+            ,
+            nativeQuery = true)
+    List<Integer> listScheduleFindByDoctorAndTime(int doctorId, String time);
 }
