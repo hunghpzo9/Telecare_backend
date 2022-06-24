@@ -193,9 +193,8 @@ public class DoctorServiceImpl implements DoctorService {
         }
 
         doctor.setPosition(doctorDetail.getPosition());
-        doctor.addSpecialty(specialtyRepository.findSpecialtyById(doctorDetail.getSpecialtyId()));
         doctor.setJobPlace(doctorDetail.getJobPlace());
-        doctor.setSignature(doctorDetail.getSignatureUrl());
+        doctor.setSignature(doctorDetail.getSignature());
 
         userRepository.save(user);
         doctorRepository.save(doctor);
