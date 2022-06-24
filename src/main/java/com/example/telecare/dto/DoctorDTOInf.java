@@ -17,6 +17,8 @@ public interface DoctorDTOInf {
     String getPosition();
     String getJobPlace();
     String getSpecialty();
+    String getSignature();
+    Byte getIsActive();
     Integer getAppointmentDoneCount();
     Integer getPatientCount();
     Double getRating();

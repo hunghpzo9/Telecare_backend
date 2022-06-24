@@ -1,16 +1,12 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.DoctorDTOInf;
-import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import com.example.telecare.service.impl.EthnicServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
@@ -35,5 +31,11 @@ public class AppointmentController {
     @GetMapping(value = "/{id}")
     public AppointmentDTOInf getAppointmentById(@PathVariable int id) {
        return appointmentService.findAppointmentById(id);
+    }
+
+    @GetMapping(value = "")
+    public  List<Integer> listScheduleFindByDoctorAndTime (@RequestParam("doctorId") int doctorId,
+                                                           @RequestParam("time") String time) {
+        return appointmentService.listScheduleFindByDoctorAndTime(doctorId,time);
     }
 }

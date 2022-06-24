@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
-            "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty FROM telecare.user u\n" +
+            "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty,d.signature as signature FROM telecare.user u\n" +
             "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
             "            left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
             "            left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
@@ -42,6 +42,16 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             nativeQuery = true)
     List<DoctorDTOInf> listAllDoctor(String search, int page);
 
+    @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
+            "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty,u.is_active as isActive FROM telecare.user u\n" +
+            "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
+            "            left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
+            "            left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
+            "            group by u.id \n" +
+            "            limit ?1,5\n",
+            nativeQuery = true)
+    List<DoctorDTOInf> getAllDoctor(int index);
+
     @Query(value = "SELECT  Sum(CASE WHEN ad.status_id = 3 THEN 1 ELSE 0 END )\n" +
             "as appointmentDoneCount\n" +
             "FROM telecare.user u\n" +
@@ -69,11 +79,10 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     Integer getNumberPatient(int uid);
 
     @Query(value = "SELECT avg(f.rating) as rating FROM \n" +
-            "            telecare.feedback f\n" +
-            "            left outer join telecare.feedback_appointment fa on f.id = fa.feedback_id\n" +
-            "            left outer join telecare.appointment a on a.id = fa.apointment_id\n" +
-            "            left outer join telecare.patient p on p.patient_id = a.patient_id\n" +
-            "            left outer join telecare.user u on u.id = p.patient_id where a.doctor_id = ?1",
+            "                        telecare.feedback f\n" +
+            "                        left outer join telecare.appointment a on a.id = f.appointment_id\n" +
+            "                        left outer join telecare.patient p on p.patient_id = a.patient_id\n" +
+            "                        left outer join telecare.user u on u.id = p.patient_id where a.doctor_id = ?1",
             nativeQuery = true)
     Double getAverageRating(int uid);
 

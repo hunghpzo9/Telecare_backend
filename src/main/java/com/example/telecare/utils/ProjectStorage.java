@@ -23,6 +23,10 @@ public class ProjectStorage {
 
     public static final String ROLE_ADMIN= "ADMIN";
 
+    public static final int HIDDEN_FEEDBACK= 0;
+
+    public static final int SHOW_FEEDBACK= 1;
+
     public static final int GENDER_MALE= 0;
 
     public static final int GENDER_FEMALE= 1;

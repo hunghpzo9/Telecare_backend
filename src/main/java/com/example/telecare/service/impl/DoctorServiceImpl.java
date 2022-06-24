@@ -7,8 +7,6 @@ import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Doctor;
 
-import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.exception.NotFoundException;
 
 import com.example.telecare.model.Specialty;
 import com.example.telecare.model.User;
@@ -98,6 +96,17 @@ public class DoctorServiceImpl implements DoctorService {
             public String getSpecialty() {
                 return doctorDTOInf.getSpecialty();
             }
+
+            @Override
+            public String getSignature() {
+                return doctorDTOInf.getSignature();
+            }
+
+            @Override
+            public Byte getIsActive() {
+                return doctorDTOInf.getIsActive();
+            }
+
 
             @Override
             public Integer getAppointmentDoneCount() {
@@ -209,6 +218,18 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.addSpecialty(specialtyRepository.findSpecialtyById(specialtyId));
 
         doctorRepository.save(doctor);
+    }
+
+    @Override
+    public List<DoctorDTOInf> getAllDoctor(int index) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.getAllDoctor(index);
+        List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
+        for (DoctorDTOInf doctorDTOInf : doctorPage) {
+            DoctorDTOInf finalDoctorDTO = doctorDTOInf;
+            doctorDTOInf = setReturnDoctor(finalDoctorDTO);
+            returnDoctorPage.add(doctorDTOInf);
+        }
+        return returnDoctorPage;
     }
 
 

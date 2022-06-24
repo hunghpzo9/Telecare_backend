@@ -10,6 +10,7 @@ import com.example.telecare.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +52,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return  setReturnAppointment(appointmentDTO);
     }
+
+    @Override
+    public List<Integer> listScheduleFindByDoctorAndTime(int doctorId, String time) {
+        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId,time);
+    }
+
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO){
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());
@@ -76,12 +83,18 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public String getSchedule() {
-                return appointmentDTO.getSchedule();
+            public Time getStartAt() {
+                return appointmentDTO.getStartAt();
             }
 
             @Override
-            public Date getTime() {
+            public Time getEndAt() {
+                return appointmentDTO.getEndAt();
+            }
+
+
+            @Override
+            public String getTime() {
                 return appointmentDTO.getTime();
             }
 

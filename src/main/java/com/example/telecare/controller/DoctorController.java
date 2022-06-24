@@ -6,6 +6,7 @@ import com.example.telecare.service.impl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,6 @@ public class DoctorController {
     @Autowired
     DoctorServiceImpl doctorService;
 
-    @GetMapping(value = "/doctorDetail/{id}")
-    @Cacheable(key = "#id", value = "doctorDetail{id}")
-    public DoctorDTOInf findDoctor(@PathVariable int id) {
-        return doctorService.findDoctorById(id);
-    }
 
     @GetMapping(value = "/{id}")
     public DoctorDTOInf findDoctorDetail(@PathVariable int id) {
@@ -41,7 +37,7 @@ public class DoctorController {
         return doctorService.listAllDoctor("%" + search + "%", pageNo);
     }
 
-    @GetMapping(value = "/search={search}/{specialtyId}/pageNo={pageNo}")
+    @GetMapping(value = "/searchBySpecialty/search={search}/pageNo={pageNo}")
     public List<DoctorDTOInf> findDoctorBySpecialty(@PathVariable String search, @Param("specialtyId") List<Integer> specialtyId, @PathVariable int pageNo) {
         return doctorService.listAllDoctorBySpecialty("%" + search + "%", specialtyId, pageNo);
     }
@@ -51,6 +47,9 @@ public class DoctorController {
         doctorService.addDoctorSpecialty(docId ,specialtyId);
         return ResponseEntity.ok(new ResponseOkMessage("Add successful", new Date()));
     }
-
+    @GetMapping(value = "")
+    public ResponseEntity<List<DoctorDTOInf>> getAllDoctor(@RequestParam int index) {
+        return new ResponseEntity<>(doctorService.getAllDoctor(index), HttpStatus.OK);
+    }
 
 }
