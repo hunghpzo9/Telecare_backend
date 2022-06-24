@@ -1,8 +1,8 @@
 package com.example.telecare.agora;
 
 public class AgoraRepository {
-    static String appId = "054668277fe54f01b8a02a9fe6ad5260"; //replace app id
-    static String appCertificate = "1a55859009ee485bbe395e844e2b5afa"; //replace app cert
+    static String appId = "97cc52a260b9460383581e0bd93ebb9b"; //replace app id
+    static String appCertificate = "9a611a40ceca450385947750adb665cc"; //replace app cert
     private String channelName;
     private int uid = 0;
     private int expirationTimeInSeconds = 3600;
