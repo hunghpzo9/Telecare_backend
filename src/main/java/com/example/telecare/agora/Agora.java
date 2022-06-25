@@ -45,6 +45,7 @@ public class Agora {
         JSONObject jsondict = new JSONObject();
         jsondict.put("rtcToken", result);
         return jsondict.toString();
+
     }
 
     @PostMapping(value = "/rtm")
