@@ -43,8 +43,8 @@ public class Agora {
         String result = token.buildTokenWithUid(resource.appId, resource.appCertificate,
                 channelName, uid, role, timestamp);
         JSONObject jsondict = new JSONObject();
-        jsondict.put("message", result);
-        return jsondict.get("message");
+        jsondict.put("rtcToken", result);
+        return jsondict.toString();
     }
 
     @PostMapping(value = "/rtm")
@@ -62,8 +62,8 @@ public class Agora {
         String result = token.buildToken(resource.getAppId(), resource.getAppCertificate(), userId, RtmTokenBuilder.Role.Rtm_User, resource.getExpireTimestamp());
         System.out.println(result);
         JSONObject jsondict = new JSONObject();
-        jsondict.put("message", result);
-        return jsondict.get("message");
+        jsondict.put("rtmToken", result);
+        return jsondict.toString();
 
     }
 }
