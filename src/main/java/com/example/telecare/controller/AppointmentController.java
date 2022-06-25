@@ -35,7 +35,8 @@ public class AppointmentController {
 
     @GetMapping(value = "")
     public  List<Integer> listScheduleFindByDoctorAndTime (@RequestParam("doctorId") int doctorId,
+                                                           @RequestParam("patientId") int patientId,
                                                            @RequestParam("time") String time) {
-        return appointmentService.listScheduleFindByDoctorAndTime(doctorId,time);
+        return appointmentService.listScheduleFindByDoctorAndTime(doctorId,patientId,time);
     }
 }
