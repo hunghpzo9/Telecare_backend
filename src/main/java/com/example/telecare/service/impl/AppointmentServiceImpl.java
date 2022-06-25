@@ -54,8 +54,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Integer> listScheduleFindByDoctorAndTime(int doctorId, String time) {
-        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId,time);
+    public List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time) {
+        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId,patientId,time);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO){

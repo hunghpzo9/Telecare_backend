@@ -9,5 +9,5 @@ public interface AppointmentService {
 
     AppointmentDTOInf findAppointmentById(int id);
 
-    List<Integer> listScheduleFindByDoctorAndTime(int doctorId, String time);
+    List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
 }
