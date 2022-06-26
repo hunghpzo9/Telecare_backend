@@ -3,14 +3,18 @@ package com.example.telecare.service.impl;
 import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.PatientDTOInf;
+import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.exception.NotFoundException;
-import com.example.telecare.model.Address;
+import com.example.telecare.model.*;
+import com.example.telecare.repository.AppointmentDetailRepository;
 import com.example.telecare.repository.AppointmentRepository;
 import com.example.telecare.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +24,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     AppointmentRepository appointmentRepository;
     @Autowired
+    AppointmentDetailRepository appointmentDetailRepository;
+    @Autowired
     PatientServiceImpl patientService;
     @Autowired
     DoctorServiceImpl doctorService;
-
+    @Autowired
+    RelativeServiceImpl relativeService;
     @Autowired
     EthnicServiceImpl ethnicService;
 
@@ -54,6 +61,35 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public Appointment createNewAppointment(Appointment appointment,String description,String time) {
+        Appointment newAppointment = new Appointment();
+        newAppointment.setPatientId(appointment.getPatientId());
+        newAppointment.setDoctorId(appointment.getDoctorId());
+        newAppointment.setScheduleId(appointment.getScheduleId());
+
+        AppointmentDetails appointmentDetails = new AppointmentDetails();
+        appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
+        appointmentDetails.setDescription(description);
+
+        //format String time to date
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsed = simpleDateFormat.parse(time);
+            java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
+            appointmentDetails.setTime(sqlDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //save to database
+        appointmentDetails.setAppointment(newAppointment);
+        appointmentRepository.save(newAppointment);
+        appointmentDetailRepository.save(appointmentDetails);
+
+        return  newAppointment;
+    }
+
+    @Override
     public List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time) {
         return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId,patientId,time);
     }
@@ -61,6 +97,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO){
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());
+        Relative relative = null;
+        if(appointmentDTO.getRelativeId() != null){
+            relative= relativeService.findRelativeById(appointmentDTO.getRelativeId());
+        }
+        Relative finalRelative = relative;
         AppointmentDTOInf returnAppointment = new AppointmentDTOInf() {
             @Override
             public Integer getId() {
@@ -109,7 +150,15 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
+            public Integer getRelativeId() {
+                return appointmentDTO.getRelativeId();
+            }
+
+            @Override
             public String getPatientName() {
+                if(finalRelative !=null){
+                    return finalRelative.getFullName();
+                }
                 return patient.getFullName();
             }
 
@@ -120,16 +169,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public Byte getPatientGender() {
+                if(finalRelative !=null){
+                    return finalRelative.getGender();
+                }
                 return patient.getGender();
             }
 
             @Override
             public String getPatientPhone() {
+                if(finalRelative !=null){
+                    return finalRelative.getPhone();
+                }
                 return patient.getPhone();
             }
 
             @Override
             public Date getPatientDob() {
+                if(finalRelative !=null){
+                    return finalRelative.getDateOfBirth();
+                }
                 return patient.getDob();
             }
 
@@ -142,6 +200,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPatientEmail() {
+                if(finalRelative !=null){
+                    return finalRelative.getEmail();
+                }
                 return patient.getEmail();
             }
 

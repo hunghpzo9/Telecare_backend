@@ -1,12 +1,12 @@
 package com.example.telecare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,8 +29,8 @@ public class Appointment {
     @Column(name = "doctor_id")
     private Integer doctorId;
     @Basic
-    @Column(name = "scheduele_id")
-    private Integer schedueleId;
+    @Column(name = "schedule_id")
+    private Integer scheduleId;
     @Basic
     @Column(name = "relative_id")
     private Integer relativeId;
@@ -42,8 +42,12 @@ public class Appointment {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-    public void addFeedback(Feedback feedback) {
-        this.feedbacks.add(feedback);
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "appointment")
+    private AppointmentDetails appointmentDetails;
+
+    public int getId() {
+        return id;
     }
 
 
@@ -57,7 +61,7 @@ public class Appointment {
         if (id != that.id) return false;
         if (patientId != null ? !patientId.equals(that.patientId) : that.patientId != null) return false;
         if (doctorId != null ? !doctorId.equals(that.doctorId) : that.doctorId != null) return false;
-        if (schedueleId != null ? !schedueleId.equals(that.schedueleId) : that.schedueleId != null) return false;
+        if (scheduleId != null ? !scheduleId.equals(that.scheduleId) : that.scheduleId != null) return false;
 
         return true;
     }
@@ -67,7 +71,7 @@ public class Appointment {
         int result = id;
         result = 31 * result + (patientId != null ? patientId.hashCode() : 0);
         result = 31 * result + (doctorId != null ? doctorId.hashCode() : 0);
-        result = 31 * result + (schedueleId != null ? schedueleId.hashCode() : 0);
+        result = 31 * result + (scheduleId != null ? scheduleId.hashCode() : 0);
         return result;
     }
 

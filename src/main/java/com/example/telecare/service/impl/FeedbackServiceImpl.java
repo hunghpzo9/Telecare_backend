@@ -1,6 +1,7 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.FeedbackDTOInf;
+import com.example.telecare.enums.FeedbackStatus;
 import com.example.telecare.model.Feedback;
 import com.example.telecare.repository.FeedbackRepository;
 import com.example.telecare.service.FeedbackService;
@@ -33,9 +34,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         currentFeedback.setComment(feedback.getComment());
         currentFeedback.setRating(feedback.getRating());
         if (isDelete)
-            currentFeedback.setIsHidden((byte) ProjectStorage.HIDDEN_FEEDBACK);
+            currentFeedback.setIsHidden((byte)FeedbackStatus.HIDDEN_FEEDBACK.status);
         else
-            currentFeedback.setIsHidden((byte) ProjectStorage.SHOW_FEEDBACK);
+            currentFeedback.setIsHidden((byte)FeedbackStatus.SHOW_FEEDBACK.status);
 
         feedbackRepository.save(currentFeedback);
     }

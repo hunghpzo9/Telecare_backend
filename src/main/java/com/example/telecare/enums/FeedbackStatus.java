@@ -5,9 +5,9 @@ public enum FeedbackStatus {
 
     SHOW_FEEDBACK(1);
 
-    final int status;
+    public int status;
 
-     FeedbackStatus(int status) {
+    FeedbackStatus(int status) {
         this.status = status;
     }
 }

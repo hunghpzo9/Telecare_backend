@@ -1,5 +1,6 @@
 package com.example.telecare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,15 +18,6 @@ public class AppointmentDetails {
     @Column(name = "appointment_id")
     private int appointmentId;
     @Basic
-    @Column(name = "status")
-    private Byte status;
-    @Basic
-    @Column(name = "prescription_id")
-    private Integer prescriptionId;
-    @Basic
-    @Column(name = "medical_record_id")
-    private Integer medicalRecordId;
-    @Basic
     @Column(name = "status_id")
     private Integer statusId;
     @Basic
@@ -34,39 +26,11 @@ public class AppointmentDetails {
     @Basic
     @Column(name = "description")
     private String description;
-
-    public int getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
-    public Integer getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Integer statusId) {
-        this.statusId = statusId;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    @JsonIgnore
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
     @Override
     public boolean equals(Object o) {
@@ -75,23 +39,13 @@ public class AppointmentDetails {
 
         AppointmentDetails that = (AppointmentDetails) o;
 
-        if (appointmentId != that.appointmentId) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-
-        if (prescriptionId != null ? !prescriptionId.equals(that.prescriptionId) : that.prescriptionId != null)
-            return false;
-        if (medicalRecordId != null ? !medicalRecordId.equals(that.medicalRecordId) : that.medicalRecordId != null)
-            return false;
-
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = appointmentId;
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (prescriptionId != null ? prescriptionId.hashCode() : 0);
-        result = 31 * result + (medicalRecordId != null ? medicalRecordId.hashCode() : 0);
+
         return result;
     }
 
