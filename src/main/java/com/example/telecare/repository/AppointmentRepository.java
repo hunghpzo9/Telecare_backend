@@ -19,7 +19,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left outer join telecare.specialty spec on spec.id = ds.specialty_id\n" +
             "left outer join telecare.appointment_details ad on a.id = ad.appointment_id\n" +
             "left outer join telecare.user u on a.doctor_id = u.id\n" +
-            "left outer join telecare.schedule s on a.scheduele_id = s.id\n" +
+            "left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
             "where p.patient_id = ?1 and aps.id in (?2)\n" +
             "group by a.doctor_id",
@@ -37,7 +37,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "            left outer join telecare.specialty spec on spec.id = ds.specialty_id\n" +
             "            left outer join telecare.appointment_details ad on a.id = ad.appointment_id\n" +
             "            left outer join telecare.user u on a.doctor_id = u.id\n" +
-            "            left outer join telecare.schedule s on a.scheduele_id = s.id\n" +
+            "            left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "            left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
             "            where a.id = ?1\n" +
             "            group by a.doctor_id",
