@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,10 +43,9 @@ public class Appointment {
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "appointment")
     private AppointmentDetails appointmentDetails;
-
-    public int getId() {
-        return id;
-    }
+    @Basic
+    @Column(name = "payment_status_id")
+    private Integer paymentStatusId;
 
 
     @Override
@@ -72,4 +72,11 @@ public class Appointment {
         return result;
     }
 
+    public Integer getPaymentStatusId() {
+        return paymentStatusId;
+    }
+
+    public void setPaymentStatusId(Integer paymentStatusId) {
+        this.paymentStatusId = paymentStatusId;
+    }
 }
