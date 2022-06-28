@@ -21,8 +21,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left outer join telecare.user u on a.doctor_id = u.id\n" +
             "left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "where p.patient_id = ?1 and aps.id in (?2)\n" +
-            "group by a.doctor_id",
+            "where p.patient_id = ?1 and aps.id in (?2)\n",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
     @Query(value = "SELECT Count(*) FROM telecare.appointment a left outer join telecare.appointment_details ad\n" +
