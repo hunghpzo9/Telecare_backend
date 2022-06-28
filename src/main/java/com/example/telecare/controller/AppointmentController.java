@@ -2,6 +2,7 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.model.Appointment;
+import com.example.telecare.model.CancelAppointment;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import com.example.telecare.service.impl.EthnicServiceImpl;
@@ -44,6 +45,12 @@ public class AppointmentController {
                                             ,@RequestParam("time") String time) {
         Appointment newAppointment = appointmentService.createNewAppointment(appointment, description, time);
         return ResponseEntity.ok(newAppointment);
+    }
+
+    @PostMapping(value = "/cancel")
+    public ResponseEntity<?> cancelAppointment(@RequestBody CancelAppointment cancelAppointment) {
+        appointmentService.cancelAppointment(cancelAppointment);
+        return ResponseEntity.ok(cancelAppointment);
     }
 
     @GetMapping(value = "")

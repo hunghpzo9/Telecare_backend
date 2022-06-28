@@ -15,9 +15,6 @@ import java.util.List;
 @Setter
 @Entity
 public class Appointment {
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "feedback_appointment", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "feedback_id"))
-    public List<Feedback> feedbacks = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")

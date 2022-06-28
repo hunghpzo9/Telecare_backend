@@ -1,10 +1,14 @@
 package com.example.telecare.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-public class Cancel {
+@Table(name = "cancel_appointment", schema = "telecare", catalog = "")
+public class CancelAppointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -17,12 +21,15 @@ public class Cancel {
     private String description;
     @Basic
     @Column(name = "created_at")
+    @CreationTimestamp
     private Timestamp createdAt;
     @Basic
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
     @Basic
     @Column(name = "appointment_id")
+
     private Integer appointmentId;
 
     public int getId() {
@@ -78,15 +85,15 @@ public class Cancel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Cancel cancel = (Cancel) o;
+        CancelAppointment that = (CancelAppointment) o;
 
-        if (id != cancel.id) return false;
-        if (cancelReasonId != null ? !cancelReasonId.equals(cancel.cancelReasonId) : cancel.cancelReasonId != null)
+        if (id != that.id) return false;
+        if (cancelReasonId != null ? !cancelReasonId.equals(that.cancelReasonId) : that.cancelReasonId != null)
             return false;
-        if (description != null ? !description.equals(cancel.description) : cancel.description != null) return false;
-        if (createdAt != null ? !createdAt.equals(cancel.createdAt) : cancel.createdAt != null) return false;
-        if (updatedAt != null ? !updatedAt.equals(cancel.updatedAt) : cancel.updatedAt != null) return false;
-        if (appointmentId != null ? !appointmentId.equals(cancel.appointmentId) : cancel.appointmentId != null)
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
+        if (appointmentId != null ? !appointmentId.equals(that.appointmentId) : that.appointmentId != null)
             return false;
 
         return true;

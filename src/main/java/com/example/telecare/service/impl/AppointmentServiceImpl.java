@@ -1,13 +1,16 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.AppointmentDTOInf;
+import com.example.telecare.dto.CancelDTOInf;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.exception.NotFoundException;
+import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.*;
 import com.example.telecare.repository.AppointmentDetailRepository;
 import com.example.telecare.repository.AppointmentRepository;
+import com.example.telecare.repository.CancelAppointmentRepository;
 import com.example.telecare.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     AppointmentRepository appointmentRepository;
     @Autowired
     AppointmentDetailRepository appointmentDetailRepository;
+    @Autowired
+    CancelAppointmentRepository cancelAppointmentRepository;
     @Autowired
     PatientServiceImpl patientService;
     @Autowired
@@ -92,6 +97,30 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time) {
         return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId,patientId,time);
+    }
+
+    @Override
+    public List<CancelDTOInf> getListCancel() {
+        return cancelAppointmentRepository.getListCancel();
+    }
+
+    @Override
+    public void cancelAppointment(CancelAppointment cancelAppointment) {
+
+
+        AppointmentDetails appointmentDetails = appointmentDetailRepository
+                .findById(cancelAppointment.getAppointmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+        Appointment appointment= appointmentRepository
+                .findById(cancelAppointment.getAppointmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+
+        if(appointmentDetails!= null){
+            appointmentDetails.setStatusId(AppointmentStatus.CANCEL.status);
+            appointmentDetails.setAppointment(appointment);
+            appointmentDetailRepository.save(appointmentDetails);
+        }
+       cancelAppointmentRepository.save(cancelAppointment);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO){
