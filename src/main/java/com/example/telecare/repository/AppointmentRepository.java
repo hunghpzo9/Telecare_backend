@@ -21,7 +21,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left outer join telecare.user u on a.doctor_id = u.id\n" +
             "left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "where p.patient_id = ?1 and aps.id in (?2)\n",
+            "where p.patient_id = ?1 and aps.id in (?2) group by s.end_at,s.start_at,ad.time\n" +
+            "            order by ad.time\n",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
     @Query(value = "SELECT Count(*) FROM telecare.appointment a left outer join telecare.appointment_details ad\n" +
@@ -57,4 +58,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             ,
             nativeQuery = true)
     List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
+
+    @Query(value = "SELECT COUNT(*) FROM telecare.cancel_appointment ca where\n" +
+            "created_at > (DATE_ADD(NOW(), INTERVAL -6048000 SECOND))\n" +
+            "and user_id = ?1"
+            ,
+            nativeQuery = true)
+    Integer countCancelAppointmentInOneWeek(int userId);
 }

@@ -47,9 +47,15 @@ public class AppointmentController {
     }
 
     @PostMapping(value = "/cancel")
-    public ResponseEntity<?> cancelAppointment(@RequestBody CancelAppointment cancelAppointment) {
-        appointmentService.cancelAppointment(cancelAppointment);
+    public ResponseEntity<?> cancelAppointment(@RequestBody CancelAppointment cancelAppointment,
+                                               @RequestParam("userId") int userId) {
+        appointmentService.cancelAppointment(cancelAppointment,userId);
         return ResponseEntity.ok(cancelAppointment);
+    }
+
+    @GetMapping(value = "/countCancelInOneWeek")
+            public Integer countCancelInOneWeek(@RequestParam ("userId") int userId) {
+        return appointmentService.countCancelAppointmentInOneWeek(userId);
     }
 
     @GetMapping(value = "")

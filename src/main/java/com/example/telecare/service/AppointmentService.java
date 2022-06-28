@@ -4,10 +4,7 @@ import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.dto.CancelDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.CancelAppointment;
-import com.example.telecare.model.Report;
-import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
 import java.util.List;
 
 public interface AppointmentService {
@@ -21,5 +18,7 @@ public interface AppointmentService {
 
     List<CancelDTOInf> getListCancel();
 
-    void cancelAppointment(CancelAppointment cancelAppointment);
+    Integer countCancelAppointmentInOneWeek(int userId);
+
+    void cancelAppointment(CancelAppointment cancelAppointment,int userId);
 }
