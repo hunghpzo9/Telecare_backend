@@ -45,12 +45,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     AddressServiceImpl addressService;
 
     @Override
-    public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId)
-    {
+    public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
 
         List<AppointmentDTOInf> appointmentList = appointmentRepository.findAppointmentByPatient(id, statusId);
         List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
-        for (AppointmentDTOInf appointmentDTO : appointmentList){
+        for (AppointmentDTOInf appointmentDTO : appointmentList) {
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             appointmentDTO = setReturnAppointment(finalAppointmentDTO);
             returnAppointmentList.add(appointmentDTO);
@@ -64,13 +63,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (appointmentDTO == null) {
             throw new NotFoundException("Không tìm thấy cuộc hẹn");
         }
-        return  setReturnAppointment(appointmentDTO);
+        return setReturnAppointment(appointmentDTO);
     }
 
     @Override
-    public Appointment createNewAppointment(Appointment appointment,String description,String time) {
+    public Appointment createNewAppointment(Appointment appointment, String description, String time) {
         int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
-        if(countPending>=3){
+        if (countPending >= 3) {
             throw new BadRequestException("Bạn đã tạo quá số lần quy định. Hãy thanh toán để tiếp tục sử dụng");
         }
         Appointment newAppointment = new Appointment();
@@ -98,12 +97,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(newAppointment);
         appointmentDetailRepository.save(appointmentDetails);
 
-        return  newAppointment;
+        return newAppointment;
     }
 
     @Override
-    public List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time) {
-        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId,patientId,time);
+    public List<Integer> listScheduleFindByDoctorAndTime(int doctorId, int patientId, String time) {
+        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId, patientId, time);
     }
 
     @Override
@@ -112,30 +111,36 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void cancelAppointment(CancelAppointment cancelAppointment) {
+    public Integer countCancelAppointmentInOneWeek(int userId) {
+        return appointmentRepository.countCancelAppointmentInOneWeek(userId);
+    }
+
+    @Override
+    public void cancelAppointment(CancelAppointment cancelAppointment, int userId) {
 
 
         AppointmentDetails appointmentDetails = appointmentDetailRepository
                 .findById(cancelAppointment.getAppointmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
-        Appointment appointment= appointmentRepository
+        Appointment appointment = appointmentRepository
                 .findById(cancelAppointment.getAppointmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
 
-        if(appointmentDetails!= null){
+        if (appointmentDetails != null) {
             appointmentDetails.setStatusId(AppointmentStatus.CANCEL.status);
             appointmentDetails.setAppointment(appointment);
             appointmentDetailRepository.save(appointmentDetails);
         }
-       cancelAppointmentRepository.save(cancelAppointment);
+        cancelAppointment.setUserId(userId);
+        cancelAppointmentRepository.save(cancelAppointment);
     }
 
-    private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO){
+    private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());
         Relative relative = null;
-        if(appointmentDTO.getRelativeId() != null){
-            relative= relativeService.findRelativeById(appointmentDTO.getRelativeId());
+        if (appointmentDTO.getRelativeId() != null) {
+            relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
         }
         Relative finalRelative = relative;
         AppointmentDTOInf returnAppointment = new AppointmentDTOInf() {
@@ -192,7 +197,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPatientName() {
-                if(finalRelative !=null){
+                if (finalRelative != null) {
                     return finalRelative.getFullName();
                 }
                 return patient.getFullName();
@@ -205,7 +210,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public Byte getPatientGender() {
-                if(finalRelative !=null){
+                if (finalRelative != null) {
                     return finalRelative.getGender();
                 }
                 return patient.getGender();
@@ -213,7 +218,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPatientPhone() {
-                if(finalRelative !=null){
+                if (finalRelative != null) {
                     return finalRelative.getPhone();
                 }
                 return patient.getPhone();
@@ -221,7 +226,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public Date getPatientDob() {
-                if(finalRelative !=null){
+                if (finalRelative != null) {
                     return finalRelative.getDateOfBirth();
                 }
                 return patient.getDob();
@@ -236,7 +241,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPatientEmail() {
-                if(finalRelative !=null){
+                if (finalRelative != null) {
                     return finalRelative.getEmail();
                 }
                 return patient.getEmail();

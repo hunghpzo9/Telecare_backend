@@ -31,6 +31,9 @@ public class CancelAppointment {
     @Column(name = "appointment_id")
 
     private Integer appointmentId;
+    @Basic
+    @Column(name = "user_id")
+    private Integer userId;
 
     public int getId() {
         return id;
@@ -108,5 +111,13 @@ public class CancelAppointment {
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         result = 31 * result + (appointmentId != null ? appointmentId.hashCode() : 0);
         return result;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
