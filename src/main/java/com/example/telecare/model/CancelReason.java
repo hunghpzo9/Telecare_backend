@@ -12,6 +12,9 @@ public class CancelReason {
     @Basic
     @Column(name = "name")
     private String name;
+    @Basic
+    @Column(name = "role_id")
+    private Integer roleId;
 
     public int getId() {
         return id;
@@ -47,5 +50,13 @@ public class CancelReason {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }
