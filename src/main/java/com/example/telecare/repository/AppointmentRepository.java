@@ -25,7 +25,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "group by a.doctor_id",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
-
+    @Query(value = "SELECT Count(*) FROM telecare.appointment a left outer join telecare.appointment_details ad\n" +
+            "on a.id = ad.appointment_id\n" +
+            " where a.payment_status_id = 1 and a.patient_id = ?1 and ad.status_id != 4;",
+            nativeQuery = true)
+    Integer countAppointmentPendingPaymentByPatientId(int id);
 
     @Query(value = "SELECT a.id , u.id as doctorId ,p.patient_id as patientId" +
             ",a.relative_id as relativeId ,u.full_name as doctorName, spec.name as doctorSpecialty,\n" +

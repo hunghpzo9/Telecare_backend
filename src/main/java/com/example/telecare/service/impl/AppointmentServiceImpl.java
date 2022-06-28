@@ -5,6 +5,8 @@ import com.example.telecare.dto.CancelDTOInf;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.enums.AppointmentStatus;
+import com.example.telecare.enums.PaymentStatus;
+import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.*;
@@ -67,10 +69,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment createNewAppointment(Appointment appointment,String description,String time) {
+        int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
+        if(countPending>=3){
+            throw new BadRequestException("Bạn đã tạo quá số lần quy định. Hãy thanh toán để tiếp tục sử dụng");
+        }
         Appointment newAppointment = new Appointment();
         newAppointment.setPatientId(appointment.getPatientId());
         newAppointment.setDoctorId(appointment.getDoctorId());
         newAppointment.setScheduleId(appointment.getScheduleId());
+        newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
 
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
