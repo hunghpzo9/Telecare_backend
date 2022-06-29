@@ -95,7 +95,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Integer getStatusId() {
-                    return null;
+                    return finalAppointmentDTO.getStatusId();
                 }
 
                 @Override
