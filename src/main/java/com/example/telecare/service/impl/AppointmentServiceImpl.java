@@ -331,7 +331,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPatientImageUrl() {
-                return patient.getImageUrl();
+                return null;
             }
 
             @Override
@@ -386,7 +386,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getDoctorImageUrl() {
-                return doctor.getImageUrl();
+                return null;
             }
 
             @Override
