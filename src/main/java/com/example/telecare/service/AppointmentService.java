@@ -4,6 +4,7 @@ import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.dto.CancelDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.CancelAppointment;
+import com.example.telecare.model.CancelReason;
 
 import java.util.List;
 
