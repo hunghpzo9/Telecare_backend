@@ -12,7 +12,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "            , u.image_url as doctorImageUrl ,\n" +
             "            u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
             "            s.start_at as startAt,s.end_at as endAt \n" +
-            "            ,DATE_FORMAT (ad.time,'%d-%m-%Y') as time ,aps.name as status\n" +
+            "            ,DATE_FORMAT (ad.time,'%d-%m-%Y') as time ,aps.name as status,aps.id as statusId\n" +
             "            FROM telecare.appointment a\n" +
             "            left outer join telecare.doctor_specialty ds on ds.doctor_id = a.doctor_id\n" +
             "            left outer join telecare.specialty spec on spec.id = ds.specialty_id\n" +
