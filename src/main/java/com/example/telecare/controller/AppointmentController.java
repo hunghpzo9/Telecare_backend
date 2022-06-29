@@ -1,6 +1,8 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.AppointmentDTOInf;
+import com.example.telecare.dto.CancelDTOInf;
+import com.example.telecare.dto.ReportDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.CancelAppointment;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
@@ -8,6 +10,7 @@ import com.example.telecare.service.impl.DoctorServiceImpl;
 import com.example.telecare.service.impl.EthnicServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,4 +67,11 @@ public class AppointmentController {
                                                          @RequestParam("time") String time) {
         return appointmentService.listScheduleFindByDoctorAndTime(doctorId, patientId, time);
     }
+
+    @Cacheable(value="allCancel")
+    @GetMapping(value = "/getAllCancelReason")
+    public List<CancelDTOInf> getAllCancel() {
+        return appointmentService.getListCancel();
+    }
+
 }
