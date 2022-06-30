@@ -52,6 +52,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         for (AppointmentDTOInf appointmentDTO : appointmentList) {
 
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
+            PatientDTOInf patient = patientService.findPatientById(finalAppointmentDTO.getPatientId());
             appointmentDTO = new AppointmentDTOInf() {
                 @Override
                 public Integer getId() {
@@ -105,7 +106,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getPatientName() {
-                    return null;
+                    return patient.getFullName();
                 }
 
                 @Override
@@ -120,7 +121,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getPatientPhone() {
-                    return null;
+                    return patient.getPhone();
                 }
 
                 @Override
@@ -165,7 +166,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDoctorPhone() {
-                    return null;
+                    return finalAppointmentDTO.getDoctorPhone();
                 }
 
                 @Override
@@ -193,6 +194,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         for (AppointmentDTOInf appointmentDTO : appointmentList) {
 
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
+            DoctorDTOInf doctorDTOInf = doctorService.findDoctorById(finalAppointmentDTO.getDoctorId());
             appointmentDTO = new AppointmentDTOInf() {
                 @Override
                 public Integer getId() {
@@ -286,7 +288,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDoctorName() {
-                    return null;
+                    return doctorDTOInf.getFullName();
                 }
 
                 @Override
@@ -306,7 +308,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDoctorPhone() {
-                    return null;
+                    return doctorDTOInf.getPhone();
                 }
 
                 @Override

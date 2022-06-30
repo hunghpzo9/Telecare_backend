@@ -10,7 +10,8 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
     @Query(value = "SELECT a.id \n" +
             "            , u.image_url as doctorImageUrl ,\n" +
-            "            u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
+            "            u.full_name as doctorName, u.phone as doctorPhone," +
+            "            a.patient_id as patientId, spec.name as doctorSpecialty,\n" +
             "            s.start_at as startAt,s.end_at as endAt \n" +
             "            ,DATE_FORMAT (ad.time,'%d-%m-%Y') as time ,aps.name as status,aps.id as statusId\n" +
             "            FROM telecare.appointment a\n" +
@@ -79,7 +80,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Query(value = "SELECT \n" +
             "    a.id,\n" +
             "    u.id AS patientId,\n" +
-            "    d.doctor_id AS doctorId,\n" +
+            "    a.doctor_id AS doctorId,\n" +
             "    u.image_url AS patientImageUrl,\n" +
             "    u.full_name AS patientName,\n" +
             "    u.phone AS patientPhone,\n" +
