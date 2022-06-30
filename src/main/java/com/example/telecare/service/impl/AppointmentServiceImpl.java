@@ -251,7 +251,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getPatientImageUrl() {
-                    return finalAppointmentDTO.getDoctorImageUrl();
+                    return finalAppointmentDTO.getPatientImageUrl();
                 }
 
                 @Override
