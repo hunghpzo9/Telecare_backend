@@ -196,34 +196,43 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment createNewAppointment(Appointment appointment, String description, String time) {
         int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
         if (countPending >= 3) {
-            throw new BadRequestException("Bạn đã tạo quá số lần quy định. Hãy thanh toán để tiếp tục sử dụng");
+            throw new BadRequestException("Bạn đã tạo quá số lần quy định (3 lần). Hãy thanh toán để tiếp tục sử dụng");
+        } else {
+            int countExistingAppointment = appointmentRepository.countExistingAppointment(appointment.getDoctorId(), time, appointment.getScheduleId());
+            if (countExistingAppointment >= 1) {
+                throw new BadRequestException("Đã có người đặt cuộc hẹn này.");
+            }
+            Appointment newAppointment = new Appointment();
+            if (appointment.getRelativeId() != null && appointment.getRelativeId() != 0) {
+                newAppointment.setRelativeId(appointment.getRelativeId());
+            }
+            newAppointment.setPatientId(appointment.getPatientId());
+            newAppointment.setDoctorId(appointment.getDoctorId());
+            newAppointment.setScheduleId(appointment.getScheduleId());
+            newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
+
+            AppointmentDetails appointmentDetails = new AppointmentDetails();
+            appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
+            appointmentDetails.setDescription(description);
+
+            //format String time to date
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date parsed = simpleDateFormat.parse(time);
+                java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
+                appointmentDetails.setTime(sqlDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //save to database
+            appointmentDetails.setAppointment(newAppointment);
+            appointmentRepository.save(newAppointment);
+            appointmentDetailRepository.save(appointmentDetails);
+            return newAppointment;
         }
-        Appointment newAppointment = new Appointment();
-        newAppointment.setPatientId(appointment.getPatientId());
-        newAppointment.setDoctorId(appointment.getDoctorId());
-        newAppointment.setScheduleId(appointment.getScheduleId());
-        newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
 
-        AppointmentDetails appointmentDetails = new AppointmentDetails();
-        appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
-        appointmentDetails.setDescription(description);
 
-        //format String time to date
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date parsed = simpleDateFormat.parse(time);
-            java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
-            appointmentDetails.setTime(sqlDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        //save to database
-        appointmentDetails.setAppointment(newAppointment);
-        appointmentRepository.save(newAppointment);
-        appointmentDetailRepository.save(appointmentDetails);
-
-        return newAppointment;
     }
 
     @Override

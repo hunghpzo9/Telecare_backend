@@ -68,3 +68,6 @@ jobs:
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
+      - name: Deploy to Cloud Run
+        run: |- 
+          gcloud run deploy flix --image gcr.io/$PROJECT_ID/$IMAGE:$TAG --platform managed --region asia-southeast1 --allow-unauthenticated
