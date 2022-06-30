@@ -69,5 +69,6 @@ jobs:
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
       - name: Deploy to Cloud Run
-        run: |- 
-          gcloud run deploy telecare --image gcr.io/$PROJECT_ID/$IMAGE:$TAG --platform managed --region asia-southeast1
+        run: |-
+          gcloud run services set-iam-policy policy.yaml
+          gcloud run deploy telecare --image gcr.io/$PROJECT_ID/$IMAGE:$TAG --platform managed --region asia-southeast1 --allow-unauthenticated
