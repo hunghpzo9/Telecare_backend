@@ -232,5 +232,10 @@ public class DoctorServiceImpl implements DoctorService {
         return returnDoctorPage;
     }
 
+    @Override
+    public int getNumberOfDoctor() {
+        return doctorRepository.getNumberOfDoctor();
+    }
+
 
 }

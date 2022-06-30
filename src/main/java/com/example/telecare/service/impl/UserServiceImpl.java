@@ -1,5 +1,6 @@
 package com.example.telecare.service.impl;
 
+import com.example.telecare.dto.AdminDTOInf;
 import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ResourceNotFoundException;
@@ -139,6 +140,27 @@ public class UserServiceImpl implements UserService {
 
             return userRepository.save(user);
         }
+    }
+
+    @Override
+    public void updateStatus(Byte isActive, int id) {
+        User user = userRepository.findById(id) .orElseThrow(()
+                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        user.setIsActive(isActive);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User findUserById(int id) {
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        return user;
+    }
+
+    @Override
+    public AdminDTOInf findAdminById(int id) {
+        AdminDTOInf admin = userRepository.findAdminById(id);
+        return admin;
     }
 
 
