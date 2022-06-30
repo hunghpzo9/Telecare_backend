@@ -34,7 +34,7 @@ jobs:
         run: mvn clean package -DskipTests
 
       - name: Setup Google Cloud CLI
-        uses: GoogleCloudPlatform/github-actions/setup-glcoud@1.3.0
+        uses: GoogleCloudPlatform/github-actions/setup-glcoud@2.285.0
         env:
           ACTIONS_ALLOW_UNSECURE_COMMAND: true
         with:
