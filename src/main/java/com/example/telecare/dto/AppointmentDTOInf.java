@@ -1,16 +1,18 @@
 package com.example.telecare.dto;
 
 import java.util.Date;
-
+import java.sql.Time;
 public interface AppointmentDTOInf {
     Integer getId();
     Integer getDoctorId();
     Integer getPatientId();
     String getDescription();
-    String getSchedule();
+    Time getStartAt();
+    Time getEndAt();
     String getTime();
     String getStatus();
     Integer getStatusId();
+    Integer getRelativeId();
 
     String getPatientName();
     String getPatientImageUrl();

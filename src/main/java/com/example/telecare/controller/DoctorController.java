@@ -38,7 +38,7 @@ public class DoctorController {
     }
 
     @GetMapping(value = "/searchBySpecialty/search={search}/pageNo={pageNo}")
-    public List<DoctorDTOInf> findDoctorBySpecialty(@PathVariable String search, @Param("specialtyId") List<Integer> specialtyId, @PathVariable int pageNo) {
+    public List<DoctorDTOInf> findDoctorBySpecialty(@PathVariable String search, @RequestParam("specialtyId") List<Integer> specialtyId, @PathVariable int pageNo) {
         return doctorService.listAllDoctorBySpecialty("%" + search + "%", specialtyId, pageNo);
     }
 

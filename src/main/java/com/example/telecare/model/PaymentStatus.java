@@ -1,18 +1,17 @@
 package com.example.telecare.model;
 
 import javax.persistence.*;
-import java.sql.Time;
 
 @Entity
-public class Schedule {
+@Table(name = "payment_status", schema = "telecare", catalog = "")
+public class PaymentStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Basic
     @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "time")
-    private Time time;
+    @Column(name = "status")
+    private String status;
 
     public int getId() {
         return id;
@@ -22,12 +21,12 @@ public class Schedule {
         this.id = id;
     }
 
-    public Time getTime() {
-        return time;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -35,10 +34,10 @@ public class Schedule {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Schedule schedule = (Schedule) o;
+        PaymentStatus that = (PaymentStatus) o;
 
-        if (id != schedule.id) return false;
-        if (time != null ? !time.equals(schedule.time) : schedule.time != null) return false;
+        if (id != that.id) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
 
         return true;
     }
@@ -46,7 +45,7 @@ public class Schedule {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.telecare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,9 +16,6 @@ import java.util.List;
 @Setter
 @Entity
 public class Appointment {
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "feedback_appointment", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "feedback_id"))
-    public List<Feedback> feedbacks = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -29,8 +27,8 @@ public class Appointment {
     @Column(name = "doctor_id")
     private Integer doctorId;
     @Basic
-    @Column(name = "scheduele_id")
-    private Integer schedueleId;
+    @Column(name = "schedule_id")
+    private Integer scheduleId;
     @Basic
     @Column(name = "relative_id")
     private Integer relativeId;
@@ -42,9 +40,12 @@ public class Appointment {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-    public void addFeedback(Feedback feedback) {
-        this.feedbacks.add(feedback);
-    }
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "appointment")
+    private AppointmentDetails appointmentDetails;
+    @Basic
+    @Column(name = "payment_status_id")
+    private Integer paymentStatusId;
 
 
     @Override
@@ -57,7 +58,7 @@ public class Appointment {
         if (id != that.id) return false;
         if (patientId != null ? !patientId.equals(that.patientId) : that.patientId != null) return false;
         if (doctorId != null ? !doctorId.equals(that.doctorId) : that.doctorId != null) return false;
-        if (schedueleId != null ? !schedueleId.equals(that.schedueleId) : that.schedueleId != null) return false;
+        if (scheduleId != null ? !scheduleId.equals(that.scheduleId) : that.scheduleId != null) return false;
 
         return true;
     }
@@ -67,8 +68,15 @@ public class Appointment {
         int result = id;
         result = 31 * result + (patientId != null ? patientId.hashCode() : 0);
         result = 31 * result + (doctorId != null ? doctorId.hashCode() : 0);
-        result = 31 * result + (schedueleId != null ? schedueleId.hashCode() : 0);
+        result = 31 * result + (scheduleId != null ? scheduleId.hashCode() : 0);
         return result;
     }
 
+    public Integer getPaymentStatusId() {
+        return paymentStatusId;
+    }
+
+    public void setPaymentStatusId(Integer paymentStatusId) {
+        this.paymentStatusId = paymentStatusId;
+    }
 }
