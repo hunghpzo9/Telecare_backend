@@ -36,6 +36,11 @@ public class AppointmentController {
         return appointmentService.findAppointmentByPatient(id, statusId);
     }
 
+    @GetMapping(value = "/doctorId={id}")
+    public List<AppointmentDTOInf> getAppointmentByDoctor(@PathVariable int id, @RequestParam("statusId") List<Integer> statusId) {
+        return appointmentService.findAppointmentByDoctor(id, statusId);
+    }
+
     @GetMapping(value = "/{id}")
     public AppointmentDTOInf getAppointmentById(@PathVariable int id) {
         return appointmentService.findAppointmentById(id);

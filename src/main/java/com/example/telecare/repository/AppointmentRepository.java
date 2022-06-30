@@ -24,6 +24,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        order by ad.time",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
+
     @Query(value = "SELECT Count(*) FROM telecare.appointment a left outer join telecare.appointment_details ad\n" +
             "on a.id = ad.appointment_id\n" +
             " where a.payment_status_id = 1 and a.patient_id = ?1 and ad.status_id != 4;",
@@ -73,4 +74,44 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             ,
             nativeQuery = true)
     Integer countExistingAppointment(int doctorId,String time, int scheduleId);
+
+
+    @Query(value = "SELECT \n" +
+            "    a.id,\n" +
+            "    u.id AS patientId,\n" +
+            "    d.doctor_id AS doctorId,\n" +
+            "    u.image_url AS patientImageUrl,\n" +
+            "    u.full_name AS patientName,\n" +
+            "    spec.name AS doctorSpecialty,\n" +
+            "    ad.description,\n" +
+            "    s.start_at AS startAt,\n" +
+            "    s.end_at AS endAt,\n" +
+            "    DATE_FORMAT(ad.time, '%d-%m-%Y') AS time,\n" +
+            "    aps.name AS status,\n" +
+            "    aps.id AS statusId\n" +
+            "FROM\n" +
+            "    telecare.appointment a\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.patient p ON a.patient_id = p.patient_id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.doctor d ON a.doctor_id = d.doctor_id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.doctor_specialty ds ON ds.doctor_id = a.doctor_id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.specialty spec ON spec.id = ds.specialty_id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.appointment_details ad ON a.id = ad.appointment_id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.user u ON a.patient_id = u.id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.schedule s ON a.schedule_id = s.id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.appointment_status aps ON aps.id = ad.status_id\n" +
+            "WHERE\n" +
+            "    d.doctor_id = ?1\n" +
+            "        AND aps.id IN (?2)\n" +
+            "GROUP BY s.end_at , s.start_at , ad.time\n" +
+            "ORDER BY ad.time\n",
+            nativeQuery = true)
+    List<AppointmentDTOInf> findAppointmentByDoctor(int id, List<Integer> statusId);
 }

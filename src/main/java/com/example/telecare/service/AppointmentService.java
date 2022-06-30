@@ -11,6 +11,8 @@ import java.util.List;
 public interface AppointmentService {
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
 
+    List<AppointmentDTOInf> findAppointmentByDoctor(int id, List<Integer> statusId);
+
     AppointmentDTOInf findAppointmentById(int id);
 
     Appointment createNewAppointment(Appointment appointment, String description, String time);
