@@ -123,8 +123,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<?> checkPhoneExisted(String phone) {
-        User duplicatUserByPhone = userRepository.findUserByPhone(phone);
-        if (duplicatUserByPhone != null) {
+        User duplicateUserByPhone = userRepository.findUserByPhone(phone);
+        if (duplicateUserByPhone != null) {
             throw new BadRequestException("Số điện thoại đã tồn tại");
         }
         return ResponseEntity.ok(new ResponseOkMessage("Số điện thoại có thể dùng được",new Date()));
