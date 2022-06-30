@@ -246,12 +246,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getPatientName() {
-                    return null;
+                    return finalAppointmentDTO.getPatientName();
                 }
 
                 @Override
                 public String getPatientImageUrl() {
-                    return null;
+                    return finalAppointmentDTO.getDoctorImageUrl();
                 }
 
                 @Override
@@ -286,12 +286,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDoctorName() {
-                    return finalAppointmentDTO.getDoctorName();
+                    return null;
                 }
 
                 @Override
                 public String getDoctorImageUrl() {
-                    return finalAppointmentDTO.getDoctorImageUrl();
+                    return null;
                 }
 
                 @Override
