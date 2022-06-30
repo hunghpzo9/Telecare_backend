@@ -51,5 +51,11 @@ public class DoctorController {
     public ResponseEntity<List<DoctorDTOInf>> getAllDoctor(@RequestParam int index) {
         return new ResponseEntity<>(doctorService.getAllDoctor(index), HttpStatus.OK);
     }
+    @GetMapping("/numberOfDoctor")
+    public ResponseEntity<Integer> getNumberOfDoctor() {
+        int medicines = doctorService.getNumberOfDoctor();
+        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
+
+    }
 
 }

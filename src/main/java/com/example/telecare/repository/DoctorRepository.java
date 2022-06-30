@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
-            "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty,d.signature as signature FROM telecare.user u\n" +
+            "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty,d.signature as signature,u.is_active as isActive FROM telecare.user u\n" +
             "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
             "            left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
             "            left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
@@ -85,6 +85,9 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             "                        left outer join telecare.user u on u.id = p.patient_id where a.doctor_id = ?1",
             nativeQuery = true)
     Double getAverageRating(int uid);
+
+    @Query(value = "SELECT COUNT(*) FROM telecare.doctor",nativeQuery = true)
+    int getNumberOfDoctor();
 
 
 }
