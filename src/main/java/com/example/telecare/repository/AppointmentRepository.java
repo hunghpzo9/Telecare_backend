@@ -20,7 +20,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "            left outer join telecare.user u on a.doctor_id = u.id\n" +
             "            left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "            left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "            where a.patient_id = 1 and aps.id in (1,2) group by s.end_at,s.start_at,ad.time\n" +
+            "            where a.patient_id = ?1 and aps.id in (?2) group by s.end_at,s.start_at,ad.time\n" +
             "                        order by ad.time",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
@@ -43,7 +43,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "            left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "            left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
             "            where a.id = ?1\n" +
-            "            group by a.doctor_id",
+            "            group by s.end_at,s.start_at,ad.time",
             nativeQuery = true)
     AppointmentDTOInf findAppointmentDetailById(int id);
     @Query(value = "SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
@@ -64,4 +64,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             ,
             nativeQuery = true)
     Integer countCancelAppointmentInOneWeek(int userId);
+
+    @Query(value = "SELECT count(*) FROM telecare.appointment a left outer join \n" +
+            "                        telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "                       where time = ?2 and a.doctor_id = ?1 \n" +
+            "                       and (ad.status_id = 2 or ad.status_id = 1)\n" +
+            "                       and a.schedule_id = ?3"
+            ,
+            nativeQuery = true)
+    Integer countExistingAppointment(int doctorId,String time, int scheduleId);
 }
