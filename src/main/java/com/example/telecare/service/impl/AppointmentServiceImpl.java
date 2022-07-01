@@ -512,7 +512,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPatientEthnic() {
-
+                if (finalRelative != null) {
+                    return ethnicService.findEthnicById(finalRelative.getEthnicId()).getName();
+                }
                 return patient.getEthnicId() == null ? null
                         : ethnicService.findEthnicById(patient.getEthnicId()).getName();
             }

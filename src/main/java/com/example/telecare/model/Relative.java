@@ -49,7 +49,9 @@ public class Relative {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
+    @Basic
+    @Column(name = "ethnic_id")
+    private Integer ethnicId;
 
 
     @Override
@@ -86,4 +88,11 @@ public class Relative {
         return result;
     }
 
+    public Integer getEthnicId() {
+        return ethnicId;
+    }
+
+    public void setEthnicId(Integer ethnicId) {
+        this.ethnicId = ethnicId;
+    }
 }
