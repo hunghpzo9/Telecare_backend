@@ -43,6 +43,23 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     List<DoctorDTOInf> listAllDoctor(String search, int page);
 
     @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
+            "                        ,d.position as position ,d.job_place as jobPlace,s.name as specialty FROM telecare.user u\n" +
+            "                        right outer join telecare.doctor d on u.id = d.doctor_id\n" +
+            "                        left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
+            "                        left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
+            "                        right outer join telecare.favorite_doctor fd on fd.doctor_id = d.doctor_id\n" +
+            "                        where u.full_name like ?1 or d.job_place like ?1 or s.name like ?1 and fd.patient_id = ?3\n" +
+            "                        group by u.id\n" +
+            "                        limit 3\n" +
+            "                        offset ?2",
+            nativeQuery = true)
+    List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page,int patientId);
+
+    @Query(value = "SELECT * from favorite_doctor where patient_id = ?1 and doctor_id = ?2",
+            nativeQuery = true)
+    Integer countFavoriteDoctor(int patientId,int doctorId);
+
+    @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
             "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty,u.is_active as isActive FROM telecare.user u\n" +
             "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
             "            left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
