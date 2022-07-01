@@ -233,6 +233,26 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page, int patientId) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllFavoriteDoctorById(search,page,patientId);
+        List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
+        for (DoctorDTOInf doctorDTOInf : doctorPage) {
+            DoctorDTOInf finalDoctorDTO = doctorDTOInf;
+            doctorDTOInf = setReturnDoctor(finalDoctorDTO);
+            returnDoctorPage.add(doctorDTOInf);
+        }
+        return returnDoctorPage;
+    }
+
+    @Override
+    public Boolean isFavoriteDoctor(int patientId, int doctorId) {
+        if(doctorRepository.countFavoriteDoctor(patientId,doctorId) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public int getNumberOfDoctor() {
         return doctorRepository.getNumberOfDoctor();
     }
