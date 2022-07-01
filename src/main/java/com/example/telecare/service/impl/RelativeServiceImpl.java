@@ -31,18 +31,8 @@ public class RelativeServiceImpl implements RelativeService {
 
     @Override
     public void updateRelativeById(Relative relativeDetail, int id) {
-        Relative relative = relativeRepository.findRelativesByID(id);
-
-        relative.setFullName(relativeDetail.getFullName());
-        relative.setDateOfBirth(relativeDetail.getDateOfBirth());
-        relative.setGender(relativeDetail.getGender());
-        relative.setRelationship(relativeDetail.getRelationship());
-        relative.setPhone(relativeDetail.getPhone());
-        relative.setEmail(relativeDetail.getEmail());
-        relative.setImageUrl(relativeDetail.getImageUrl());
-
-        relativeRepository.save(relative);
+        relativeDetail.setId(id);
+        relativeRepository.save(relativeDetail);
     }
-
 
 }
