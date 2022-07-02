@@ -48,7 +48,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             "                        left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
             "                        left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
             "                        right outer join telecare.favorite_doctor fd on fd.doctor_id = d.doctor_id\n" +
-            "                        where u.full_name like ?1 or d.job_place like ?1 or s.name like ?1 and fd.patient_id = ?3\n" +
+            "                        where (u.full_name like ?1 or d.job_place like ?1 or s.name like ?1) and fd.patient_id = ?3\n" +
             "                        group by u.id\n" +
             "                        limit 3\n" +
             "                        offset ?2",
