@@ -55,7 +55,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             nativeQuery = true)
     List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page,int patientId);
 
-    @Query(value = "SELECT * from favorite_doctor where patient_id = ?1 and doctor_id = ?2",
+    @Query(value = "SELECT Count(*) from favorite_doctor where patient_id = ?1 and doctor_id = ?2",
             nativeQuery = true)
     Integer countFavoriteDoctor(int patientId,int doctorId);
 
