@@ -266,7 +266,7 @@ public class DoctorServiceImpl implements DoctorService {
     public void addFavoriteDoctor(int patientId, int doctorId) {
         Patient patient = patientRepository.findById(patientId).orElseThrow();
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
-        Set<Doctor> favoriteDoctor = new HashSet<>();
+        Set<Doctor> favoriteDoctor = patient.getFavoriteDoctor();
         favoriteDoctor.add(doctor);
         patient.setFavoriteDoctor(favoriteDoctor);
         patientRepository.save(patient);
