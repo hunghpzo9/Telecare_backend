@@ -1,9 +1,8 @@
 package com.example.telecare.security;
 
-import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ForbiddenException;
 import com.example.telecare.repository.UserRepository;
-import com.example.telecare.utils.ProjectStorage;
+import com.example.telecare.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +31,10 @@ public class MyUserDetailsService implements UserDetailsService {
             logger.error("User not found");
             throw new UsernameNotFoundException("User not found in database");
         }
-        if(user.getIsActive() == ProjectStorage.IS_NOT_ACTIVE){
+        if(user.getIsActive() == Constants.IS_NOT_ACTIVE){
             throw new ForbiddenException("Tài khoản của bạn chưa được kích hoạt");
         }
-        if(user.getIsActive() == ProjectStorage.IS_BAN){
+        if(user.getIsActive() == Constants.IS_BAN){
             throw new ForbiddenException("Tài khoản của bạn đang bị khoá");
         }
         else {

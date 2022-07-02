@@ -2,9 +2,12 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.DoctorDTO;
+import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.model.User;
 import com.example.telecare.security.MyUserDetailsService;
+import com.example.telecare.service.TwilioService;
 import com.example.telecare.service.impl.AuthServiceImpl;
+import com.example.telecare.service.impl.TwilioServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    TwilioServiceImpl twilioService;
 
     @Autowired
     private AuthServiceImpl authService;
@@ -39,6 +45,18 @@ public class AuthController {
     public ResponseEntity<?> registerUserDoctor(@RequestBody DoctorDTO doctorDTO) {
         userService.registerDoctor(doctorDTO);
         return ResponseEntity.ok(doctorDTO);
+    }
+
+    @PostMapping("/otp/sendOtp")
+    public ResponseEntity<?> sendOtp(@RequestParam("phone") String phone) {
+        TwilioRequestDTO twilioRequestDTO = new TwilioRequestDTO();
+        twilioRequestDTO.setPhoneNumber(phone);
+        return twilioService.sendOtpForPasswordReset(twilioRequestDTO);
+    }
+    @PostMapping("/otp/validateOtp")
+    public ResponseEntity<?> validateOtp(@RequestParam("otp") String otp,@RequestParam("phone") String phone) {
+
+        return twilioService.validateOtp(otp,phone);
     }
 
     @PostMapping("/login")
