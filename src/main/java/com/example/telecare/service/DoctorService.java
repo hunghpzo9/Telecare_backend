@@ -22,6 +22,10 @@ public interface DoctorService {
 
     Boolean isFavoriteDoctor(int patientId, int doctorId);
 
+    void removeFavoriteDoctor(int patientId, int doctorId);
+
+    void addFavoriteDoctor(int patientId, int doctorId);
+
     int getNumberOfDoctor();
 
 }

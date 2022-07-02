@@ -1,70 +1,60 @@
 package com.example.telecare.agora;
 
-import com.example.telecare.agora.media.RtcTokenBuilder;
-import com.example.telecare.agora.rtm.RtmTokenBuilder;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.springframework.web.bind.annotation.*;
-
-@CrossOrigin(maxAge = 60 * 60 * 24 * 30)
-@RestController
-@RequestMapping("/api/v1/agora")
-
 public class Agora {
+    static String appId = "97cc52a260b9460383581e0bd93ebb9b"; //replace app id
+    static String appCertificate = "9a611a40ceca450385947750adb665cc"; //replace app cert
+    private String channelName;
+    private int uid = 0;
+    private int expirationTimeInSeconds = 3600;
+    private int role = 2; // By default subscriber
 
-    @PostMapping(value = "/rtc")
-    public Object getRTCToken(@RequestBody AgoraRepository resource) throws JSONException {
-
-        RtcTokenBuilder token = new RtcTokenBuilder();
-        String channelName = resource.getChannelName();
-        int expireTime = resource.getExpirationTimeInSeconds();
-        RtcTokenBuilder.Role role = RtcTokenBuilder.Role.Role_Subscriber;
-        int uid = resource.getUid();
-
-        // check for null channelName
-        if (channelName == null) {
-            JSONObject error = new JSONObject();
-            error.put("error", "Channel Name cannot be blank");
-            return error.getString("error");
-        }
-
-        if (expireTime == 0) {
-            expireTime = 3600;
-        }
-
-        if (resource.getRole() == 1) {
-            role = RtcTokenBuilder.Role.Role_Publisher;
-        } else if (resource.getRole() == 0) {
-            role = RtcTokenBuilder.Role.Role_Attendee;
-        }
-        int timestamp = (int) (System.currentTimeMillis() / 1000 + expireTime);
-
-
-        String result = token.buildTokenWithUid(resource.appId, resource.appCertificate,
-                channelName, uid, role, timestamp);
-        JSONObject jsondict = new JSONObject();
-        jsondict.put("rtcToken", result);
-        return jsondict.toString();
-
+    public static String getAppId() {
+        return appId;
     }
 
-    @PostMapping(value = "/rtm")
-    public Object getRTMToken(@RequestBody AgoraRTMRepository resource) throws Exception {
-
-        String userId = resource.getUserId();
-
-        if (userId == null) {
-            JSONObject error = new JSONObject();
-            error.put("error", "User ID cannot be blank");
-            return error.getString("error");
-        }
-
-        RtmTokenBuilder token = new RtmTokenBuilder();
-        String result = token.buildToken(resource.getAppId(), resource.getAppCertificate(), userId, RtmTokenBuilder.Role.Rtm_User, resource.getExpireTimestamp());
-        System.out.println(result);
-        JSONObject jsondict = new JSONObject();
-        jsondict.put("rtmToken", result);
-        return jsondict.toString();
-
+    public static void setAppId(String appId) {
+        Agora.appId = appId;
     }
+
+    public static String getAppCertificate() {
+        return appCertificate;
+    }
+
+    public static void setAppCertificate(String appCertificate) {
+        Agora.appCertificate = appCertificate;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public int getExpirationTimeInSeconds() {
+        return expirationTimeInSeconds;
+    }
+
+    public void setExpirationTimeInSeconds(int expirationTimeInSeconds) {
+        this.expirationTimeInSeconds = expirationTimeInSeconds;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+
 }

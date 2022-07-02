@@ -4,8 +4,6 @@ import com.example.telecare.dto.DoctorUpdateDTO;
 import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +17,6 @@ import java.util.List;
 public class DoctorController {
     @Autowired
     DoctorServiceImpl doctorService;
-
 
     @GetMapping(value = "/{id}")
     public DoctorDTOInf findDoctorDetail(@PathVariable int id) {
@@ -42,6 +39,17 @@ public class DoctorController {
         return doctorService.listAllDoctorBySpecialty("%" + search + "%", specialtyId, pageNo);
     }
 
+    @DeleteMapping(value = "/removeFavoriteDoctor")
+    public ResponseEntity<?> removeFavoriteDoctor(@RequestParam("patientId") int patientId, @RequestParam("doctorId") int doctorId) {
+       doctorService.removeFavoriteDoctor(patientId,doctorId);
+       return ResponseEntity.ok(new ResponseOkMessage("Remove successfully",new Date()));
+    }
+    @PostMapping(value = "/addFavoriteDoctor")
+    public ResponseEntity<?> addFavoriteDoctor(@RequestParam("patientId") int patientId, @RequestParam("doctorId") int doctorId) {
+        doctorService.addFavoriteDoctor(patientId,doctorId);
+        return ResponseEntity.ok(new ResponseOkMessage("Add successfully",new Date()));
+    }
+
     @GetMapping(value = "/searchFavorite/search={search}/pageNo={pageNo}")
     public List<DoctorDTOInf> findAllFavoriteDoctor(@PathVariable String search, @RequestParam("patientId") int patientId, @PathVariable int pageNo) {
         return doctorService.listAllFavoriteDoctorById("%" + search + "%", pageNo,patientId);
@@ -58,6 +66,7 @@ public class DoctorController {
         doctorService.addDoctorSpecialty(docId ,specialtyId);
         return ResponseEntity.ok(new ResponseOkMessage("Add successful", new Date()));
     }
+
     @GetMapping(value = "")
     public ResponseEntity<List<DoctorDTOInf>> getAllDoctor(@RequestParam int index) {
         return new ResponseEntity<>(doctorService.getAllDoctor(index), HttpStatus.OK);
