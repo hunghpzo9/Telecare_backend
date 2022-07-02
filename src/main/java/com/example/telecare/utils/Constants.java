@@ -1,6 +1,6 @@
 package com.example.telecare.utils;
 
-public class ProjectStorage {
+public class Constants {
 
     //API
     public static final String ACCESS_TOKEN= "access_token";

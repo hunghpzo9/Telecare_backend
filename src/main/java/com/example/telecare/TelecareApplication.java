@@ -1,5 +1,8 @@
 package com.example.telecare;
 
+import com.example.telecare.config.TwilioConfig;
+import com.twilio.Twilio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,13 +12,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableCaching
 public class TelecareApplication {
 
+	@Autowired
+	private TwilioConfig twilioConfig;
+
+	@PostConstruct
+	public void initTwilio(){
+		Twilio.init(twilioConfig.getAccountSid(),twilioConfig.getAuthToken());
+	}
+
 	public static void main(String[] args) {
+
 		SpringApplication.run(TelecareApplication.class, args);
 	}
 

@@ -3,7 +3,7 @@ package com.example.telecare.filter;
 import com.example.telecare.exception.ForbiddenException;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.utils.JwtTokenUtil;
-import com.example.telecare.utils.ProjectStorage;
+import com.example.telecare.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,11 +32,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
        if(request.getServletPath().equals("/api/v1/auth/login")){
            filterChain.doFilter(request,response);
        }else {
-           final String authorizationHeader = request.getHeader(ProjectStorage.AUTHORIZATION);
+           final String authorizationHeader = request.getHeader(Constants.AUTHORIZATION);
            String username = null;
            String jwt ;
            try {
-               if (authorizationHeader != null && authorizationHeader.startsWith(ProjectStorage.BEARER)) {
+               if (authorizationHeader != null && authorizationHeader.startsWith(Constants.BEARER)) {
                    jwt = authorizationHeader.substring(7);
                    username = jwtTokenUtil.getUsernameFromToken(jwt);
                }
