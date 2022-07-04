@@ -19,6 +19,10 @@ public interface DoctorDTOInf {
     String getSpecialty();
     String getSignature();
     Byte getIsActive();
+    String getCertificate();
+    String getIdentificationFront();
+    String getIdentificationBack();
+    Date getExpireDateCertificate();
     Integer getAppointmentDoneCount();
     Integer getPatientCount();
     Double getRating();
