@@ -107,6 +107,26 @@ public class DoctorServiceImpl implements DoctorService {
                 return doctorDTOInf.getIsActive();
             }
 
+            @Override
+            public String getCertificate() {
+                return doctorDTOInf.getCertificate();
+            }
+
+            @Override
+            public String getIdentificationFront() {
+                return doctorDTOInf.getIdentificationFront();
+            }
+
+            @Override
+            public String getIdentificationBack() {
+                return doctorDTOInf.getIdentificationBack();
+            }
+
+            @Override
+            public Date getExpireDateCertificate() {
+                return doctorDTOInf.getExpireDateCertificate();
+            }
+
 
             @Override
             public Integer getAppointmentDoneCount() {
