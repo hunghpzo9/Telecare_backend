@@ -46,20 +46,20 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<?> login(AuthenticationRequest authenticationRequest) {
-        AuthenticationResponse  authenticationResponse=getUser(authenticationRequest);
+        AuthenticationResponse authenticationResponse = getUser(authenticationRequest);
         return ResponseEntity.ok(authenticationResponse);
     }
 
     @Override
-    public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest){
-        AuthenticationResponse  authenticationResponse=getUser(authenticationRequest);
-        if(!authenticationResponse.getRole().equals(Constants.ROLE_ADMIN)){
+    public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest) {
+        AuthenticationResponse authenticationResponse = getUser(authenticationRequest);
+        if (!authenticationResponse.getRole().equals(Constants.ROLE_ADMIN)) {
             throw new ForbiddenException("Bạn không có quyền vào trang này");
         }
         return ResponseEntity.ok(authenticationResponse);
     }
 
-    private AuthenticationResponse getUser(AuthenticationRequest authenticationRequest){
+    private AuthenticationResponse getUser(AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getPhone(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
@@ -70,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
         final String refresh_token = jwtTokenUtil.generateRefreshToken(userDetails);
         User user = userRepository.findUserByPhone(authenticationRequest.getPhone());
         Role user_role = user.getRoles().stream().reduce((first, second) -> first).orElse(null);
-        return new AuthenticationResponse(access_token, refresh_token, user.getId(),user_role.getName());
+        return new AuthenticationResponse(access_token, refresh_token, user.getId(), user_role.getName());
     }
 
     @Override
@@ -101,15 +101,24 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<?> changeOldPassword(String id, String oldPassword,String newPassword) {
-        User user = userRepository.findUserById(id);
-        if(!oldPassword.equals(decodePassword(user))){
+    public ResponseEntity<?> changeOldPassword(String phone, String oldPassword, String newPassword) {
+        User user = userRepository.findUserById(phone);
+        if (!oldPassword.equals(decodePassword(user))) {
             throw new ForbiddenException("Mật khẩu ban đầu không đúng");
-        }else{
-            encodePassword(user,newPassword);
+        } else {
+            encodePassword(user, newPassword);
             userRepository.save(user);
-            return ResponseEntity.ok(new ResponseOkMessage("Mật khẩu đã được thay đổi",new Date()));
+            return ResponseEntity.ok(new ResponseOkMessage("Mật khẩu đã được thay đổi", new Date()));
         }
+    }
+
+    @Override
+    public ResponseEntity<?> forgotPassword(String phone, String newPassword) {
+        User user = userRepository.findUserByPhone(phone);
+        encodePassword(user, newPassword);
+        userRepository.save(user);
+        return ResponseEntity.ok(new ResponseOkMessage("Mật khẩu đã được thay đổi", new Date()));
+
     }
 
     @Override
@@ -118,7 +127,7 @@ public class AuthServiceImpl implements AuthService {
         if (duplicateUserByEmail != null) {
             throw new BadRequestException("Email đã tồn tại");
         }
-        return ResponseEntity.ok(new ResponseOkMessage("Email có thể dùng được",new Date()));
+        return ResponseEntity.ok(new ResponseOkMessage("Email có thể dùng được", new Date()));
     }
 
     @Override
@@ -127,19 +136,20 @@ public class AuthServiceImpl implements AuthService {
         if (duplicateUserByPhone != null) {
             throw new BadRequestException("Số điện thoại đã tồn tại");
         }
-        return ResponseEntity.ok(new ResponseOkMessage("Số điện thoại có thể dùng được",new Date()));
+        return ResponseEntity.ok(new ResponseOkMessage("Số điện thoại có thể dùng được", new Date()));
     }
 
-    private void encodePassword(User user,String newPassword) {
+    private void encodePassword(User user, String newPassword) {
         UUID randomUUID = UUID.randomUUID();
         String salt = randomUUID.toString().replaceAll("-", "").substring(0, 7);
         String encodePass = passwordEncoder.encodePasswordAlgorithm(salt, newPassword);
         user.setPassword(encodePass);
         user.setPasswordSalt(salt);
     }
+
     private String decodePassword(User user) {
         String decodePass = passwordEncoder.decodePasswordAlgorithm(user.getPassword());
-        System.out.println("Current:" +decodePass.substring(7));
+        System.out.println("Current:" + decodePass.substring(7));
         return decodePass.substring(7);
     }
 }
