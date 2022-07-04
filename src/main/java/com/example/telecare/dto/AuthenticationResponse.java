@@ -13,4 +13,5 @@ public class AuthenticationResponse {
     private String refresh_token;
     private int user_id;
     private String role;
+    private byte is_active;
 }
