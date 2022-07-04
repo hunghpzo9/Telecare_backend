@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface TwilioService {
 
-    ResponseEntity sendOtpForPasswordReset(TwilioRequestDTO twilioRequestOTP);
+    ResponseEntity sendOtp(TwilioRequestDTO twilioRequestOTP);
 
     ResponseEntity<?> validateOtp(String userInputOtp, String phoneNumber);
 }
