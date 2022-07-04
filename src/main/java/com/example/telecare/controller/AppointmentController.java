@@ -2,8 +2,10 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.dto.CancelDTOInf;
+import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.ReportDTOInf;
 import com.example.telecare.model.Appointment;
+import com.example.telecare.model.AppointmentDetails;
 import com.example.telecare.model.CancelAppointment;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.DoctorServiceImpl;
@@ -27,7 +29,6 @@ public class AppointmentController {
     PatientServiceImpl patientService;
     @Autowired
     DoctorServiceImpl doctorService;
-
     @Autowired
     EthnicServiceImpl ethnicService;
 
@@ -37,7 +38,7 @@ public class AppointmentController {
     }
 
     @GetMapping(value = "/doctorId={id}")
-    public List<AppointmentDTOInf> getAppointmentByDoctor(@PathVariable int id, @RequestParam("statusId") List<Integer> statusId) {
+        public List<AppointmentDTOInf> getAppointmentByDoctor(@PathVariable int id, @RequestParam("statusId") List<Integer> statusId) {
         return appointmentService.findAppointmentByDoctor(id, statusId);
     }
 
@@ -74,9 +75,16 @@ public class AppointmentController {
     }
 
     @Cacheable(value="allCancel")
+
     @GetMapping(value = "/getAllCancelReason")
     public List<CancelDTOInf> getAllCancel() {
         return appointmentService.getListCancel();
+    }
+
+    @PutMapping(value = "/confirm")
+    public ResponseEntity<AppointmentDetails> updatePatient(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) {
+        appointmentService.confirmAppointment(appointmentDetails,id);
+        return ResponseEntity.ok(appointmentDetails);
     }
 
 }

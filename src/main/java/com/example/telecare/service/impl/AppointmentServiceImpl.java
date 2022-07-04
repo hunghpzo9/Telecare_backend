@@ -40,7 +40,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     RelativeServiceImpl relativeService;
     @Autowired
     EthnicServiceImpl ethnicService;
-
     @Autowired
     AddressServiceImpl addressService;
 
@@ -409,6 +408,16 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
+    }
+
+    @Override
+    public void confirmAppointment(AppointmentDetails appointmentDetails, int id) {
+        AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
+
+        appointmentDs.setStatusId(appointmentDetails.getStatusId());
+
+        appointmentDetailRepository.save(appointmentDs);
+
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
