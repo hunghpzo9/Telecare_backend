@@ -4,8 +4,6 @@ import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.model.User;
-import com.example.telecare.security.MyUserDetailsService;
-import com.example.telecare.service.TwilioService;
 import com.example.telecare.service.impl.AuthServiceImpl;
 import com.example.telecare.service.impl.TwilioServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
@@ -48,23 +46,22 @@ public class AuthController {
     }
 
     @PostMapping("/otp/sendOtp")
-    public ResponseEntity<?> sendOtp(@RequestParam("phone") String phone) {
-        TwilioRequestDTO twilioRequestDTO = new TwilioRequestDTO();
-        twilioRequestDTO.setPhoneNumber(phone);
-        return twilioService.sendOtpForPasswordReset(twilioRequestDTO);
+    public ResponseEntity<?> sendOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
+
+        return twilioService.sendOtp(twilioRequestDTO);
     }
     @PostMapping("/otp/validateOtp")
-    public ResponseEntity<?> validateOtp(@RequestParam("otp") String otp,@RequestParam("phone") String phone) {
+    public ResponseEntity<?> validateOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
 
-        return twilioService.validateOtp(otp,phone);
+        return twilioService.validateOtp(twilioRequestDTO.getOtp(),twilioRequestDTO.getPhoneNumber());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
         return authService.login(authenticationRequest);
     }
     @PostMapping("/loginForAdmin")
-    public ResponseEntity<?> loginForAdmin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> loginForAdmin(@RequestBody AuthenticationRequest authenticationRequest)  {
         return authService.loginForAdmin(authenticationRequest);
     }
 
