@@ -69,8 +69,9 @@ public class AuthServiceImpl implements AuthService {
         final String access_token = jwtTokenUtil.generateAccessToken(userDetails);
         final String refresh_token = jwtTokenUtil.generateRefreshToken(userDetails);
         User user = userRepository.findUserByPhone(authenticationRequest.getPhone());
+
         Role user_role = user.getRoles().stream().reduce((first, second) -> first).orElse(null);
-        return new AuthenticationResponse(access_token, refresh_token, user.getId(), user_role.getName());
+        return new AuthenticationResponse(access_token, refresh_token, user.getId(), user_role.getName(),user.getIsActive());
     }
 
     @Override
