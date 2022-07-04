@@ -143,7 +143,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateStatus(Byte isActive, int id) {
+    public void updateStatus(Byte isActive, int id,Date expireDate) {
+
+            Doctor doctor = doctorRepository.findById(id).orElseThrow(()
+                    -> new ResourceNotFoundException("Không tìm thấy bác sĩ"));
+            doctor.setExpireDateCertificate(expireDate);
+            doctorRepository.save(doctor);
+
         User user = userRepository.findById(id) .orElseThrow(()
                 -> new ResourceNotFoundException("Không tìm thấy người dùng"));
         user.setIsActive(isActive);

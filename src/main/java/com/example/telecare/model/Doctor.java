@@ -130,12 +130,4 @@ public class Doctor {
     public void setSignature(String signature) {
         this.signature = signature;
     }
-
-    public Date getExpireDateCertificate() {
-        return expireDateCertificate;
-    }
-
-    public void setExpireDateCertificate(Date expireDateCertificate) {
-        this.expireDateCertificate = expireDateCertificate;
-    }
 }
