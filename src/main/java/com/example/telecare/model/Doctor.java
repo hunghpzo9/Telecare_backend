@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +45,9 @@ public class Doctor {
     @Basic
     @Column(name = "signature")
     private String signature;
+    @Basic
+    @Column(name = "expire_date_certificate")
+    private Date expireDateCertificate;
 
     public int getDoctorId() {
         return doctorId;
@@ -125,5 +129,13 @@ public class Doctor {
 
     public void setSignature(String signature) {
         this.signature = signature;
+    }
+
+    public Date getExpireDateCertificate() {
+        return expireDateCertificate;
+    }
+
+    public void setExpireDateCertificate(Date expireDateCertificate) {
+        this.expireDateCertificate = expireDateCertificate;
     }
 }
