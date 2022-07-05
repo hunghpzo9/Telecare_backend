@@ -135,4 +135,24 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        order by ad.time",
             nativeQuery = true)
     AppointmentDTOInf getCurrentAppointmentAvailable(int patientId, int doctorId, String date, String time);
+
+    @Query(value = "SELECT a.id \n" +
+            "                        , u.image_url as doctorImageUrl ,\n" +
+            "                        u.full_name as doctorName, u.phone as doctorPhone,\n" +
+            "                        a.patient_id as patientId, a.doctor_id as doctorId, spec.name as doctorSpecialty,\n" +
+            "                        s.start_at as startAt,s.end_at as endAt \n" +
+            "                        ,DATE_FORMAT (ad.time,'%d-%m-%Y') as time ,aps.name as status,aps.id as statusId\n" +
+            "                        FROM telecare.appointment a\n" +
+            "                        left outer join telecare.doctor_specialty ds on ds.doctor_id = a.doctor_id\n" +
+            "                        left outer join telecare.specialty spec on spec.id = ds.specialty_id\n" +
+            "                        left outer join telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "                        left outer join telecare.user u on a.doctor_id = u.id\n" +
+            "                        left outer join telecare.schedule s on a.schedule_id = s.id\n" +
+            "                        left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
+            "                        where aps.id in (1,2) and ((ad.time < ?1 \n" +
+            "                        and s.end_at <= ?2) or ad.time < ?1 )\n" +
+            "                        group by s.end_at,s.start_at,ad.time\n" +
+            "                                    ",
+            nativeQuery = true)
+    List<AppointmentDTOInf> findAppointmentOverdue(String date,String time);
 }
