@@ -38,7 +38,7 @@ public class AppointmentController {
     }
 
     @GetMapping(value = "/doctorId={id}")
-        public List<AppointmentDTOInf> getAppointmentByDoctor(@PathVariable int id, @RequestParam("statusId") List<Integer> statusId) {
+    public List<AppointmentDTOInf> getAppointmentByDoctor(@PathVariable int id, @RequestParam("statusId") List<Integer> statusId) {
         return appointmentService.findAppointmentByDoctor(id, statusId);
     }
 
@@ -49,8 +49,8 @@ public class AppointmentController {
 
     @PostMapping(value = "/book")
     public ResponseEntity<?> bookAppointment(@RequestBody Appointment appointment
-                                            ,@RequestParam("description") String description
-                                            ,@RequestParam("time") String time) {
+            , @RequestParam("description") String description
+            , @RequestParam("time") String time) {
         Appointment newAppointment = appointmentService.createNewAppointment(appointment, description, time);
         return ResponseEntity.ok(newAppointment);
     }
@@ -58,12 +58,12 @@ public class AppointmentController {
     @PostMapping(value = "/cancel")
     public ResponseEntity<?> cancelAppointment(@RequestBody CancelAppointment cancelAppointment,
                                                @RequestParam("userId") int userId) {
-        appointmentService.cancelAppointment(cancelAppointment,userId);
+        appointmentService.cancelAppointment(cancelAppointment, userId);
         return ResponseEntity.ok(cancelAppointment);
     }
 
     @GetMapping(value = "/countCancelInOneWeek")
-            public Integer countCancelInOneWeek(@RequestParam ("userId") int userId) {
+    public Integer countCancelInOneWeek(@RequestParam("userId") int userId) {
         return appointmentService.countCancelAppointmentInOneWeek(userId);
     }
 
@@ -74,7 +74,15 @@ public class AppointmentController {
         return appointmentService.listScheduleFindByDoctorAndTime(doctorId, patientId, time);
     }
 
-    @Cacheable(value="allCancel")
+    @GetMapping(value = "/availableAppointment")
+    public AppointmentDTOInf getCurrentAppointmentAvailable(@RequestParam("doctorId") int doctorId,
+                                                             @RequestParam("patientId") int patientId
+    ) {
+        return appointmentService.getCurrentAppointmentAvailable(patientId, doctorId);
+    }
+
+
+    @Cacheable(value = "allCancel")
 
     @GetMapping(value = "/getAllCancelReason")
     public List<CancelDTOInf> getAllCancel() {
@@ -82,8 +90,8 @@ public class AppointmentController {
     }
 
     @PutMapping(value = "/confirm")
-    public ResponseEntity<AppointmentDetails> updatePatient(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) {
-        appointmentService.confirmAppointment(appointmentDetails,id);
+    public ResponseEntity<AppointmentDetails> confirmAppointment(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) {
+        appointmentService.confirmAppointment(appointmentDetails, id);
         return ResponseEntity.ok(appointmentDetails);
     }
 
