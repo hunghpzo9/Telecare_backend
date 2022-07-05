@@ -29,4 +29,6 @@ public interface AppointmentService {
     void confirmAppointment(AppointmentDetails appointmentDetails, int id);
 
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
+
+    List<AppointmentDTOInf> findAppointmentOverdue();
 }

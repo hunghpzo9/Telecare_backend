@@ -15,17 +15,15 @@ import com.example.telecare.repository.AppointmentRepository;
 import com.example.telecare.repository.CancelAppointmentRepository;
 import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.AppointmentService;
+import com.example.telecare.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -344,41 +342,48 @@ public class AppointmentServiceImpl implements AppointmentService {
         int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
         if (countPending >= 3) {
             throw new BadRequestException("Bạn đã tạo quá số lần quy định (3 lần). Hãy thanh toán để tiếp tục sử dụng");
-        } else {
-            int countExistingAppointment = appointmentRepository.countExistingAppointment(appointment.getDoctorId(), time, appointment.getScheduleId());
-            if (countExistingAppointment >= 1) {
-                throw new BadRequestException("Đã có người đặt cuộc hẹn này.");
-            }
-            Appointment newAppointment = new Appointment();
-            if (appointment.getRelativeId() != null && appointment.getRelativeId() != 0) {
-                newAppointment.setRelativeId(appointment.getRelativeId());
-            }
-            newAppointment.setPatientId(appointment.getPatientId());
-            newAppointment.setDoctorId(appointment.getDoctorId());
-            newAppointment.setScheduleId(appointment.getScheduleId());
-            newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
-
-            AppointmentDetails appointmentDetails = new AppointmentDetails();
-            appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
-            appointmentDetails.setDescription(description);
-
-            //format String time to date
-            try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date parsed = simpleDateFormat.parse(time);
-                java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
-                appointmentDetails.setTime(sqlDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            //save to database
-            appointmentDetails.setAppointment(newAppointment);
-            appointmentRepository.save(newAppointment);
-            appointmentDetailRepository.save(appointmentDetails);
-            return newAppointment;
         }
 
+        DoctorDTOInf doctor = doctorService.findDoctorById(appointment.getDoctorId());
+        if (doctor.getIsActive() != Constants.IS_ACTIVE) {
+            throw new BadRequestException("Bác sĩ hiện đang được xem xét, không thể đặt được");
+        }
+
+        int countExistingAppointment = appointmentRepository
+                .countExistingAppointment(appointment.getDoctorId(), time, appointment.getScheduleId());
+        if (countExistingAppointment >= 1) {
+            throw new BadRequestException("Đã có người đặt cuộc hẹn này.");
+        }
+
+        Appointment newAppointment = new Appointment();
+        if (appointment.getRelativeId() != null && appointment.getRelativeId() != 0) {
+            newAppointment.setRelativeId(appointment.getRelativeId());
+        }
+
+        newAppointment.setPatientId(appointment.getPatientId());
+        newAppointment.setDoctorId(appointment.getDoctorId());
+        newAppointment.setScheduleId(appointment.getScheduleId());
+        newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
+
+        AppointmentDetails appointmentDetails = new AppointmentDetails();
+        appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
+        appointmentDetails.setDescription(description);
+
+        //format String time to date
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsed = simpleDateFormat.parse(time);
+            java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
+            appointmentDetails.setTime(sqlDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //save to database
+        appointmentDetails.setAppointment(newAppointment);
+        appointmentRepository.save(newAppointment);
+        appointmentDetailRepository.save(appointmentDetails);
+        return newAppointment;
 
     }
 
@@ -428,11 +433,26 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time) {
-        User patient = userRepository.findUserByPhone( patientPhone);
-        User doctor = userRepository.findUserByPhone( doctorPhone);
+    public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone, String date, String time) {
+        User patient = userRepository.findUserByPhone(patientPhone);
+        User doctor = userRepository.findUserByPhone(doctorPhone);
 
-        return appointmentRepository.getCurrentAppointmentAvailable(patient.getId(),doctor.getId(),date,time);
+        return appointmentRepository.getCurrentAppointmentAvailable(patient.getId(), doctor.getId(), date, time);
+    }
+
+    @Override
+    public List<AppointmentDTOInf> findAppointmentOverdue() {
+        Date d = new Date();
+        DateFormat dateFormatDay = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss");
+
+        dateFormatDay.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        dateFormatTime.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+
+        String date = dateFormatDay.format(d);
+        String time = dateFormatTime.format(d);
+
+        return appointmentRepository.findAppointmentOverdue(date,time);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
