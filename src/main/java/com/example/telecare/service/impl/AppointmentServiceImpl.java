@@ -13,6 +13,7 @@ import com.example.telecare.model.*;
 import com.example.telecare.repository.AppointmentDetailRepository;
 import com.example.telecare.repository.AppointmentRepository;
 import com.example.telecare.repository.CancelAppointmentRepository;
+import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,6 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +45,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     EthnicServiceImpl ethnicService;
     @Autowired
     AddressServiceImpl addressService;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
@@ -426,11 +428,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentDTOInf getCurrentAppointmentAvailable(int patientId, int doctorId,String date,String time) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Format f = new SimpleDateFormat("HH:mm:ss");
-        Date currentDate = new Date();
-        return appointmentRepository.getCurrentAppointmentAvailable(patientId,doctorId,date,time);
+    public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time) {
+        User patient = userRepository.findUserByPhone( patientPhone);
+        User doctor = userRepository.findUserByPhone( doctorPhone);
+
+        return appointmentRepository.getCurrentAppointmentAvailable(patient.getId(),doctor.getId(),date,time);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
