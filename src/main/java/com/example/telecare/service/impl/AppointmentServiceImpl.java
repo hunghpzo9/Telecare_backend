@@ -426,14 +426,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentDTOInf getCurrentAppointmentAvailable(int patientId, int doctorId) {
+    public AppointmentDTOInf getCurrentAppointmentAvailable(int patientId, int doctorId,String date,String time) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Format f = new SimpleDateFormat("HH:mm:ss");
         Date currentDate = new Date();
-        String date = dateFormat.format(currentDate);
-        String time = f.format(currentDate);
-        System.out.println(date);
-        System.out.println(time);
         return appointmentRepository.getCurrentAppointmentAvailable(patientId,doctorId,date,time);
     }
 

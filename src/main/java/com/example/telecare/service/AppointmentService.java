@@ -28,5 +28,5 @@ public interface AppointmentService {
 
     void confirmAppointment(AppointmentDetails appointmentDetails, int id);
 
-    AppointmentDTOInf getCurrentAppointmentAvailable(int patientId, int doctorId);
+    AppointmentDTOInf getCurrentAppointmentAvailable(int patientId, int doctorId,String date,String time);
 }

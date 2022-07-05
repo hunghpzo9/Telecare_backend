@@ -76,9 +76,11 @@ public class AppointmentController {
 
     @GetMapping(value = "/availableAppointment")
     public AppointmentDTOInf getCurrentAppointmentAvailable(@RequestParam("doctorId") int doctorId,
-                                                             @RequestParam("patientId") int patientId
+                                                             @RequestParam("patientId") int patientId,
+                                                            @RequestParam("date") String date,
+                                                            @RequestParam("time") String time
     ) {
-        return appointmentService.getCurrentAppointmentAvailable(patientId, doctorId);
+        return appointmentService.getCurrentAppointmentAvailable(patientId, doctorId,date,time);
     }
 
 
