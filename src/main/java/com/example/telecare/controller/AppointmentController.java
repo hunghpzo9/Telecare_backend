@@ -2,6 +2,8 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.dto.CancelDTOInf;
+import com.example.telecare.dto.PatientDTO;
+import com.example.telecare.dto.ReportDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.AppointmentDetails;
 import com.example.telecare.model.CancelAppointment;

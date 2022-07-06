@@ -35,9 +35,6 @@ public class Prescription {
     @Basic
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-    @Basic
-    @Column(name = "url")
-    private String url;
 
 
 
@@ -84,13 +81,5 @@ public class Prescription {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 }

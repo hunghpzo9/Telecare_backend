@@ -44,8 +44,61 @@ public class Doctor {
     @Basic
     @Column(name = "expire_date_certificate")
     private Date expireDateCertificate;
+    public int getDoctorId() {
+        return doctorId;
+    }
 
+    public Date getExpireDateCertificate() {
+        return expireDateCertificate;
+    }
 
+    public void setExpireDateCertificate(Date expireDateCertificate) {
+        this.expireDateCertificate = expireDateCertificate;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
+
+    public String getJobPlace() {
+        return jobPlace;
+    }
+
+    public void setJobPlace(String jobPlace) {
+        this.jobPlace = jobPlace;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getIdentificationFront() {
+        return identificationFront;
+    }
+
+    public void setIdentificationFront(String identificationFront) {
+        this.identificationFront = identificationFront;
+    }
+
+    public String getIdentificationBack() {
+        return identificationBack;
+    }
+
+    public void setIdentificationBack(String identificationBack) {
+        this.identificationBack = identificationBack;
+    }
 
     @Override
     public boolean equals(Object o) {

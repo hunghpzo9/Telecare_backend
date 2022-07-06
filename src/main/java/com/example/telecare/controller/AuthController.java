@@ -2,10 +2,9 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.DoctorDTO;
-import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.model.User;
+import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.service.impl.AuthServiceImpl;
-import com.example.telecare.service.impl.TwilioServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
     @Autowired
     UserServiceImpl userService;
-
-    @Autowired
-    TwilioServiceImpl twilioService;
 
     @Autowired
     private AuthServiceImpl authService;
@@ -45,25 +41,12 @@ public class AuthController {
         return ResponseEntity.ok(doctorDTO);
     }
 
-    @PostMapping("/otp/sendOtp")
-    public ResponseEntity<?> sendOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
-
-        return twilioService.sendOtp(twilioRequestDTO);
-    }
-
-    @PostMapping("/otp/validateOtp")
-    public ResponseEntity<?> validateOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
-
-        return twilioService.validateOtp(twilioRequestDTO.getOtp(), twilioRequestDTO.getPhoneNumber());
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         return authService.login(authenticationRequest);
     }
-
     @PostMapping("/loginForAdmin")
-    public ResponseEntity<?> loginForAdmin(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> loginForAdmin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         return authService.loginForAdmin(authenticationRequest);
     }
 
@@ -77,19 +60,10 @@ public class AuthController {
         return authService.checkPhoneExisted(phone);
     }
 
-    @PutMapping("/changePassword")
-    public ResponseEntity<?> changeOldPassword(@RequestParam("id") String id,
-                                               @RequestParam("password") String password,
-                                               @RequestParam("newPassword") String newPassword) {
+    @PutMapping("/changePassword/{id}/{password}/{newPassword}")
+    public ResponseEntity<?> changeOldPassword(@PathVariable String id, @PathVariable String password, @PathVariable String newPassword) {
         return authService.changeOldPassword(id, password, newPassword);
     }
-
-    @PutMapping("/forgotPassword")
-    public ResponseEntity<?> forgotPassword(@RequestParam("phone") String phone,
-                                            @RequestParam("newPassword") String newPassword) {
-        return authService.forgotPassword(phone, newPassword);
-    }
-
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
