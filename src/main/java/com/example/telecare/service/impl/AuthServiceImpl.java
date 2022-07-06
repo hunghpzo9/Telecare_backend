@@ -59,6 +59,15 @@ public class AuthServiceImpl implements AuthService {
         return ResponseEntity.ok(authenticationResponse);
     }
 
+    @Override
+    public ResponseEntity<?> forgotPassword(String phone, String newPassword) {
+        User user = userRepository.findUserByPhone(phone);
+        encodePassword(user, newPassword);
+        userRepository.save(user);
+        return ResponseEntity.ok(new ResponseOkMessage("Mật khẩu đã được thay đổi", new Date()));
+
+    }
+
     private AuthenticationResponse getUser(AuthenticationRequest authenticationRequest){
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getPhone(), authenticationRequest.getPassword()));

@@ -32,4 +32,6 @@ public class Constants {
     public static final int GENDER_FEMALE= 1;
 
     public static final int GENDER_OTHER= 2;
+
+    public static final int SYSTEM_CANCEL_STATUS= 11;
 }

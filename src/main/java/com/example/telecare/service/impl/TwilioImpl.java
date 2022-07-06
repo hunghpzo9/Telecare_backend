@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Service
-public class SpeedSMSImpl implements Twilio {
+public class TwilioImpl implements Twilio {
     @Autowired
     TwilioConfig twilioConfig;
     Map<String, String> otpMap = new HashMap<>();
