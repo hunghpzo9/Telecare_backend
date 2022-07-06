@@ -12,7 +12,7 @@ import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.security.PasswordHashService;
 import com.example.telecare.service.AuthService;
 import com.example.telecare.utils.JwtTokenUtil;
-import com.example.telecare.utils.ProjectStorage;
+import com.example.telecare.utils.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest) throws Exception {
         AuthenticationResponse  authenticationResponse=getUser(authenticationRequest);
-        if(!authenticationResponse.getRole().equals(ProjectStorage.ROLE_ADMIN)){
+        if(!authenticationResponse.getRole().equals(Constants.ROLE_ADMIN)){
             throw new ForbiddenException("Bạn không có quyền vào trang này");
         }
         return ResponseEntity.ok(authenticationResponse);
@@ -75,16 +75,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        final String authorizationHeader = request.getHeader(ProjectStorage.AUTHORIZATION);
-        if (authorizationHeader != null && authorizationHeader.startsWith(ProjectStorage.BEARER)) {
+        final String authorizationHeader = request.getHeader(Constants.AUTHORIZATION);
+        if (authorizationHeader != null && authorizationHeader.startsWith(Constants.BEARER)) {
             try {
-                String refresh_token = authorizationHeader.substring(ProjectStorage.BEARER.length());
+                String refresh_token = authorizationHeader.substring(Constants.BEARER.length());
                 String phone = jwtTokenUtil.getUsernameFromToken(refresh_token);
                 final UserDetails userDetails = userDetailsService.loadUserByUsername(phone);
                 String access_token = jwtTokenUtil.generateAccessToken(userDetails);
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put(ProjectStorage.ACCESS_TOKEN, access_token);
-                tokens.put(ProjectStorage.REFRESH_TOKEN, refresh_token);
+                tokens.put(Constants.ACCESS_TOKEN, access_token);
+                tokens.put(Constants.REFRESH_TOKEN, refresh_token);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception exception) {

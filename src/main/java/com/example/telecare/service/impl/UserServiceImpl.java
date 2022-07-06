@@ -8,7 +8,7 @@ import com.example.telecare.model.*;
 import com.example.telecare.repository.*;
 import com.example.telecare.security.PasswordHashService;
 import com.example.telecare.service.UserService;
-import com.example.telecare.utils.ProjectStorage;
+import com.example.telecare.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
             encodePassword(user);
             logger.info("Save user to database");
-            Role rolePatient = roleRepository.findByName(ProjectStorage.ROLE_PATIENT);
+            Role rolePatient = roleRepository.findByName(Constants.ROLE_PATIENT);
             user.addRole(rolePatient);
 
             Patient patient = new Patient();
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
             user.setPassword(doctorDTO.getPassword());
             encodePassword(user);
             user.setIsActive(doctorDTO.getIsActive());
-            Role roleDoctor = roleRepository.findByName(ProjectStorage.ROLE_DOCTOR);
+            Role roleDoctor = roleRepository.findByName(Constants.ROLE_DOCTOR);
             user.addRole(roleDoctor);
             user.setAddress(address);
             logger.info("Save user to database");
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
             encodePassword(user);
             logger.info("Save user to database");
-            Role roleAdmin = roleRepository.findByName(ProjectStorage.ROLE_ADMIN);
+            Role roleAdmin = roleRepository.findByName(Constants.ROLE_ADMIN);
             user.addRole(roleAdmin);
 
             return userRepository.save(user);
