@@ -26,7 +26,7 @@ public class TwilioImpl implements Twilio {
     Map<String, String> otpMap = new HashMap<>();
 
     @Override
-    public ResponseEntity<?> sendOtpForPasswordReset(TwilioRequestDTO twilioRequestDTO) {
+    public ResponseEntity<?> sendOtp(TwilioRequestDTO twilioRequestDTO) {
         TwilioResponseDTO twilioResponseDTO;
         try {
             PhoneNumber to = new PhoneNumber(twilioRequestDTO.getPhoneNumber());
@@ -36,7 +36,7 @@ public class TwilioImpl implements Twilio {
             String otp = generateOtp();
             String otpMessage = "Mã xác nhận của bạn là " + otp;
 
-            Message message = Message.creator(
+             Message.creator(
                             to,
                             from,
                             otpMessage)
@@ -49,7 +49,29 @@ public class TwilioImpl implements Twilio {
             twilioResponseDTO = new TwilioResponseDTO(OtpStatus.FAILED, e.getMessage());
             return ResponseEntity.badRequest().body(twilioResponseDTO);
         }
+    }
 
+    @Override
+    public ResponseEntity sendSmsToDoctor(TwilioRequestDTO twilioRequestDTO) {
+        TwilioResponseDTO twilioResponseDTO;
+        try {
+            PhoneNumber to = new PhoneNumber(twilioRequestDTO.getPhoneNumber());
+            PhoneNumber from = new PhoneNumber(twilioConfig.getTrialNumber());
+
+            String message ="Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi";
+
+            Message.creator(
+                            to,
+                            from,
+                            message)
+                    .create();
+
+            twilioResponseDTO = new TwilioResponseDTO(OtpStatus.DELIVERED, message);
+            return ResponseEntity.ok(twilioResponseDTO);
+        } catch (Exception e) {
+            twilioResponseDTO = new TwilioResponseDTO(OtpStatus.FAILED, e.getMessage());
+            return ResponseEntity.badRequest().body(twilioResponseDTO);
+        }
     }
 
     @Override

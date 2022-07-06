@@ -75,7 +75,7 @@ public class AuthController {
     }
     @PostMapping("/otp/sendOtp")
     public ResponseEntity<?> sendOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
-        return twilioService.sendOtpForPasswordReset(twilioRequestDTO);
+        return twilioService.sendOtp(twilioRequestDTO);
     }
     @PostMapping("/otp/validateOtp")
     public ResponseEntity<?> validateOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
