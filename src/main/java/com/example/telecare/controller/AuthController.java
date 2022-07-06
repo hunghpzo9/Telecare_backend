@@ -2,9 +2,12 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.DoctorDTO;
+import com.example.telecare.dto.TwilioRequestDTO;
+import com.example.telecare.dto.TwilioResponseDTO;
 import com.example.telecare.model.User;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.service.impl.AuthServiceImpl;
+import com.example.telecare.service.impl.TwilioServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    TwilioServiceImpl twilioService;
 
     @Autowired
     private AuthServiceImpl authService;
@@ -68,6 +74,15 @@ public class AuthController {
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
         authService.refreshToken(request, response);
+    }
+    @PostMapping("/otp/sendOtp")
+    public ResponseEntity<?> sendOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
+        return twilioService.sendOtpForPasswordReset(twilioRequestDTO);
+    }
+    @PostMapping("/otp/validateOtp")
+    public ResponseEntity<?> validateOtp(@RequestBody TwilioRequestDTO twilioRequestDTO) {
+
+        return twilioService.validateOtp(twilioRequestDTO.getOtp(),twilioRequestDTO.getPhoneNumber());
     }
 
 }
