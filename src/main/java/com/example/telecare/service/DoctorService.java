@@ -1,7 +1,10 @@
 package com.example.telecare.service;
 
+import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.DoctorUpdateDTO;
+import com.example.telecare.model.Doctor;
+import com.example.telecare.model.DoctorAchievement;
 
 import java.util.List;
 
@@ -16,16 +19,7 @@ public interface DoctorService {
 
     void addDoctorSpecialty(int doctor, int specialtyId);
 
-    List<DoctorDTOInf> getAllDoctor(int index);
-
-    List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page,int patientId);
-
-    Boolean isFavoriteDoctor(int patientId, int doctorId);
-
-    void removeFavoriteDoctor(int patientId, int doctorId);
-
-    void addFavoriteDoctor(int patientId, int doctorId);
-
-    int getNumberOfDoctor();
+    List<DoctorDTOInf> getAllDoctor(int index,String search);
+    int getNumberOfDoctor(String search);
 
 }

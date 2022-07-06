@@ -15,8 +15,6 @@ public interface AuthService {
 
     ResponseEntity<?> changeOldPassword(String id, String oldPassword,String newPassword);
 
-    ResponseEntity<?> forgotPassword(String phone,String newPassword);
-
     ResponseEntity<?> checkEmailExisted(String email);
 
     ResponseEntity<?> checkPhoneExisted(String phone);
