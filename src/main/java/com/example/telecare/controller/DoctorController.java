@@ -48,12 +48,12 @@ public class DoctorController {
         return ResponseEntity.ok(new ResponseOkMessage("Add successful", new Date()));
     }
     @GetMapping(value = "")
-    public ResponseEntity<List<DoctorDTOInf>> getAllDoctor(@RequestParam int index) {
-        return new ResponseEntity<>(doctorService.getAllDoctor(index), HttpStatus.OK);
+    public ResponseEntity<List<DoctorDTOInf>> getAllDoctor(@RequestParam int index,@RequestParam String searchText) {
+        return new ResponseEntity<>(doctorService.getAllDoctor(index,searchText), HttpStatus.OK);
     }
     @GetMapping("/numberOfDoctor")
-    public ResponseEntity<Integer> getNumberOfDoctor() {
-        int medicines = doctorService.getNumberOfDoctor();
+    public ResponseEntity<Integer> getNumberOfDoctor(@RequestParam String searchText) {
+        int medicines = doctorService.getNumberOfDoctor(searchText);
         return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
 
     }

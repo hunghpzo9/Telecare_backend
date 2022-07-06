@@ -241,8 +241,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorDTOInf> getAllDoctor(int index) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.getAllDoctor(index);
+    public List<DoctorDTOInf> getAllDoctor(int index,String search) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.getAllDoctor(index,search);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
             DoctorDTOInf finalDoctorDTO = doctorDTOInf;
@@ -253,8 +253,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public int getNumberOfDoctor() {
-        return doctorRepository.getNumberOfDoctor();
+    public int getNumberOfDoctor(String searh) {
+        return doctorRepository.getNumberOfDoctor(searh);
     }
 
 
