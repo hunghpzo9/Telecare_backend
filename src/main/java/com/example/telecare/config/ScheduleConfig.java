@@ -3,6 +3,9 @@ package com.example.telecare.config;
 import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.model.CancelAppointment;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
+import com.example.telecare.service.impl.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -16,6 +19,7 @@ import java.util.List;
 public class ScheduleConfig {
     @Autowired
     AppointmentServiceImpl appointmentService;
+    private static final Logger logger = LoggerFactory.getLogger(ScheduleConfig.class);
 
     @Scheduled(fixedRate = 1000 * 60)
     public void scheduleTaskWithFixedRate() {
@@ -30,9 +34,10 @@ public class ScheduleConfig {
                 cancelAppointment.setDescription("Hệ thống tự động huỷ");
 
                 appointmentService.cancelAppointment(cancelAppointment, appointmentDTO.getDoctorId());
+                logger.info("Cancel appointment id: {}", appointmentDTO.getId());
             }
         }
 
-        System.out.println(appointmentList.size());
+
     }
 }
