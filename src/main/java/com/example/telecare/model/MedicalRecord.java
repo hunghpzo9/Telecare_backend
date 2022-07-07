@@ -77,6 +77,10 @@ public class MedicalRecord {
     @Basic
     @Column(name = "second_amount")
     private String secondAmount;
+    @Basic
+    @Column(name = "is_edited")
+    private Byte isEdited;
+
 
 
     @Override
@@ -100,4 +104,6 @@ public class MedicalRecord {
         result = 31 * result + appointmentId;
         return result;
     }
+
+
 }
