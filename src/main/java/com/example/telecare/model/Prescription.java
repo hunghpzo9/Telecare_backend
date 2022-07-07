@@ -2,6 +2,8 @@ package com.example.telecare.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -30,10 +32,12 @@ public class Prescription {
     @Column(name = "guardian")
     private String guardian;
     @Basic
+    @CreationTimestamp
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Basic
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private Timestamp updatedAt;
     @Basic
     @Column(name = "prescription_medicine_id")

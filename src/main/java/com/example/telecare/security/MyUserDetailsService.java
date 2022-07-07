@@ -31,12 +31,6 @@ public class MyUserDetailsService implements UserDetailsService {
             logger.error("User not found");
             throw new UsernameNotFoundException("User not found in database");
         }
-//        if(user.getIsActive() == Constants.IS_NOT_ACTIVE){
-//            throw new ForbiddenException("Tài khoản của bạn chưa được kích hoạt");
-//        }
-//        if(user.getIsActive() == Constants.IS_BAN){
-//            throw new ForbiddenException("Tài khoản của bạn đang bị khoá");
-//        }
         else {
             String decodePass = passwordHashService.decodePasswordAlgorithm(user.getPassword());
             Collection<SimpleGrantedAuthority> authorities;

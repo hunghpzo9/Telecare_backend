@@ -3,7 +3,7 @@ package com.example.telecare.service;
 import com.example.telecare.dto.TwilioRequestDTO;
 import org.springframework.http.ResponseEntity;
 
-public interface Twilio {
+public interface TwilioService {
 
     ResponseEntity sendOtp(TwilioRequestDTO twilioRequestDTO);
 
