@@ -17,5 +17,7 @@ public interface AuthService {
 
     ResponseEntity<?> checkEmailExisted(String email);
 
+    ResponseEntity<?> forgotPassword(String phone,String newPassword);
+
     ResponseEntity<?> checkPhoneExisted(String phone);
 }

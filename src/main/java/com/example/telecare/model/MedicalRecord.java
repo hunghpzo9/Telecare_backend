@@ -32,7 +32,51 @@ public class MedicalRecord {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
+    @Basic
+    @Column(name = "medical_record_name")
+    private String medicalRecordName;
+    @Basic
+    @Column(name = "subject")
+    private String subject;
+    @Basic
+    @Column(name = "guardian_detail")
+    private String guardianDetail;
+    @Basic
+    @Column(name = "guardian_phone")
+    private String guardianPhone;
+    @Basic
+    @Column(name = "reason")
+    private String reason;
+    @Basic
+    @Column(name = "medical_process")
+    private String medicalProcess;
+    @Basic
+    @Column(name = "self_history")
+    private String selfHistory;
+    @Basic
+    @Column(name = "family_history")
+    private String familyHistory;
+    @Basic
+    @Column(name = "body_examination")
+    private String bodyExamination;
+    @Basic
+    @Column(name = "organs_examination")
+    private String organsExamination;
+    @Basic
+    @Column(name = "summary")
+    private String summary;
+    @Basic
+    @Column(name = "main_disease")
+    private String mainDisease;
+    @Basic
+    @Column(name = "include_disease")
+    private String includeDisease;
+    @Basic
+    @Column(name = "first_amount")
+    private String firstAmount;
+    @Basic
+    @Column(name = "second_amount")
+    private String secondAmount;
 
 
     @Override
@@ -56,5 +100,4 @@ public class MedicalRecord {
         result = 31 * result + appointmentId;
         return result;
     }
-    
 }
