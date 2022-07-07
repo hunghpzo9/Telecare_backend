@@ -35,7 +35,12 @@ public class Prescription {
     @Basic
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-
+    @Basic
+    @Column(name = "prescription_medicine_id")
+    private String prescriptionMedicineId;
+    @Basic
+    @Column(name = "url")
+    private String url;
 
 
     @Override
@@ -67,19 +72,4 @@ public class Prescription {
         return result;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
