@@ -97,5 +97,10 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
            ,nativeQuery = true)
     int getNumberOfDoctor(String search);
 
+    @Query(value = "SELECT d.* FROM telecare.doctor d left outer join user u on u.id = d.doctor_id \n" +
+            "where expire_date_certificate < NOW() and u.is_active != 2;"
+            ,nativeQuery = true)
+    List<Doctor> getAllExpireDoctor(String time);
+
 
 }

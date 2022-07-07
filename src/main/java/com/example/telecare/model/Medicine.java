@@ -31,62 +31,10 @@ public class Medicine {
     @Basic
     @Column(name = "registration_number")
     private String registrationNumber;
+    @Basic
+    @Column(name = "status")
+    private Byte status;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNumberOfReceipts() {
-        return numberOfReceipts;
-    }
-
-    public void setNumberOfReceipts(String numberOfReceipts) {
-        this.numberOfReceipts = numberOfReceipts;
-    }
-
-    public Integer getYearOfReceipts() {
-        return yearOfReceipts;
-    }
-
-    public void setYearOfReceipts(Integer yearOfReceipts) {
-        this.yearOfReceipts = yearOfReceipts;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getAdvertisingType() {
-        return advertisingType;
-    }
-
-    public void setAdvertisingType(String advertisingType) {
-        this.advertisingType = advertisingType;
-    }
-
-    public String getRegistrationNumber() {
-        return registrationNumber;
-    }
-
-    public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber;
-    }
 
 
     @Override
@@ -122,4 +70,6 @@ public class Medicine {
         result = 31 * result + (registrationNumber != null ? registrationNumber.hashCode() : 0);
         return result;
     }
+
+
 }

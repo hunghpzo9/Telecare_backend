@@ -10,7 +10,7 @@ import java.util.List;
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
 @RequestMapping("/api/v1/medicalRecord")
-public class MedicalRecordServiceController {
+public class MedicalRecordController {
     @Autowired
     MedicalRecordServiceImpl medicalRecordService;
 

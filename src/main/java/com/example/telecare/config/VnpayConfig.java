@@ -12,6 +12,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+
 @AllArgsConstructor
 public class VnpayConfig {
 
@@ -25,8 +26,8 @@ public class VnpayConfig {
     public static final String vnp_Command  = "pay";
     public static final String vnp_OrderInfo = "offer";
     public static final String orderType  = "270001";
+    public static final String vnp_CurrCode  = "VND";
     public static final String vnp_BankCode = "NCB";
-    public static final String vnp_TxnRef = "2.1.0";
 
     public static String md5(String message) {
         String digest = null;

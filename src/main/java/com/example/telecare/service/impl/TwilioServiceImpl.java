@@ -6,7 +6,7 @@ import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.dto.TwilioResponseDTO;
 import com.example.telecare.enums.OtpStatus;
 import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.service.Twilio;
+import com.example.telecare.service.TwilioService;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Random;
 
 @Service
-public class TwilioImpl implements Twilio {
+public class TwilioServiceImpl implements TwilioService {
     @Autowired
     TwilioConfig twilioConfig;
     Map<String, String> otpMap = new HashMap<>();

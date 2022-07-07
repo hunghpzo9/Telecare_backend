@@ -34,10 +34,8 @@ public class Prescription {
     @Basic
     @CreationTimestamp
     @Column(name = "created_at")
-    @CreationTimestamp
     private Timestamp createdAt;
     @Basic
-    @UpdateTimestamp
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Timestamp updatedAt;

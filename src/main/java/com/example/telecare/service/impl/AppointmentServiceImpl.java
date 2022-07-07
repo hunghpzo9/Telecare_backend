@@ -339,10 +339,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment createNewAppointment(Appointment appointment, String description, String time) {
-        int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
-        if (countPending >= 3) {
-            throw new BadRequestException("Bạn đã tạo quá số lần quy định (3 lần). Hãy thanh toán để tiếp tục sử dụng");
-        }
+
 
         DoctorDTOInf doctor = doctorService.findDoctorById(appointment.getDoctorId());
         if (doctor.getIsActive() != Constants.IS_ACTIVE) {
@@ -383,6 +380,16 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDetails.setAppointment(newAppointment);
         appointmentRepository.save(newAppointment);
         appointmentDetailRepository.save(appointmentDetails);
+
+
+        int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
+//        if (countPending >= 3) {
+//            User user = userRepository.findById(appointment.getPatientId()) .orElseThrow(()
+//                    -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+//            user.setIsActive((byte) Constants.IS_BAN);
+//            user.setReason("Chưa thanh toán");
+//            userRepository.save(user);
+//        }
         return newAppointment;
 
     }
@@ -420,14 +427,19 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
+        if(appointmentRepository.countCancelAppointmentInOneWeek(userId) >=3){
+            User user = userRepository.findById(userId) .orElseThrow(()
+                    -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+            user.setIsActive((byte) Constants.IS_BAN);
+            user.setReason("Huỷ quá 3 lần trong 1 tuần");
+            userRepository.save(user);
+        }
     }
 
     @Override
     public void confirmAppointment(AppointmentDetails appointmentDetails, int id) {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
-
         appointmentDs.setStatusId(appointmentDetails.getStatusId());
-
         appointmentDetailRepository.save(appointmentDs);
 
     }
