@@ -38,7 +38,7 @@ public class Appointment {
     private Date createdAt;
     @Basic
     @Column(name = "updated_at")
-    @UpdateTimestamp
+        @UpdateTimestamp
     private Date updatedAt;
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "appointment")

@@ -104,6 +104,4 @@ public class MedicalRecord {
         result = 31 * result + appointmentId;
         return result;
     }
-
-
 }
