@@ -49,7 +49,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             "            left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
             "            where u.full_name like %?2% or d.job_place like %?2% or s.name like %?2% or u.phone like %?2%\n" +
             "            group by u.id \n" +
-            "            limit ?1,5\n",
+            "            limit ?1,10\n",
             nativeQuery = true)
     List<DoctorDTOInf> getAllDoctor(int index,String search);
 
