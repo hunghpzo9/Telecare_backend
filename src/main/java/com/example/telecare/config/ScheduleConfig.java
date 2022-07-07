@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 
-@Configuration
+//@Configuration
 @EnableScheduling
 public class ScheduleConfig {
     @Autowired
