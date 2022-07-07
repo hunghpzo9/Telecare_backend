@@ -17,9 +17,8 @@ import com.example.telecare.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -176,7 +175,12 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTOInf> listAllDoctor(String search, int page) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search, page);
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = formatter.format(cld.getTime());
+        System.out.println(currentDate);
+
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search, page,currentDate);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
             DoctorDTOInf finalDoctorDTO = doctorDTOInf;
@@ -188,7 +192,12 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page) {
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search, specialtyId, page);
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = formatter.format(cld.getTime());
+
+
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search, specialtyId, page,currentDate);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
             DoctorDTOInf finalDoctorDTO = doctorDTOInf;
