@@ -15,7 +15,7 @@ public class PrescriptionController {
     @Autowired
     PrescriptionServiceImpl prescriptionService;
 
-    @GetMapping(value = "")
+    @GetMapping(value = "getAll")
     public List<PrescriptionDTOInf> findPrescriptionByPatientId(@RequestParam int patientId, @RequestParam int page) {
         return prescriptionService.listAllPrescriptionByPatientId(patientId, page);
     }

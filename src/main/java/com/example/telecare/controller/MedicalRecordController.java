@@ -14,7 +14,7 @@ public class MedicalRecordController {
     @Autowired
     MedicalRecordServiceImpl medicalRecordService;
 
-    @GetMapping(value = "")
+    @GetMapping(value = "/getAll")
     List<MedicalRecordDTOInf> medicalRecordDTOInfList (@RequestParam int patientId, @RequestParam int page){
         return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
     }

@@ -12,24 +12,24 @@ import java.util.List;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/medicine")
 public class MedicineController {
     @Autowired
     MedicineServiceImpl medicineService;
-    @GetMapping("/medicines")
-    public ResponseEntity<List<Medicine>> getAllVaccine(@RequestParam int index) {
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAllMedicine(@RequestParam int index) {
         List<Medicine> medicines = medicineService.getAllMedicine(index);
         if (medicines.isEmpty()) {
-            return new ResponseEntity<List<Medicine>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Medicine>>(medicines, HttpStatus.OK);
+        return new ResponseEntity(medicines,HttpStatus.OK);
 
     }
     @GetMapping("/numberOfMedicine")
-    public ResponseEntity<Integer> getNumberOfMedicine() {
-        int medicines = medicineService.getNumberOfMedicine();
+    public ResponseEntity<?> getNumberOfMedicine() {
+        int numberOfMedicine = medicineService.getNumberOfMedicine();
 
-        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
+        return new ResponseEntity(numberOfMedicine, HttpStatus.OK);
 
     }
 
