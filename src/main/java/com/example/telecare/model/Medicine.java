@@ -36,6 +36,7 @@ public class Medicine {
     private Byte status;
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,11 +71,5 @@ public class Medicine {
         return result;
     }
 
-    public Byte getStatus() {
-        return status;
-    }
 
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
 }

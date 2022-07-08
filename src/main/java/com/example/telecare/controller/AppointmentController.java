@@ -85,7 +85,6 @@ public class AppointmentController {
 
 
     @Cacheable(value = "allCancel")
-
     @GetMapping(value = "/getAllCancelReason")
     public List<CancelDTOInf> getAllCancel() {
         return appointmentService.getListCancel();
