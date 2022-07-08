@@ -17,8 +17,8 @@ public class MedicineController {
     @Autowired
     MedicineServiceImpl medicineService;
     @GetMapping("/medicines")
-    public ResponseEntity<List<Medicine>> getAllVaccine(@RequestParam int index) {
-        List<Medicine> medicines = medicineService.getAllMedicine(index);
+    public ResponseEntity<List<Medicine>> getAllVaccine(@RequestParam int index,@RequestParam String searchText) {
+        List<Medicine> medicines = medicineService.getAllMedicine(index,searchText);
         if (medicines.isEmpty()) {
             return new ResponseEntity<List<Medicine>>(HttpStatus.NO_CONTENT);
         }
@@ -26,8 +26,8 @@ public class MedicineController {
 
     }
     @GetMapping("/numberOfMedicine")
-    public ResponseEntity<Integer> getNumberOfMedicine() {
-        int medicines = medicineService.getNumberOfMedicine();
+    public ResponseEntity<Integer> getNumberOfMedicine(@RequestParam String searchText) {
+        int medicines = medicineService.getNumberOfMedicine(searchText);
 
         return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
 
