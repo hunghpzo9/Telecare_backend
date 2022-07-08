@@ -24,6 +24,8 @@ public interface AppointmentService {
 
     Integer countCancelAppointmentInOneWeek(int userId);
 
+    Integer countAppointmentPendingPaymentByPatientId(int userId);
+
     void cancelAppointment(CancelAppointment cancelAppointment,int userId);
 
     void confirmAppointment(AppointmentDetails appointmentDetails, int id);

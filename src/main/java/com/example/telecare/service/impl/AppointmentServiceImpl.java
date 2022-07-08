@@ -345,7 +345,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (doctor.getIsActive() != Constants.IS_ACTIVE) {
             throw new BadRequestException("Bác sĩ hiện đang được xem xét, không thể đặt được");
         }
-
+        int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
+        if (countPending >= 3) {
+            throw new BadRequestException("Bạn hãy hoàn thành thanh toán các lần trước để tiếp tục sử dụng. ");
+        }
         int countExistingAppointment = appointmentRepository
                 .countExistingAppointment(appointment.getDoctorId(), time, appointment.getScheduleId());
         if (countExistingAppointment >= 1) {
@@ -381,15 +384,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(newAppointment);
         appointmentDetailRepository.save(appointmentDetails);
 
+        // if user not paid more than 3 times then ban
 
-        int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
-//        if (countPending >= 3) {
-//            User user = userRepository.findById(appointment.getPatientId()) .orElseThrow(()
-//                    -> new ResourceNotFoundException("Không tìm thấy người dùng"));
-//            user.setIsActive((byte) Constants.IS_BAN);
-//            user.setReason("Chưa thanh toán");
-//            userRepository.save(user);
-//        }
         return newAppointment;
 
     }
@@ -407,6 +403,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Integer countCancelAppointmentInOneWeek(int userId) {
         return appointmentRepository.countCancelAppointmentInOneWeek(userId);
+    }
+
+    @Override
+    public Integer countAppointmentPendingPaymentByPatientId(int userId) {
+        return appointmentRepository.countAppointmentPendingPaymentByPatientId(userId);
     }
 
     @Override
