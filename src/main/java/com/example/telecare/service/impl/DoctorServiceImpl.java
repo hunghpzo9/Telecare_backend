@@ -8,9 +8,11 @@ import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Doctor;
 
 
+import com.example.telecare.model.Patient;
 import com.example.telecare.model.Specialty;
 import com.example.telecare.model.User;
 import com.example.telecare.repository.DoctorRepository;
+import com.example.telecare.repository.PatientRepository;
 import com.example.telecare.repository.SpecialtyRepository;
 import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.DoctorService;
@@ -24,6 +26,8 @@ import java.util.*;
 public class DoctorServiceImpl implements DoctorService {
     @Autowired
     DoctorRepository doctorRepository;
+    @Autowired
+    PatientRepository patientRepository;
     @Autowired
     SpecialtyServiceImp specialtyServiceImp;
     @Autowired
@@ -205,6 +209,43 @@ public class DoctorServiceImpl implements DoctorService {
             returnDoctorPage.add(doctorDTOInf);
         }
         return returnDoctorPage;
+    }
+    @Override
+    public List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page, int patientId) {
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllFavoriteDoctorById(search,page,patientId);
+        List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
+        for (DoctorDTOInf doctorDTOInf : doctorPage) {
+            DoctorDTOInf finalDoctorDTO = doctorDTOInf;
+            doctorDTOInf = setReturnDoctor(finalDoctorDTO);
+            returnDoctorPage.add(doctorDTOInf);
+        }
+        return returnDoctorPage;
+    }
+
+    @Override
+    public Boolean isFavoriteDoctor(int patientId, int doctorId) {
+        if(doctorRepository.countFavoriteDoctor(patientId,doctorId) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void removeFavoriteDoctor(int patientId, int doctorId) {
+        Patient patient = patientRepository.findById(patientId).orElseThrow();
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
+        patient.getFavoriteDoctor().remove(doctor);
+        patientRepository.save(patient);
+    }
+
+    @Override
+    public void addFavoriteDoctor(int patientId, int doctorId) {
+        Patient patient = patientRepository.findById(patientId).orElseThrow();
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
+        Set<Doctor> favoriteDoctor = patient.getFavoriteDoctor();
+        favoriteDoctor.add(doctor);
+        patient.setFavoriteDoctor(favoriteDoctor);
+        patientRepository.save(patient);
     }
 
     @Override

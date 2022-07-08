@@ -42,6 +42,28 @@ public class DoctorController {
         return doctorService.listAllDoctorBySpecialty("%" + search + "%", specialtyId, pageNo);
     }
 
+    @DeleteMapping(value = "/removeFavoriteDoctor")
+    public ResponseEntity<?> removeFavoriteDoctor(@RequestParam("patientId") int patientId, @RequestParam("doctorId") int doctorId) {
+        doctorService.removeFavoriteDoctor(patientId,doctorId);
+        return ResponseEntity.ok(new ResponseOkMessage("Remove successfully",new Date()));
+    }
+    @PostMapping(value = "/addFavoriteDoctor")
+    public ResponseEntity<?> addFavoriteDoctor(@RequestParam("patientId") int patientId, @RequestParam("doctorId") int doctorId) {
+        doctorService.addFavoriteDoctor(patientId,doctorId);
+        return ResponseEntity.ok(new ResponseOkMessage("Add successfully",new Date()));
+    }
+
+    @GetMapping(value = "/searchFavorite/search={search}/pageNo={pageNo}")
+    public List<DoctorDTOInf> findAllFavoriteDoctor(@PathVariable String search, @RequestParam("patientId") int patientId, @PathVariable int pageNo) {
+        return doctorService.listAllFavoriteDoctorById("%" + search + "%", pageNo,patientId);
+    }
+
+    @GetMapping(value = "/isFavorite")
+    public Boolean isFavoriteDoctor(@RequestParam("patientId") int patientId,
+                                    @RequestParam("doctorId") int doctorId) {
+        return doctorService.isFavoriteDoctor(patientId,doctorId);
+    }
+
     @PutMapping(value = "/doctorId={id}/specialtyId={sId}")
     public ResponseEntity<?> addDoctorSpecialty(@PathVariable("id") int docId, @PathVariable("sId") int specialtyId) {
         doctorService.addDoctorSpecialty(docId ,specialtyId);
