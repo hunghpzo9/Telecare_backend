@@ -42,6 +42,7 @@ public class DoctorController {
         return doctorService.listAllDoctorBySpecialty("%" + search + "%", specialtyId, pageNo);
     }
 
+
     @PutMapping(value = "/doctorId={id}/specialtyId={sId}")
     public ResponseEntity<?> addDoctorSpecialty(@PathVariable("id") int docId, @PathVariable("sId") int specialtyId) {
         doctorService.addDoctorSpecialty(docId ,specialtyId);
