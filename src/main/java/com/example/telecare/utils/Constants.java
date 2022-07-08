@@ -34,4 +34,12 @@ public class Constants {
     public static final int GENDER_OTHER= 2;
 
     public static final int SYSTEM_CANCEL_STATUS= 11;
+
+    public static final int IS_NOT_CIRCULATE= 1;
+
+    public static final int IS_CIRCULATE= 0;
+
+
+
+
 }

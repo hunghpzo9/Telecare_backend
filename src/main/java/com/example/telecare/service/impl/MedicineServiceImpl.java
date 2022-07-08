@@ -14,13 +14,13 @@ public class MedicineServiceImpl implements MedicineService {
     MedicineRepository medicineRepository;
 
     @Override
-    public List<Medicine> getAllMedicine(int index) {
-        return medicineRepository.getAllMedicine(index);
+    public List<Medicine> getAllMedicine(int index,String searchText) {
+        return medicineRepository.getAllMedicine(index,searchText);
     }
 
     @Override
-    public int getNumberOfMedicine() {
-        return medicineRepository.getNumberOfMedicine();
+    public int getNumberOfMedicine(String searchText) {
+        return medicineRepository.getNumberOfMedicine(searchText);
     }
 
 }

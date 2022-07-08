@@ -52,13 +52,13 @@ public class TwilioServiceImpl implements TwilioService {
     }
 
     @Override
-    public ResponseEntity sendSmsToDoctor(TwilioRequestDTO twilioRequestDTO) {
+    public ResponseEntity sendSms(TwilioRequestDTO twilioRequestDTO,String message) {
         TwilioResponseDTO twilioResponseDTO;
         try {
             PhoneNumber to = new PhoneNumber(twilioRequestDTO.getPhoneNumber());
             PhoneNumber from = new PhoneNumber(twilioConfig.getTrialNumber());
 
-            String message ="Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi";
+
 
             Message.creator(
                             to,

@@ -7,7 +7,7 @@ public interface TwilioService {
 
     ResponseEntity sendOtp(TwilioRequestDTO twilioRequestDTO);
 
-    ResponseEntity sendSmsToDoctor(TwilioRequestDTO twilioRequestDTO);
+    ResponseEntity sendSms(TwilioRequestDTO twilioRequestDTO,String message);
 
     ResponseEntity<?> validateOtp(String userInputOtp, String phoneNumber);
 }

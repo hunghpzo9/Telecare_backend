@@ -2,6 +2,7 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.AdminDTOInf;
 import com.example.telecare.dto.DoctorDTO;
+import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.*;
@@ -20,6 +21,8 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TwilioServiceImpl twilioService;
 
     @Autowired
     AddressRepository addressRepository;
@@ -152,8 +155,16 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findById(id) .orElseThrow(()
                 -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        Byte currentStatus = user.getIsActive();
         user.setIsActive(isActive);
         userRepository.save(user);
+        if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_NOT_ACTIVE){
+            TwilioRequestDTO twilioRequestDTO = new TwilioRequestDTO();
+            String phone = "+84"+user.getPhone().substring(1);
+            logger.info(phone);
+            twilioRequestDTO.setPhoneNumber(phone);
+            //twilioService.sendSmsToDoctor(twilioRequestDTO,Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi);
+        }
     }
 
     @Override
