@@ -10,6 +10,4 @@ public interface MedicineDTO {
     String getCompany();
     String getAdvertisingType();
     String getRegistrationNumber();
-
-
 }
