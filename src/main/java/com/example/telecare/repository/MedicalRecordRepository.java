@@ -25,4 +25,8 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
             "    a.patient_id = ?1\n" +
             "LIMIT 5 OFFSET ?2", nativeQuery = true)
     List<MedicalRecordDTOInf> getMedicalRecordByPatientId(int id, int page);
+
+    @Query(value = "SELECT * FROM telecare.medical_record where created_at < DATE_ADD(?1, INTERVAL -43200 SECOND);\n"
+            , nativeQuery = true)
+    List<MedicalRecord> getOverDueMedicalRecord(String date);
 }

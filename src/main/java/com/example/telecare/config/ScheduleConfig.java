@@ -4,8 +4,10 @@ import com.example.telecare.dto.AppointmentDTOInf;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.CancelAppointment;
 import com.example.telecare.model.Doctor;
+import com.example.telecare.model.MedicalRecord;
 import com.example.telecare.model.User;
 import com.example.telecare.repository.DoctorRepository;
+import com.example.telecare.repository.MedicalRecordRepository;
 import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
@@ -35,10 +37,12 @@ public class ScheduleConfig {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    MedicalRecordRepository medicalRecordRepository;
     private static final Logger logger = LoggerFactory.getLogger(ScheduleConfig.class);
 
     @Scheduled(fixedRate = 1000 * 60)
-    public void cancelAppointmentTask() {
+    private void cancelAppointmentTask() {
         List<AppointmentDTOInf> appointmentList = appointmentService.findAppointmentOverdue();
         if (!appointmentList.isEmpty()) {
             for (AppointmentDTOInf appointmentDTO : appointmentList) {
@@ -55,8 +59,22 @@ public class ScheduleConfig {
         }
     }
 
+    @Scheduled(fixedRate = 1000 * 10)
+    private void setOverdueMedicalRecord(){
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        String date = formatter.format(cld.getTime());
+        List<MedicalRecord> medicalRecords = medicalRecordRepository.getOverDueMedicalRecord(date);
+        if (!medicalRecords.isEmpty()) {
+            for (MedicalRecord medicalRecord : medicalRecords) {
+                medicalRecord.setIsEdited((byte) 1);
+                medicalRecordRepository.save(medicalRecord);
+            }
+        }
+    }
+
     @Scheduled(fixedRate = 1000 * 60*60)
-    public void banDoctorExpireCertificate() {
+    private void banDoctorExpireCertificate() {
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String date = formatter.format(cld.getTime());

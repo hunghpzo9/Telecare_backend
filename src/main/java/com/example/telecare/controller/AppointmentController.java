@@ -66,6 +66,10 @@ public class AppointmentController {
     public Integer countCancelInOneWeek(@RequestParam("userId") int userId) {
         return appointmentService.countCancelAppointmentInOneWeek(userId);
     }
+    @GetMapping(value = "/countPendingAppointment")
+    public Integer countPendingAppointment(@RequestParam("userId") int userId) {
+        return appointmentService.countAppointmentPendingPaymentByPatientId(userId);
+    }
 
     @GetMapping(value = "")
     public List<Integer> listScheduleFindByDoctorAndTime(@RequestParam("doctorId") int doctorId,
