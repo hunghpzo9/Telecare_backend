@@ -31,7 +31,6 @@ public class TelecareApplication {
 		SpringApplication.run(TelecareApplication.class, args);
 	}
 
-
 	@Bean
 	public CorsFilter corsFilter() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
