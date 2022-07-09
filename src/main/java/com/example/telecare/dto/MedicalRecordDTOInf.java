@@ -9,6 +9,7 @@ public interface MedicalRecordDTOInf {
     Date getCreatedAt();
     String getReason();
     String getMainDisease();
+    String getUrl();
 }
 
 

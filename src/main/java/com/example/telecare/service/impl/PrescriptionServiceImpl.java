@@ -16,48 +16,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Autowired
     PrescriptionRepository prescriptionRepository;
 
-    private PrescriptionDTOInf setReturnPrescription(PrescriptionDTOInf prescriptionDTOInf) {
-
-        PrescriptionDTOInf returnDtoInf = new PrescriptionDTOInf() {
-
-            @Override
-            public Integer getId() {
-                return prescriptionDTOInf.getId();
-            }
-
-            @Override
-            public String getPrescriptionDiagnosis() {
-                return prescriptionDTOInf.getPrescriptionDiagnosis();
-            }
-
-            @Override
-            public String getDoctorName() {
-                return prescriptionDTOInf.getDoctorName();
-            }
-
-            @Override
-            public Date getCreatedAt() {
-                return prescriptionDTOInf.getCreatedAt();
-            }
-
-            @Override
-            public String getUrl() {
-                return prescriptionDTOInf.getUrl();
-            }
-
-        };
-        return returnDtoInf;
-    }
-
     @Override
     public List<PrescriptionDTOInf> listAllPrescriptionByPatientId(int id, int page) {
-        List<PrescriptionDTOInf> prescriptionList = prescriptionRepository.getAllPrescription(id, page);
-        List<PrescriptionDTOInf> returnPrescriptionList = new ArrayList<>();
-        for (PrescriptionDTOInf prescriptionDTOInf : prescriptionList) {
-            PrescriptionDTOInf finalPrescriptionList = prescriptionDTOInf;
-            prescriptionDTOInf = setReturnPrescription(finalPrescriptionList);
-            returnPrescriptionList.add(prescriptionDTOInf);
-        }
-        return returnPrescriptionList;
+        return prescriptionRepository.getAllPrescription(id, page);
     }
 }
