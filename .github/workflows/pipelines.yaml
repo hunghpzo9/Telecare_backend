@@ -16,7 +16,7 @@ env:
 jobs:
   setup-build-publish-deploy:
     name: Setup Build Publish Deploy
-    runs-on: ubuntu-latestvv
+    runs-on: ubuntu-latest
     steps:
 
       - name: Checkout Repository
