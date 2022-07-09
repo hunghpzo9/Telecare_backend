@@ -402,7 +402,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Integer countCancelAppointmentInOneWeek(int userId) {
-        return appointmentRepository.countCancelAppointmentInOneWeek(userId);
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        String date = formatter.format(cld.getTime());
+        return appointmentRepository.countCancelAppointmentInOneWeek(userId,date);
     }
 
     @Override
@@ -426,9 +429,14 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointmentDetails.setAppointment(appointment);
             appointmentDetailRepository.save(appointmentDetails);
         }
+
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
-        if(appointmentRepository.countCancelAppointmentInOneWeek(userId) >=3){
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        String date = formatter.format(cld.getTime());
+        if(appointmentRepository.countCancelAppointmentInOneWeek(userId,date) >=3){
             User user = userRepository.findById(userId) .orElseThrow(()
                     -> new ResourceNotFoundException("Không tìm thấy người dùng"));
             user.setIsActive((byte) Constants.IS_BAN);
