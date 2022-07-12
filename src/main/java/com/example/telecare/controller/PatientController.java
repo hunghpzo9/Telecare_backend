@@ -1,13 +1,18 @@
 package com.example.telecare.controller;
 
+import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.PatientDTOInf;
+import com.example.telecare.dto.PatientDTOInf2;
 import com.example.telecare.service.impl.AddressServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
@@ -30,4 +35,19 @@ public class PatientController {
         patientService.updatePatient(patientDetail,id);
         return ResponseEntity.ok(patientDetail);
     }
+    @GetMapping(value = "")
+    public PatientDTOInf2 findPatientForAdmin(@RequestParam int id) {
+        return  patientService.findPatientByIdForAdmin(id);
+    }
+    @GetMapping(value = "/getAll")
+    public ResponseEntity<List<PatientDTOInf2>> getAllDoctor(@RequestParam int index, @RequestParam String searchText) {
+        return new ResponseEntity<>(patientService.getAllPatient(index,searchText), HttpStatus.OK);
+    }
+    @GetMapping("/numberOfPatient")
+    public ResponseEntity<Integer> getNumberOfDoctor(@RequestParam String searchText) {
+        int medicines = patientService.getNumberOfPatient(searchText);
+        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
+
+    }
+
 }

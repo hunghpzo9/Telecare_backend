@@ -414,9 +414,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             endAt = endAt.substring(0, endAt.length() - 3);
 
             //notification for patient
-            notificationService.sendNotification(appointment.getPatientId(), "Bạn đã đặt lịch thành công bác sĩ " + doctor.getFullName() + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+            notificationService.sendNotification(appointment.getPatientId(), "Bạn đã đặt lịch thành công bác sĩ "
+                    + doctor.getFullName() + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
             //notification for doctor
-            notificationService.sendNotification(appointment.getDoctorId(), "Bạn đã được một bệnh nhân đặt lịch" + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+            notificationService.sendNotification(appointment.getDoctorId(), "Bạn đã được một bệnh nhân đặt lịch" +
+                    " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -450,8 +452,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void cancelAppointment(CancelAppointment cancelAppointment, int userId) {
 
 
-        AppointmentDetails appointmentDetails = appointmentDetailRepository.findById(cancelAppointment.getAppointmentId()).orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
-        Appointment appointment = appointmentRepository.findById(cancelAppointment.getAppointmentId()).orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+        AppointmentDetails appointmentDetails = appointmentDetailRepository.findById(cancelAppointment.getAppointmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+        Appointment appointment = appointmentRepository.findById(cancelAppointment.getAppointmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
 
         if (appointmentDetails != null) {
             appointmentDetails.setStatusId(AppointmentStatus.CANCEL.status);
@@ -479,6 +483,30 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
         appointmentDs.setStatusId(appointmentDetails.getStatusId());
         appointmentDetailRepository.save(appointmentDs);
+
+        //send notification
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd")
+                    .parse(appointmentDs.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã được bác sĩ xác nhận.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -486,6 +514,34 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
         appointmentDs.setStatusId(3);
         appointmentDetailRepository.save(appointmentDs);
+
+        //send notification
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDs.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+
+            //notification for doctor
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã được bác sĩ xác nhận.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

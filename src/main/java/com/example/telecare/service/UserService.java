@@ -11,7 +11,8 @@ public interface UserService {
     User registerPatient(User user);
     void registerDoctor(DoctorDTO doctorSignupDTO);
     User registerAdmin(User user);
-    void updateStatus(Byte isActive, int id, Date expireDate);
+    void updateStatus(Byte isActive, int id, Date expireDate,String reason);
+    void updateStatusForPatient(Byte isActive, int id,String reason);
     User findUserById(int id);
     AdminDTOInf findAdminById(int id);
 

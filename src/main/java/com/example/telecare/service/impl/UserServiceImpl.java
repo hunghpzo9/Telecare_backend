@@ -146,18 +146,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateStatus(Byte isActive, int id,Date expireDate) {
+    public void updateStatus(Byte isActive, int id,Date expireDate,String reason) {
 
             Doctor doctor = doctorRepository.findById(id).orElseThrow(()
                     -> new ResourceNotFoundException("Không tìm thấy bác sĩ"));
             doctor.setExpireDateCertificate(expireDate);
+
             doctorRepository.save(doctor);
 
         User user = userRepository.findById(id) .orElseThrow(()
                 -> new ResourceNotFoundException("Không tìm thấy người dùng"));
         Byte currentStatus = user.getIsActive();
         user.setIsActive(isActive);
+        if(isActive==Constants.IS_BAN){
+            user.setReason(reason);
+        }else if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN){
+            user.setReason(null);
+        }
+
         userRepository.save(user);
+
         if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_NOT_ACTIVE){
             TwilioRequestDTO twilioRequestDTO = new TwilioRequestDTO();
             String phone = "+84"+user.getPhone().substring(1);
@@ -165,6 +173,22 @@ public class UserServiceImpl implements UserService {
             twilioRequestDTO.setPhoneNumber(phone);
             //twilioService.sendSmsToDoctor(twilioRequestDTO,Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi);
         }
+
+    }
+
+    @Override
+    public void updateStatusForPatient(Byte isActive, int id, String reason) {
+        User user = userRepository.findById(id) .orElseThrow(()
+                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        Byte currentStatus = user.getIsActive();
+        user.setIsActive(isActive);
+        if(isActive==Constants.IS_BAN){
+            user.setReason(reason);
+        }else if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN){
+            user.setReason(null);
+        }
+
+        userRepository.save(user);
     }
 
     @Override

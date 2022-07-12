@@ -173,6 +173,11 @@ public class DoctorServiceImpl implements DoctorService {
                 }
                 return doctorExperiences;
             }
+
+            @Override
+            public String getReason() {
+                return doctorDTOInf.getReason();
+            }
         };
         return returnDtoInf;
     }
