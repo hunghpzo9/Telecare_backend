@@ -16,17 +16,18 @@ import java.util.*;
 @AllArgsConstructor
 public class VnpayConfig {
 
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Returnurl = "http://localhost:8080/vnpay_jsp/vnpay_return.jsp";
-    public static final String vnp_TmnCode   = "HEZES5XN";
-    public static String vnp_HashSecret = "JGAWVSUVYAQETSOFRBNLWUHDHZTUUVYU";
-    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
+    public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static final String vnp_Returnurl = "http://localhost:8080/api/v1/payment/returnPayment";
+    public static final String vnp_TmnCode = "HEZES5XN";
+    public static final String vnp_HashSecret = "JGAWVSUVYAQETSOFRBNLWUHDHZTUUVYU";
+    public static final String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
+    public static final String vnp_IpnUrl = "https://sandbox.vnpayment.vn/tryitnow/Home/VnPayIPN";
 
     public static final String vnp_Version = "2.1.0";
-    public static final String vnp_Command  = "pay";
+    public static final String vnp_Command = "pay";
     public static final String vnp_OrderInfo = "offer";
-    public static final String orderType  = "270001";
-    public static final String vnp_CurrCode  = "VND";
+    public static final String orderType = "270001";
+    public static final String vnp_CurrCode = "VND";
     public static final String vnp_BankCode = "NCB";
 
     public static String md5(String message) {

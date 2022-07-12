@@ -16,7 +16,7 @@ public interface AppointmentService {
 
     AppointmentDTOInf findAppointmentById(int id);
 
-    Appointment createNewAppointment(Appointment appointment, String description, String time);
+    void createNewAppointment(Appointment appointment, String description, String time);
 
     List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
 
@@ -29,6 +29,8 @@ public interface AppointmentService {
     void cancelAppointment(CancelAppointment cancelAppointment,int userId);
 
     void confirmAppointment(AppointmentDetails appointmentDetails, int id);
+
+    void endAppointment(int id);
 
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
 
