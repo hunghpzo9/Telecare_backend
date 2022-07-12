@@ -11,7 +11,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     @Query(value = "SELECT u.id ,u.phone,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.image_url as imageUrl,u.email as email\n" +
             "            ,d.position as position ,d.job_place as jobPlace,s.name as specialty,d.signature as signature,u.is_active as isActive" +
             "           ,d.certificate as certificate,d.identification_front as identificationFront,d.identification_back as identificationBack" +
-            "           ,d.expire_date_certificate as expireDateCertificate FROM telecare.user u\n" +
+            "           ,d.expire_date_certificate as expireDateCertificate, u.reason as reason FROM telecare.user u\n" +
             "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
             "            left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
             "            left outer join telecare.specialty s on ds.specialty_id = s.id \n" +

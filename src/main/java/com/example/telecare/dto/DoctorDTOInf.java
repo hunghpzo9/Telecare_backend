@@ -29,4 +29,5 @@ public interface DoctorDTOInf {
     List<Specialty> getListSpecialty();
     List<DoctorAchievementDTO> getListAchievement();
     List<DoctorExperienceDTO> getListExperience();
+    String getReason();
 }

@@ -22,12 +22,20 @@ public class UserController {
     UserServiceImpl userService;
 
     @PutMapping(value = "/updateStatus")
-    public ResponseEntity<?> updateStatus(@RequestParam Byte isActive, @RequestParam int id,@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam Date expireDate) throws ParseException {
+    public ResponseEntity<?> updateStatus(@RequestParam Byte isActive, @RequestParam int id,@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam Date expireDate,@RequestParam String reason) throws ParseException {
 
-        userService.updateStatus(isActive,id,expireDate);
+        userService.updateStatus(isActive,id,expireDate,reason);
         return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
 
     }
+    @PutMapping(value = "/updateStatusForPatient")
+    public ResponseEntity<?> updateStatusForPatient(@RequestParam Byte isActive, @RequestParam int id,@RequestParam String reason) throws ParseException {
+
+        userService.updateStatusForPatient(isActive,id,reason);
+        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
+
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<AdminDTOInf> findUserById(@PathVariable("id") int id) {
         AdminDTOInf admin =  userService.findAdminById(id);
