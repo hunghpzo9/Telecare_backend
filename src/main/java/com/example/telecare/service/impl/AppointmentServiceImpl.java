@@ -466,6 +466,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
 
+
+
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
         String date = formatter.format(cld.getTime());
@@ -475,6 +477,30 @@ public class AppointmentServiceImpl implements AppointmentService {
             user.setIsActive((byte) Constants.IS_BAN);
             user.setReason("Huỷ quá 3 lần trong 1 tuần");
             userRepository.save(user);
+        }
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDetails.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+
+            //notification for doctor
+            notificationService.sendNotification(appointment.getDoctorId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
@@ -535,9 +561,9 @@ public class AppointmentServiceImpl implements AppointmentService {
                             + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
 
             //notification for doctor
-            notificationService.sendNotification(appointment.getPatientId(),
+            notificationService.sendNotification(appointment.getDoctorId(),
                     "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã được bác sĩ xác nhận.");
+                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
 
         } catch (ParseException e) {
             e.printStackTrace();
