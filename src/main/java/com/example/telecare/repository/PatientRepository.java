@@ -13,7 +13,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
     @Query(value = "SELECT u.id,u.full_name as fullName,u.date_of_birth as dob ,u.email as email" +
             ",u.phone as phone,u.gender as gender,u.image_url as imageUrl,\n" +
             "a.street_name as streetName,\n" +
-            "e.id as ethnicId,\n" +
+            "e.id as ethnicId, u.is_active as isActive ,u.reason," +
             "p.blood_type as bloodType,p.height as height,p.weight as weight,p.job as job,p.job_place as jobPlace,\n" +
             "a.id as addressId ,a.city_id as cityId,a.districy_id as districtId,a.ward_id as wardId\n" +
             "FROM user u left outer join patient p ON u.id = p.patient_id \n" +

@@ -1,9 +1,6 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.CancelDTOInf;
-import com.example.telecare.dto.PatientDTO;
-import com.example.telecare.dto.ReportDTOInf;
+import com.example.telecare.dto.*;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.AppointmentDetails;
 import com.example.telecare.model.CancelAppointment;
@@ -17,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
@@ -51,8 +49,9 @@ public class AppointmentController {
     public ResponseEntity<?> bookAppointment(@RequestBody Appointment appointment
             , @RequestParam("description") String description
             , @RequestParam("time") String time) {
-        Appointment newAppointment = appointmentService.createNewAppointment(appointment, description, time);
-        return ResponseEntity.ok(newAppointment);
+
+        appointmentService.createNewAppointment(appointment, description, time);
+        return ResponseEntity.ok(appointment);
     }
 
     @PostMapping(value = "/cancel")
@@ -65,6 +64,11 @@ public class AppointmentController {
     @GetMapping(value = "/countCancelInOneWeek")
     public Integer countCancelInOneWeek(@RequestParam("userId") int userId) {
         return appointmentService.countCancelAppointmentInOneWeek(userId);
+    }
+
+    @GetMapping(value = "/countPendingAppointment")
+    public Integer countPendingAppointment(@RequestParam("userId") int userId) {
+        return appointmentService.countAppointmentPendingPaymentByPatientId(userId);
     }
 
     @GetMapping(value = "")
@@ -80,7 +84,7 @@ public class AppointmentController {
                                                             @RequestParam("date") String date,
                                                             @RequestParam("time") String time
     ) {
-        return appointmentService.getCurrentAppointmentAvailable(patientPhone, doctorPhone,date,time);
+        return appointmentService.getCurrentAppointmentAvailable(patientPhone, doctorPhone, date, time);
     }
 
 
@@ -91,9 +95,15 @@ public class AppointmentController {
     }
 
     @PutMapping(value = "/confirm")
-    public ResponseEntity<AppointmentDetails> confirmAppointment(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) {
+    public ResponseEntity<?> confirmAppointment(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) {
         appointmentService.confirmAppointment(appointmentDetails, id);
         return ResponseEntity.ok(appointmentDetails);
+    }
+
+    @PutMapping(value = "/end")
+    public ResponseEntity<?> endAppointment(@RequestParam("id") int id) {
+        appointmentService.endAppointment(id);
+        return ResponseEntity.ok(new ResponseOkMessage("Kết thúc phiên khám thành công", new Date()));
     }
 
 }

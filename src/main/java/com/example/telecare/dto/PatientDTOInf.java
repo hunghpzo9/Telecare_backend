@@ -40,4 +40,8 @@ public interface PatientDTOInf {
     String getDistrictId();
 
     String getWardId();
+
+    Byte getIsActive();
+
+    String getReason();
 }

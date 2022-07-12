@@ -13,7 +13,7 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
             "    md.medical_record_name AS medicalRecordName,\n" +
             "    u.full_name AS doctorName,\n" +
             "    md.created_at AS createdAt,\n" +
-            "    md.reason,\n" +
+            "    md.reason, md.url," +
             "    md.main_disease AS mainDisease\n" +
             "FROM\n" +
             "    telecare.medical_record md\n" +
@@ -25,4 +25,8 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
             "    a.patient_id = ?1\n" +
             "LIMIT 5 OFFSET ?2", nativeQuery = true)
     List<MedicalRecordDTOInf> getMedicalRecordByPatientId(int id, int page);
+
+    @Query(value = "SELECT * FROM telecare.medical_record where created_at < DATE_ADD(?1, INTERVAL -43200 SECOND);\n"
+            , nativeQuery = true)
+    List<MedicalRecord> getOverDueMedicalRecord(String date);
 }

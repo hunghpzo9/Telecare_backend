@@ -1,5 +1,6 @@
 package com.example.telecare;
 
+import com.example.telecare.config.FirebaseConfig;
 import com.example.telecare.config.TwilioConfig;
 import com.twilio.Twilio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,32 +21,22 @@ import java.util.Arrays;
 public class TelecareApplication {
 	@Autowired
 	private TwilioConfig twilioConfig;
+	@Autowired
+	private FirebaseConfig firebaseConfig;
 
 	@PostConstruct
-	public void initTwilio(){
+	private void initTwilio(){
+		System.out.println("Init twilio");
 		Twilio.init(twilioConfig.getAccountSid(),twilioConfig.getAuthToken());
 	}
-
+	@PostConstruct
+	private void initFirebase(){
+		System.out.println("Init firebase");
+		firebaseConfig.initialization();
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(TelecareApplication.class, args);
-	}
-
-
-	@Bean
-	public CorsFilter corsFilter() {
-		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.setAllowCredentials(true);
-		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-		corsConfiguration.setAllowedHeaders(Arrays.asList("Origin", "Access-Control-Allow-Origin", "Content-Type",
-				"Accept", "Authorization", "Origin, Accept", "X-Requested-With",
-				"Access-Control-Request-Method", "Access-Control-Request-Headers"));
-		corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
-				"Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-		return new CorsFilter(urlBasedCorsConfigurationSource);
 	}
 
 }
