@@ -27,7 +27,6 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
@@ -44,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         corsConfiguration.addAllowedOriginPattern("*");
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
         corsConfiguration.setAllowCredentials(false);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
@@ -64,13 +63,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/v1/patient/**").hasAnyAuthority(Constants.ROLE_PATIENT)
                 .antMatchers("/api/v1/ethnic/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
-                .antMatchers(HttpMethod.GET,"/api/v1/achievement").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
-                .antMatchers(HttpMethod.GET,"/api/v1/experience").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
-                .antMatchers(HttpMethod.GET,"/api/v1/doctorSpecialty").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
-                .antMatchers(HttpMethod.GET,"/api/v1/specialty").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/v1/prescription/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_PATIENT)
-                .antMatchers(HttpMethod.GET,"/api/v1/medicalRecord/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_PATIENT)
-                .antMatchers(HttpMethod.GET,"/api/v1/agora/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/achievement").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers(HttpMethod.GET, "/api/v1/experience").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers(HttpMethod.GET, "/api/v1/doctorSpecialty").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers(HttpMethod.GET, "/api/v1/specialty").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/prescription/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_PATIENT)
+                .antMatchers(HttpMethod.GET, "/api/v1/medicalRecord/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_PATIENT)
+                .antMatchers(HttpMethod.GET, "/api/v1/agora/**").permitAll()
                 .antMatchers("/api/v1/specialty/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/relative/**").hasAnyAuthority(Constants.ROLE_PATIENT, Constants.ROLE_ADMIN)
@@ -78,6 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)
+
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -2,6 +2,7 @@ package com.example.telecare.controller;
 
 import com.example.telecare.config.VnpayConfig;
 import com.example.telecare.dto.PaymentDTO;
+import com.google.gson.JsonObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +17,143 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/v1/payment")
 public class PaymentController {
+
+
+    @GetMapping(value = "/returnIpn")
+    public void returnIpn(
+            @RequestParam(value = "vnp_TmnCode", required = false) String vnp_TmnCode,
+            @RequestParam(value = "vnp_Amount", required = false) String vnp_Amount,
+            @RequestParam(value = "vnp_BankCode", required = false) String vnp_BankCode,
+            @RequestParam(value = "vnp_BankTranNo", required = false) String vnp_BankTranNo,
+            @RequestParam(value = "vnp_CardType", required = false) String vnp_CardType,
+            @RequestParam(value = "vnp_PayDate", required = false) String vnp_PayDate,
+            @RequestParam(value = "vnp_OrderInfo", required = false) String vnp_OrderInfo,
+            @RequestParam(value = "vnp_TransactionNo", required = false) String vnp_TransactionNo,
+            @RequestParam(value = "vnp_ResponseCode", required = false) String vnp_ResponseCode,
+            @RequestParam(value = "vnp_TransactionStatus", required = false) String vnp_TransactionStatus,
+            @RequestParam(value = "vnp_TxnRef", required = false) String vnp_TxnRef,
+            @RequestParam(value = "vnp_SecureHashType", required = false) String vnp_SecureHashType,
+            @RequestParam(value = "vnp_SecureHash", required = false) String vnp_SecureHash,
+            HttpServletRequest request) {
+        try {
+
+	/*  IPN URL: Record payment results from VNPAY
+	Implementation steps:
+	Check checksum
+	Find transactions (vnp_TxnRef) in the database (checkOrderId)
+	Check the payment status of transactions before updating (checkOrderStatus)
+	Check the amount (vnp_Amount) of transactions before updating (checkAmount)
+	Update results to Database
+	Return recorded results to VNPAY
+	*/
+
+            // ex:  	PaymnentStatus = 0; pending
+            //              PaymnentStatus = 1; success
+            //              PaymnentStatus = 2; Faile
+
+            //Begin process return from VNPAY
+            Map fields = new HashMap();
+            for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
+                String fieldName = (String) params.nextElement();
+                String fieldValue = request.getParameter(fieldName);
+                if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                    fields.put(fieldName, fieldValue);
+                }
+            }
+
+            if (fields.containsKey("vnp_SecureHashType")) {
+                fields.remove("vnp_SecureHashType");
+            }
+            if (fields.containsKey("vnp_SecureHash")) {
+                fields.remove("vnp_SecureHash");
+            }
+
+            // Check checksum
+            String signValue = VnpayConfig.hashAllFields(fields);
+            if (signValue.equals(vnp_SecureHash)) {
+
+                boolean checkOrderId = true; // vnp_TxnRef exists in your database
+                boolean checkAmount = true; // vnp_Amount is valid (Check vnp_Amount VNPAY returns compared to the amount of the code (vnp_TxnRef) in the Your database).
+                boolean checkOrderStatus = true; // PaymnentStatus = 0 (pending)
+
+
+                if (checkOrderId) {
+                    if (checkAmount) {
+                        if (checkOrderStatus) {
+                            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+
+                                //Here Code update PaymnentStatus = 1 into your Database
+                            } else {
+
+                                // Here Code update PaymnentStatus = 2 into your Database
+                            }
+                            System.out.println("{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}");
+                        } else {
+
+                            System.out.println("{\"RspCode\":\"02\",\"Message\":\"Order already confirmed\"}");
+                        }
+                    } else {
+                        System.out.println("{\"RspCode\":\"04\",\"Message\":\"Invalid Amount\"}");
+                    }
+                } else {
+                    System.out.println("{\"RspCode\":\"01\",\"Message\":\"Order not Found\"}");
+                }
+            } else {
+                System.out.println("{\"RspCode\":\"97\",\"Message\":\"Invalid Checksum\"}");
+            }
+        } catch (Exception e) {
+            System.out.println("{\"RspCode\":\"99\",\"Message\":\"Unknow error\"}");
+        }
+    }
+
+    @GetMapping(value = "/returnPayment")
+    public void returnPayment(
+            @RequestParam(value = "vnp_TmnCode", required = false) String vnp_TmnCode,
+            @RequestParam(value = "vnp_Amount", required = false) String vnp_Amount,
+            @RequestParam(value = "vnp_BankCode", required = false) String vnp_BankCode,
+            @RequestParam(value = "vnp_BankTranNo", required = false) String vnp_BankTranNo,
+            @RequestParam(value = "vnp_CardType", required = false) String vnp_CardType,
+            @RequestParam(value = "vnp_PayDate", required = false) String vnp_PayDate,
+            @RequestParam(value = "vnp_OrderInfo", required = false) String vnp_OrderInfo,
+            @RequestParam(value = "vnp_TransactionNo", required = false) String vnp_TransactionNo,
+            @RequestParam(value = "vnp_ResponseCode", required = false) String vnp_ResponseCode,
+            @RequestParam(value = "vnp_TransactionStatus", required = false) String vnp_TransactionStatus,
+            @RequestParam(value = "vnp_TxnRef", required = false) String vnp_TxnRef,
+            @RequestParam(value = "vnp_SecureHashType", required = false) String vnp_SecureHashType,
+            @RequestParam(value = "vnp_SecureHash", required = false) String vnp_SecureHash,
+            HttpServletRequest request) {
+
+        Map fields = new HashMap();
+        for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
+            String fieldName = (String) params.nextElement();
+            System.out.println(fieldName);
+            String fieldValue = request.getParameter(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                fields.put(fieldName, fieldValue);
+            }
+        }
+
+        if (fields.containsKey("vnp_SecureHashType")) {
+            fields.remove("vnp_SecureHashType");
+        }
+        if (fields.containsKey("vnp_SecureHash")) {
+            fields.remove("vnp_SecureHash");
+        }
+
+
+
+        if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+            System.out.println("GD Thanh cong");
+        } else {
+            System.out.println("GD Khong thanh cong");
+        }
+
+
+    }
+
     @PostMapping(value = "/createPayment")
-    public ResponseEntity<?> addAchievement(@RequestBody PaymentDTO paymentDTO,
-                                            HttpServletRequest req) throws UnsupportedEncodingException {
+    public ResponseEntity<?> createPayment(@RequestBody PaymentDTO paymentDTO,
+                                           HttpServletRequest req) throws UnsupportedEncodingException {
 
         String vnp_Version = VnpayConfig.vnp_Version;
         String vnp_Command = VnpayConfig.vnp_Command;
@@ -58,6 +193,7 @@ public class PaymentController {
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
+        //Build data to hash and querystring
         List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();
@@ -87,9 +223,12 @@ public class PaymentController {
         String queryUrl = query.toString();
         String vnp_SecureHash = VnpayConfig.hmacSHA512(VnpayConfig.vnp_HashSecret, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+
         String paymentUrl = VnpayConfig.vnp_PayUrl + "?" + queryUrl;
-
-        return ResponseEntity.ok(paymentUrl);
-
+        HashMap<String, String> json = new HashMap<>();
+        json.put("code", "00");
+        json.put("message", "success");
+        json.put("data", paymentUrl);
+        return ResponseEntity.ok(json);
     }
 }

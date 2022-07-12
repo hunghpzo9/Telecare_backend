@@ -39,7 +39,15 @@ public class Constants {
 
     public static final int IS_CIRCULATE= 0;
 
+    //Firebase
 
+    public static final String COLLECTION_NOTIFICATION= "notifications";
+
+    public static final String COLLECTION_NOTIFICATION_MESSAGE= "message";
+
+    public static final String NOTIFICATION_TEXT= "text";
+
+    public static final String NOTIFICATION_TIME= "time";
 
 
 }
