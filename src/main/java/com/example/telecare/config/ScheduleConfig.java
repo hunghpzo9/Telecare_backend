@@ -61,13 +61,13 @@ public class ScheduleConfig {
 
                 try {
                     Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDTO.getTime());
-
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
                     //notification for patient
                     notificationService.sendNotification(appointmentDTO.getPatientId(),
-                            "Lịch khám của bạn vào ngày " + notificationDate + " đã bị hệ thống tự động huỷ.");
+                            "Lịch khám của bạn vào ngày " + simpleDateFormat.format(notificationDate) + " đã bị hệ thống tự động huỷ.");
                     //notification for doctor
                     notificationService.sendNotification(appointmentDTO.getDoctorId(),
-                            "Lịch khám của bạn vào ngày " + notificationDate + " đã bị hệ thống tự động huỷ.");
+                            "Lịch khám của bạn vào ngày " + simpleDateFormat.format(notificationDate) + " đã bị hệ thống tự động huỷ.");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
