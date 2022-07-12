@@ -2,6 +2,7 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.PatientDTOInf;
+import com.example.telecare.dto.PatientDTOInf2;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Address;
@@ -13,6 +14,8 @@ import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -63,5 +66,20 @@ public class PatientServiceImpl implements PatientService {
 
         userRepository.save(user);
         patientRepository.save(patient);
+    }
+
+    @Override
+    public PatientDTOInf2 findPatientByIdForAdmin(int uid) {
+        return patientRepository.findPatientByIdForAdmin(uid);
+    }
+
+    @Override
+    public List<PatientDTOInf2> getAllPatient(int index, String search) {
+        return patientRepository.getAllPatient(index,search);
+    }
+
+    @Override
+    public int getNumberOfPatient(String search) {
+        return patientRepository.getNumberOfPatient(search);
     }
 }
