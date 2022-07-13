@@ -407,7 +407,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
             //get schedule
-            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId()).orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
             String startAt = schedule.getStartAt().toString();
             startAt = startAt.substring(0, startAt.length() - 3);
             String endAt = schedule.getEndAt().toString();
@@ -465,7 +466,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
-
 
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
