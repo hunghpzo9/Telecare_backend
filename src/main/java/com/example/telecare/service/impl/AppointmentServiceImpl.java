@@ -401,29 +401,29 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDetailRepository.save(appointmentDetails);
 
         //send notification
-        try {
-            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(time);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-
-            //get schedule
-            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
-            String startAt = schedule.getStartAt().toString();
-            startAt = startAt.substring(0, startAt.length() - 3);
-            String endAt = schedule.getEndAt().toString();
-            endAt = endAt.substring(0, endAt.length() - 3);
-
-            //notification for patient
-            notificationService.sendNotification(appointment.getPatientId(), "Bạn đã đặt lịch thành công bác sĩ "
-                    + doctor.getFullName() + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
-            //notification for doctor
-            notificationService.sendNotification(appointment.getDoctorId(), "Bạn đã được một bệnh nhân đặt lịch" +
-                    " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(time);
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//
+//
+//            //get schedule
+//            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+//                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+//            String startAt = schedule.getStartAt().toString();
+//            startAt = startAt.substring(0, startAt.length() - 3);
+//            String endAt = schedule.getEndAt().toString();
+//            endAt = endAt.substring(0, endAt.length() - 3);
+//
+//            //notification for patient
+//            notificationService.sendNotification(appointment.getPatientId(), "Bạn đã đặt lịch thành công bác sĩ "
+//                    + doctor.getFullName() + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+//            //notification for doctor
+//            notificationService.sendNotification(appointment.getDoctorId(), "Bạn đã được một bệnh nhân đặt lịch" +
+//                    " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

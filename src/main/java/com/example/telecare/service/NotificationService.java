@@ -5,6 +5,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface NotificationService {
 
-    ResponseEntity<?> sendNotification(int uid,String message);
+   void sendNotification(int uid,String message);
 
 }
