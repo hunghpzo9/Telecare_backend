@@ -16,7 +16,6 @@ public class FirebaseConfig {
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(in))
                     .build();
-
             FirebaseApp.initializeApp(options);
         } catch (Exception e) {
             e.printStackTrace();
