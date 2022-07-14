@@ -21,5 +21,6 @@ public class DoctorDTO {
     String certificate;
     String identificationFront;
     String identificationBack;
+    String signature;
     Integer specialtyId;
 }

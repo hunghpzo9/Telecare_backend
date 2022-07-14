@@ -5,7 +5,7 @@ import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.model.User;
 import com.example.telecare.service.impl.AuthServiceImpl;
-import com.example.telecare.service.impl.TwilioImpl;
+import com.example.telecare.service.impl.TwilioServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class AuthController {
     UserServiceImpl userService;
 
     @Autowired
-    TwilioImpl twilioService;
+    TwilioServiceImpl twilioService;
 
     @Autowired
     private AuthServiceImpl authService;

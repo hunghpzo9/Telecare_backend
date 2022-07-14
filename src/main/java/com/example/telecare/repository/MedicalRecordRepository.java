@@ -12,8 +12,8 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
             "    md.id,\n" +
             "    md.medical_record_name AS medicalRecordName,\n" +
             "    u.full_name AS doctorName,\n" +
-            "    createdAt,\n" +
-            "    md.reason,\n" +
+            "    md.created_at AS createdAt,\n" +
+            "    md.reason, md.url," +
             "    md.main_disease AS mainDisease\n" +
             "FROM\n" +
             "    telecare.medical_record md\n" +

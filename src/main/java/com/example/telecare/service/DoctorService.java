@@ -20,6 +20,15 @@ public interface DoctorService {
     void addDoctorSpecialty(int doctor, int specialtyId);
 
     List<DoctorDTOInf> getAllDoctor(int index,String search);
+
+    List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page,int patientId);
+
+    Boolean isFavoriteDoctor(int patientId, int doctorId);
+
+    void removeFavoriteDoctor(int patientId, int doctorId);
+
+    void addFavoriteDoctor(int patientId, int doctorId);
+
     int getNumberOfDoctor(String search);
 
 }

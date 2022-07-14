@@ -34,4 +34,20 @@ public class Constants {
     public static final int GENDER_OTHER= 2;
 
     public static final int SYSTEM_CANCEL_STATUS= 11;
+
+    public static final int IS_NOT_CIRCULATE= 1;
+
+    public static final int IS_CIRCULATE= 0;
+
+    //Firebase
+
+    public static final String COLLECTION_NOTIFICATION= "notifications";
+
+    public static final String COLLECTION_NOTIFICATION_MESSAGE= "message";
+
+    public static final String NOTIFICATION_TEXT= "text";
+
+    public static final String NOTIFICATION_TIME= "time";
+
+
 }

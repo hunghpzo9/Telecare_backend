@@ -10,11 +10,11 @@ import java.util.List;
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
 @RequestMapping("/api/v1/medicalRecord")
-public class MedicalRecordServiceController {
+public class MedicalRecordController {
     @Autowired
     MedicalRecordServiceImpl medicalRecordService;
 
-    @GetMapping(value = "")
+    @GetMapping(value = "/getAll")
     List<MedicalRecordDTOInf> medicalRecordDTOInfList (@RequestParam int patientId, @RequestParam int page){
         return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
     }

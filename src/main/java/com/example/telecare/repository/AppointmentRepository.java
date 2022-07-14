@@ -61,11 +61,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
 
     @Query(value = "SELECT COUNT(*) FROM telecare.cancel_appointment ca where\n" +
-            "created_at > (DATE_ADD(NOW(), INTERVAL -6048000 SECOND))\n" +
-            "and user_id = ?1"
+            "created_at > (DATE_ADD(?2, INTERVAL -6048000 SECOND))\n" +
+            "and user_id = ?1 and cancel_reason_id != 11"
             ,
             nativeQuery = true)
-    Integer countCancelAppointmentInOneWeek(int userId);
+    Integer countCancelAppointmentInOneWeek(int userId,String date);
 
     @Query(value = "SELECT count(*) FROM telecare.appointment a left outer join \n" +
             "                        telecare.appointment_details ad on a.id = ad.appointment_id\n" +
@@ -82,6 +82,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "    u.id AS patientId,\n" +
             "    a.doctor_id AS doctorId,\n" +
             "    u.image_url AS patientImageUrl,\n" +
+            "    a.relative_id as relativeId,\n" +
             "    u.full_name AS patientName,\n" +
             "    u.phone AS patientPhone,\n" +
             "    spec.name AS doctorSpecialty,\n" +
@@ -129,7 +130,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                       left outer join telecare.user u on a.doctor_id = u.id\n" +
             "                        left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "                        left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "                        where a.patient_id = ?1 and a.doctor_id = ?2 and ad.status_id = 2\n" +
+            "                        where a.patient_id = ?1 and a.doctor_id = ?2 and (ad.status_id = 2 or ad.status_id = 3)\n" +
             "                        and time = ?3 and s.start_at <= ?4 and s.end_at >= ?4 \n" +
             "                        group by s.end_at,s.start_at,ad.time\n" +
             "                        order by ad.time",

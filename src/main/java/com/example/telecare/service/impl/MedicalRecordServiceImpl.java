@@ -16,52 +16,9 @@ public class MedicalRecordServiceImpl implements MedicalRecord {
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
 
-    private MedicalRecordDTOInf setMedicalRecord(MedicalRecordDTOInf medicalRecordDTOInf) {
-        MedicalRecordDTOInf returnDtoInf = new MedicalRecordDTOInf() {
-
-            @Override
-            public Integer getId() {
-                return medicalRecordDTOInf.getId();
-            }
-
-            @Override
-            public String getMedicalRecordName() {
-                return medicalRecordDTOInf.getMedicalRecordName();
-            }
-
-            @Override
-            public String getDoctorName() {
-                return medicalRecordDTOInf.getDoctorName();
-            }
-
-            @Override
-            public Date getCreatedAt() {
-                return medicalRecordDTOInf.getCreatedAt();
-            }
-
-            @Override
-            public String getReason() {
-                return medicalRecordDTOInf.getReason();
-            }
-
-            @Override
-            public String getMainDisease() {
-                return medicalRecordDTOInf.getMainDisease();
-            }
-        };
-        return returnDtoInf;
-    }
-
     @Override
     public List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(int id, int page) {
-        List<MedicalRecordDTOInf> medicalRecordList = medicalRecordRepository.getMedicalRecordByPatientId(id, page);
-        List<MedicalRecordDTOInf> returnMedicalRecordList = new ArrayList<>();
-        for (MedicalRecordDTOInf medicalRecordDTOInf : medicalRecordList
-        ) {
-            MedicalRecordDTOInf finalMedicalRecordDTO = medicalRecordDTOInf;
-            medicalRecordDTOInf = setMedicalRecord(finalMedicalRecordDTO);
-            returnMedicalRecordList.add(medicalRecordDTOInf);
-        }
-        return returnMedicalRecordList;
+        return medicalRecordRepository.getMedicalRecordByPatientId(id, page);
+
     }
 }

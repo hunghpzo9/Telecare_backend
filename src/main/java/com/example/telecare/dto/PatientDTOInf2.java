@@ -1,10 +1,8 @@
 package com.example.telecare.dto;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
 
-@JsonDeserialize(as = PatientDTO.class)
-public interface PatientDTOInf {
+public interface PatientDTOInf2 {
     Integer getId();
 
     String getFullName();
@@ -21,7 +19,7 @@ public interface PatientDTOInf {
 
     String getStreetName();
 
-    Integer getEthnicId();
+    String getEthnicName();
 
     String getBloodType();
 
@@ -33,17 +31,13 @@ public interface PatientDTOInf {
 
     String getJobPlace();
 
-    Integer getAddressId();
+    String getCityName();
 
-    String getCityId();
+    String getDistrictName();
 
-    String getDistrictId();
-
-    String getWardId();
+    String getWardName();
 
     Byte getIsActive();
 
     String getReason();
-
-    String getInsurance();
 }

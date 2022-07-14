@@ -2,6 +2,7 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.AdminDTOInf;
 import com.example.telecare.dto.DoctorDTO;
+import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.*;
@@ -20,6 +21,8 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TwilioServiceImpl twilioService;
 
     @Autowired
     AddressRepository addressRepository;
@@ -108,6 +111,7 @@ public class UserServiceImpl implements UserService {
             doctor.setPosition(doctorDTO.getPosition());
             doctor.setIdentificationFront(doctorDTO.getIdentificationFront());
             doctor.setIdentificationBack(doctorDTO.getIdentificationBack());
+            doctor.setSignature(doctorDTO.getSignature());
 
             Specialty specialty = specialtyRepository.findById(doctorDTO.getSpecialtyId())
                     .orElseThrow(() -> new ResourceNotFoundException("Not found patient"));
@@ -143,16 +147,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateStatus(Byte isActive, int id,Date expireDate) {
+    public void updateStatus(Byte isActive, int id,Date expireDate,String reason) {
 
             Doctor doctor = doctorRepository.findById(id).orElseThrow(()
                     -> new ResourceNotFoundException("Không tìm thấy bác sĩ"));
             doctor.setExpireDateCertificate(expireDate);
+
             doctorRepository.save(doctor);
 
         User user = userRepository.findById(id) .orElseThrow(()
                 -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        Byte currentStatus = user.getIsActive();
         user.setIsActive(isActive);
+        if(isActive==Constants.IS_BAN){
+            user.setReason(reason);
+        }else if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN){
+            user.setReason(null);
+        }
+
+        userRepository.save(user);
+
+        if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_NOT_ACTIVE){
+            TwilioRequestDTO twilioRequestDTO = new TwilioRequestDTO();
+            String phone = "+84"+user.getPhone().substring(1);
+            logger.info(phone);
+            twilioRequestDTO.setPhoneNumber(phone);
+            //twilioService.sendSmsToDoctor(twilioRequestDTO,Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi);
+        }
+
+    }
+
+    @Override
+    public void updateStatusForPatient(Byte isActive, int id, String reason) {
+        User user = userRepository.findById(id) .orElseThrow(()
+                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        Byte currentStatus = user.getIsActive();
+        user.setIsActive(isActive);
+        if(isActive==Constants.IS_BAN){
+            user.setReason(reason);
+        }else if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN){
+            user.setReason(null);
+        }
+
         userRepository.save(user);
     }
 

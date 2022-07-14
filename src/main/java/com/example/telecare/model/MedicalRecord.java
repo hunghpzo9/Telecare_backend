@@ -82,6 +82,7 @@ public class MedicalRecord {
     private Byte isEdited;
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

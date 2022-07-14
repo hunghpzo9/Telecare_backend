@@ -46,6 +46,12 @@ public class Appointment {
     @Basic
     @Column(name = "payment_status_id")
     private Integer paymentStatusId;
+    @Basic
+    @Column(name = "is_share_medical_record")
+    private Byte isShareMedicalRecord;
+    @Basic
+    @Column(name = "is_share_prescription")
+    private Byte isSharePrescription;
 
 
     @Override
@@ -72,11 +78,4 @@ public class Appointment {
         return result;
     }
 
-    public Integer getPaymentStatusId() {
-        return paymentStatusId;
-    }
-
-    public void setPaymentStatusId(Integer paymentStatusId) {
-        this.paymentStatusId = paymentStatusId;
-    }
 }

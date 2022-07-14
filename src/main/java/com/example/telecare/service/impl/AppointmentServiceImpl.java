@@ -10,10 +10,7 @@ import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.*;
-import com.example.telecare.repository.AppointmentDetailRepository;
-import com.example.telecare.repository.AppointmentRepository;
-import com.example.telecare.repository.CancelAppointmentRepository;
-import com.example.telecare.repository.UserRepository;
+import com.example.telecare.repository.*;
 import com.example.telecare.service.AppointmentService;
 import com.example.telecare.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +42,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     AddressServiceImpl addressService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    NotificationServiceImpl notificationService;
+    @Autowired
+    ScheduleRepository scheduleRepository;
+
 
     @Override
     public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
@@ -197,6 +199,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             DoctorDTOInf doctorDTOInf = doctorService.findDoctorById(finalAppointmentDTO.getDoctorId());
+            Relative relative = null;
+            System.out.println(appointmentDTO.getRelativeId());
+            if (appointmentDTO.getRelativeId() != null) {
+                relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
+            }
+            Relative finalRelative = relative;
+
             appointmentDTO = new AppointmentDTOInf() {
                 @Override
                 public Integer getId() {
@@ -250,11 +259,18 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getPatientName() {
+                    if (finalRelative != null) {
+                        return finalRelative.getFullName();
+                    }
                     return finalAppointmentDTO.getPatientName();
                 }
 
                 @Override
                 public String getPatientImageUrl() {
+                    if (finalRelative != null) {
+                        return finalRelative.getImageUrl();
+                    }
+
                     return finalAppointmentDTO.getPatientImageUrl();
                 }
 
@@ -338,19 +354,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment createNewAppointment(Appointment appointment, String description, String time) {
-        int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
-        if (countPending >= 3) {
-            throw new BadRequestException("Bạn đã tạo quá số lần quy định (3 lần). Hãy thanh toán để tiếp tục sử dụng");
-        }
+    public void createNewAppointment(Appointment appointment, String description, String time) {
+
 
         DoctorDTOInf doctor = doctorService.findDoctorById(appointment.getDoctorId());
         if (doctor.getIsActive() != Constants.IS_ACTIVE) {
             throw new BadRequestException("Bác sĩ hiện đang được xem xét, không thể đặt được");
         }
-
-        int countExistingAppointment = appointmentRepository
-                .countExistingAppointment(appointment.getDoctorId(), time, appointment.getScheduleId());
+        int countPending = appointmentRepository.countAppointmentPendingPaymentByPatientId(appointment.getPatientId());
+        if (countPending >= 3) {
+            throw new BadRequestException("Bạn hãy hoàn thành thanh toán các lần trước để tiếp tục sử dụng. ");
+        }
+        int countExistingAppointment = appointmentRepository.countExistingAppointment(appointment.getDoctorId(), time, appointment.getScheduleId());
         if (countExistingAppointment >= 1) {
             throw new BadRequestException("Đã có người đặt cuộc hẹn này.");
         }
@@ -364,6 +379,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         newAppointment.setDoctorId(appointment.getDoctorId());
         newAppointment.setScheduleId(appointment.getScheduleId());
         newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
+        newAppointment.setIsShareMedicalRecord(appointment.getIsShareMedicalRecord());
+        newAppointment.setIsSharePrescription(appointment.getIsSharePrescription());
 
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
@@ -383,8 +400,31 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDetails.setAppointment(newAppointment);
         appointmentRepository.save(newAppointment);
         appointmentDetailRepository.save(appointmentDetails);
-        return newAppointment;
 
+        //send notification
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(time);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+
+            //get schedule
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(), "Bạn đã đặt lịch thành công bác sĩ "
+                    + doctor.getFullName() + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+            //notification for doctor
+            notificationService.sendNotification(appointment.getDoctorId(), "Bạn đã được một bệnh nhân đặt lịch" +
+                    " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -399,18 +439,24 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Integer countCancelAppointmentInOneWeek(int userId) {
-        return appointmentRepository.countCancelAppointmentInOneWeek(userId);
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        String date = formatter.format(cld.getTime());
+        return appointmentRepository.countCancelAppointmentInOneWeek(userId, date);
+    }
+
+    @Override
+    public Integer countAppointmentPendingPaymentByPatientId(int userId) {
+        return appointmentRepository.countAppointmentPendingPaymentByPatientId(userId);
     }
 
     @Override
     public void cancelAppointment(CancelAppointment cancelAppointment, int userId) {
 
 
-        AppointmentDetails appointmentDetails = appointmentDetailRepository
-                .findById(cancelAppointment.getAppointmentId())
+        AppointmentDetails appointmentDetails = appointmentDetailRepository.findById(cancelAppointment.getAppointmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
-        Appointment appointment = appointmentRepository
-                .findById(cancelAppointment.getAppointmentId())
+        Appointment appointment = appointmentRepository.findById(cancelAppointment.getAppointmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
 
         if (appointmentDetails != null) {
@@ -418,18 +464,111 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointmentDetails.setAppointment(appointment);
             appointmentDetailRepository.save(appointmentDetails);
         }
+
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
+
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        String date = formatter.format(cld.getTime());
+        if (appointmentRepository.countCancelAppointmentInOneWeek(userId, date) >= 3) {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+            user.setIsActive((byte) Constants.IS_BAN);
+            user.setReason("Huỷ quá 3 lần trong 1 tuần");
+            userRepository.save(user);
+        }
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDetails.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+
+            //notification for doctor
+            notificationService.sendNotification(appointment.getDoctorId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void confirmAppointment(AppointmentDetails appointmentDetails, int id) {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
-
         appointmentDs.setStatusId(appointmentDetails.getStatusId());
-
         appointmentDetailRepository.save(appointmentDs);
 
+        //send notification
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd")
+                    .parse(appointmentDs.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã được bác sĩ xác nhận.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void endAppointment(int id) {
+        AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
+        appointmentDs.setStatusId(3);
+        appointmentDetailRepository.save(appointmentDs);
+
+        //send notification
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+
+//        try {
+//            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDs.getTime().toString());
+//            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+//                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//            String startAt = schedule.getStartAt().toString();
+//            startAt = startAt.substring(0, startAt.length() - 3);
+//            String endAt = schedule.getEndAt().toString();
+//            endAt = endAt.substring(0, endAt.length() - 3);
+//
+//            //notification for patient
+//            notificationService.sendNotification(appointment.getPatientId(),
+//                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+//                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+//
+//            //notification for doctor
+//            notificationService.sendNotification(appointment.getDoctorId(),
+//                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+//                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -452,7 +591,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         String date = dateFormatDay.format(d);
         String time = dateFormatTime.format(d);
 
-        return appointmentRepository.findAppointmentOverdue(date,time);
+        return appointmentRepository.findAppointmentOverdue(date, time);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
@@ -557,8 +696,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 if (finalRelative != null) {
                     return ethnicService.findEthnicById(finalRelative.getEthnicId()).getName();
                 }
-                return patient.getEthnicId() == null ? null
-                        : ethnicService.findEthnicById(patient.getEthnicId()).getName();
+                return patient.getEthnicId() == null ? null : ethnicService.findEthnicById(patient.getEthnicId()).getName();
             }
 
             @Override

@@ -8,10 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MedicineRepository extends JpaRepository<Medicine,Integer> {
-    @Query(value = "SELECT * FROM telecare.medicine  limit ?1,50",nativeQuery = true)
-    List<Medicine> getAllMedicine(int index);
+    @Query(value = "SELECT * FROM telecare.medicine as m" +
+                   "            where m.number_of_receipts like %?2% or m.year_of_receipts like %?2% or m.name like %?2% or m.company like %?2% or m.registration_number like %?2%" +
+                   "            limit ?1,50\n",nativeQuery = true)
+    List<Medicine> getAllMedicine(int index,String searchText);
 
-    @Query(value = "SELECT count(*) FROM telecare.medicine",nativeQuery = true)
-    int getNumberOfMedicine();
+    @Query(value = "SELECT count(*) FROM telecare.medicine as m"+
+            "            where m.number_of_receipts like %?1% or m.year_of_receipts like %?1% or m.name like %?1% or m.company like %?1% or m.registration_number like %?1%"
+            ,nativeQuery = true)
+    int getNumberOfMedicine(String searchText);
 
 }

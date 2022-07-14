@@ -1,9 +1,14 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.sql.Time;
 
 @Entity
+@Getter
+@Setter
 public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -11,42 +16,14 @@ public class Schedule {
     @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "time")
-    private Time time;
+    @Column(name = "start_at")
+    private Time startAt;
+    @Basic
+    @Column(name = "end_at")
+    private Time endAt;
+    @Basic
+    @Column(name = "shift")
+    private String shift;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Schedule schedule = (Schedule) o;
-
-        if (id != schedule.id) return false;
-        if (time != null ? !time.equals(schedule.time) : schedule.time != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        return result;
-    }
 }
