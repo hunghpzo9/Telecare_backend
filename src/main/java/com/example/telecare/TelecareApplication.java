@@ -42,13 +42,10 @@ public class TelecareApplication {
 		firebaseConfig.initialization();
 	}
 
-	public static void main(String[] args) throws ExecutionException, InterruptedException {
+	public static void main(String[] args) {
 		SpringApplication.run(TelecareApplication.class, args);
 		Firestore db = FirestoreClient.getFirestore();
-		ApiFuture<QuerySnapshot> query = db.collection("users").get();
-		QuerySnapshot querySnapshot = query.get();
-		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
-		System.out.println(documents.size());
+		System.out.println(db.getOptions().getCredentials());
 	}
 
 }
