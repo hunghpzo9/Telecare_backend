@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -77,9 +78,12 @@ public class ScheduleConfig {
 
     @Scheduled(fixedRate = 1000 * 10)
     private void setOverdueMedicalRecord() {
+
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = formatter.format(cld.getTime());
+
+        System.out.println(date);
         List<MedicalRecord> medicalRecords = medicalRecordRepository.getOverDueMedicalRecord(date);
         if (!medicalRecords.isEmpty()) {
             for (MedicalRecord medicalRecord : medicalRecords) {
