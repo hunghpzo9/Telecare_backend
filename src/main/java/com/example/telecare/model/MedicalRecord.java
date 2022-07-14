@@ -36,9 +36,6 @@ public class MedicalRecord {
     @Column(name = "medical_record_name")
     private String medicalRecordName;
     @Basic
-    @Column(name = "subject")
-    private String subject;
-    @Basic
     @Column(name = "guardian_detail")
     private String guardianDetail;
     @Basic
