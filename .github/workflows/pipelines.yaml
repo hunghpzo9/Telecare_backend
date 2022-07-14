@@ -54,4 +54,4 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |-
-          gcloud run deploy telecare --image gcr.io/$PROJECT_ID/$IMAGE:$TAG --platform managed --region us-central1 --allow-unauthenticated
+          gcloud run deploy telecare --image gcr.io/$PROJECT_ID/$IMAGE:$TAG --platform managed --region asia-southeast1 --allow-unauthenticated
