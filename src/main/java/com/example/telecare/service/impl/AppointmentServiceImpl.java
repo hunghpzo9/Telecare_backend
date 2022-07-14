@@ -200,6 +200,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             DoctorDTOInf doctorDTOInf = doctorService.findDoctorById(finalAppointmentDTO.getDoctorId());
             Relative relative = null;
+            System.out.println(appointmentDTO.getRelativeId());
             if (appointmentDTO.getRelativeId() != null) {
                 relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
             }
@@ -545,29 +546,29 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
 
-        try {
-            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDs.getTime().toString());
-            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            String startAt = schedule.getStartAt().toString();
-            startAt = startAt.substring(0, startAt.length() - 3);
-            String endAt = schedule.getEndAt().toString();
-            endAt = endAt.substring(0, endAt.length() - 3);
-
-            //notification for patient
-            notificationService.sendNotification(appointment.getPatientId(),
-                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
-
-            //notification for doctor
-            notificationService.sendNotification(appointment.getDoctorId(),
-                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDs.getTime().toString());
+//            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+//                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//            String startAt = schedule.getStartAt().toString();
+//            startAt = startAt.substring(0, startAt.length() - 3);
+//            String endAt = schedule.getEndAt().toString();
+//            endAt = endAt.substring(0, endAt.length() - 3);
+//
+//            //notification for patient
+//            notificationService.sendNotification(appointment.getPatientId(),
+//                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+//                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+//
+//            //notification for doctor
+//            notificationService.sendNotification(appointment.getDoctorId(),
+//                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+//                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

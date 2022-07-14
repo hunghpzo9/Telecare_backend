@@ -82,6 +82,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "    u.id AS patientId,\n" +
             "    a.doctor_id AS doctorId,\n" +
             "    u.image_url AS patientImageUrl,\n" +
+            "    a.relative_id as relativeId,\n" +
             "    u.full_name AS patientName,\n" +
             "    u.phone AS patientPhone,\n" +
             "    spec.name AS doctorSpecialty,\n" +
