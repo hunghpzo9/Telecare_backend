@@ -12,7 +12,7 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
             "    md.id,\n" +
             "    md.medical_record_name AS medicalRecordName,\n" +
             "    u.full_name AS doctorName,\n" +
-            "    DATE_FORMAT (md.created_at,'%d-%m-%Y') AS createdAt,\n" +
+            "    createdAt,\n" +
             "    md.reason,\n" +
             "    md.main_disease AS mainDisease\n" +
             "FROM\n" +
