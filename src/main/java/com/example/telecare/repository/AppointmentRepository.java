@@ -130,7 +130,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                       left outer join telecare.user u on a.doctor_id = u.id\n" +
             "                        left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "                        left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "                        where a.patient_id = ?1 and a.doctor_id = ?2 and ad.status_id = 2\n" +
+            "                        where a.patient_id = ?1 and a.doctor_id = ?2 and (ad.status_id = 2 or ad.status_id = 3)\n" +
             "                        and time = ?3 and s.start_at <= ?4 and s.end_at >= ?4 \n" +
             "                        group by s.end_at,s.start_at,ad.time\n" +
             "                        order by ad.time",
