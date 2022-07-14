@@ -44,4 +44,6 @@ public interface PatientDTOInf {
     Byte getIsActive();
 
     String getReason();
+
+    String getInsurance();
 }

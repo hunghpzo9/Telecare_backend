@@ -47,4 +47,6 @@ public class PatientDTO {
     String districtId;
 
     String wardId;
+
+    String insurance;
 }
