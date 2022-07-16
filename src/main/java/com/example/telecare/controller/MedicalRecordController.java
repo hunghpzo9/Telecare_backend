@@ -1,6 +1,7 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.MedicalRecordDTOInf;
+import com.example.telecare.model.MedicalRecord;
 import com.example.telecare.service.impl.MedicalRecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,13 @@ public class MedicalRecordController {
     MedicalRecordServiceImpl medicalRecordService;
 
     @GetMapping(value = "/getAll")
-    List<MedicalRecordDTOInf> medicalRecordDTOInfList (@RequestParam int patientId, @RequestParam int page){
+    List<MedicalRecordDTOInf> medicalRecordDTOInfList(@RequestParam int patientId, @RequestParam int page) {
         return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
+    }
+
+    @PutMapping(value = "/addMedicalRecord")
+    MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord);
+        return addMedicalRecord;
     }
 }
