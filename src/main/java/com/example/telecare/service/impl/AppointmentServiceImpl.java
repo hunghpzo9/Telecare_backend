@@ -440,7 +440,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Integer countCancelAppointmentInOneWeek(int userId) {
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = formatter.format(cld.getTime());
         return appointmentRepository.countCancelAppointmentInOneWeek(userId, date);
     }
@@ -470,7 +470,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = formatter.format(cld.getTime());
         if (appointmentRepository.countCancelAppointmentInOneWeek(userId, date) >= 3) {
             User user = userRepository.findById(userId)
