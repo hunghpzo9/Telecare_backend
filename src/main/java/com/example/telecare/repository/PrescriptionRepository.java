@@ -3,6 +3,7 @@ package com.example.telecare.repository;
 import com.example.telecare.dto.PrescriptionDTOInf;
 import com.example.telecare.dto.PrescriptionDetailDTO;
 import com.example.telecare.model.Prescription;
+import com.example.telecare.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -38,4 +39,12 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Inte
             "WHERE\n" +
             "    appointment_id = ?1", nativeQuery = true)
     PrescriptionDetailDTO getPrescriptionDetailByAppointmentId(int id);
+
+    @Query(value = "SELECT * FROM telecare.prescription WHERE trace = ?1",
+            nativeQuery = true)
+    Prescription checkDuplicateTrace(String trace);
+
+    @Query(value = "SELECT * FROM telecare.prescription WHERE appointment_id = ?1",
+            nativeQuery = true)
+    Prescription findPrescriptionByAppointmentId(int id);
 }

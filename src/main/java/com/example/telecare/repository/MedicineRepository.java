@@ -3,6 +3,7 @@ package com.example.telecare.repository;
 import com.example.telecare.dto.MedicineDTO;
 import com.example.telecare.dto.MedicinePrescriptionDTO;
 import com.example.telecare.model.Medicine;
+import com.example.telecare.model.Specialty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,6 +24,9 @@ public interface MedicineRepository extends JpaRepository<Medicine,Integer> {
             "WHERE\n" +
             "    pm.prescription_id = ?1",nativeQuery = true)
     List<MedicinePrescriptionDTO> findAllMedicineByAppointmentId(int id);
+
+    @Query(value = "SELECT * from telecare.medicine WHERE id = ?1", nativeQuery = true)
+    Medicine findMedicineById(int id);
 
     @Query(value = "SELECT count(*) FROM telecare.medicine as m"+
             "            where m.number_of_receipts like %?1% or m.year_of_receipts like %?1% or m.name like %?1% or m.company like %?1% or m.registration_number like %?1%"
