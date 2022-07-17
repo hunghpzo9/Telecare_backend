@@ -75,9 +75,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/relative/**").hasAnyAuthority(Constants.ROLE_PATIENT, Constants.ROLE_ADMIN)
                 .antMatchers("/api/v1/address/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers(HttpMethod.GET,"/api/v1/payment/returnIpn").permitAll()
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
-                .antMatchers("/api/v1/payment/returnIpn").permitAll()
                 .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)
 
                 .anyRequest().authenticated()
