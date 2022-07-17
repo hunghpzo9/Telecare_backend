@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-@Configuration
+//@Configuration
 @EnableScheduling
 public class ScheduleConfig {
     @Autowired
@@ -58,20 +58,6 @@ public class ScheduleConfig {
 
                 appointmentService.cancelAppointment(cancelAppointment, appointmentDTO.getDoctorId());
                 logger.info("Cancel appointment id: {}", appointmentDTO.getId());
-                //send notification
-
-                try {
-                    Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDTO.getTime());
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    //notification for patient
-                    notificationService.sendNotification(appointmentDTO.getPatientId(),
-                            "Lịch khám của bạn vào ngày " + simpleDateFormat.format(notificationDate) + " đã bị hệ thống tự động huỷ.");
-                    //notification for doctor
-                    notificationService.sendNotification(appointmentDTO.getDoctorId(),
-                            "Lịch khám của bạn vào ngày " + simpleDateFormat.format(notificationDate) + " đã bị hệ thống tự động huỷ.");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -83,7 +69,6 @@ public class ScheduleConfig {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = formatter.format(cld.getTime());
 
-        System.out.println(date);
         List<MedicalRecord> medicalRecords = medicalRecordRepository.getOverDueMedicalRecord(date);
         if (!medicalRecords.isEmpty()) {
             for (MedicalRecord medicalRecord : medicalRecords) {
