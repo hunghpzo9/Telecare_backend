@@ -27,21 +27,13 @@ import java.util.concurrent.ExecutionException;
 public class TelecareApplication {
 	@Autowired
 	private TwilioConfig twilioConfig;
-	@Autowired
-	private FirebaseConfig firebaseConfig;
-
 	@PostConstruct
 	private void initTwilio(){
 		System.out.println("Init twilio");
 		Twilio.init(twilioConfig.getAccountSid(),twilioConfig.getAuthToken());
 	}
-//	@PostConstruct
-//	private void initFirebase(){
-//		System.out.println("Init firebase");
-//		firebaseConfig.initialization();
-//	}
 
-	public static void main(String[] args) throws ExecutionException, InterruptedException {
+	public static void main(String[] args) {
 		try {
 			String path = "/serviceAccountKey.json";
 			InputStream in = TelecareApplication.class.getResourceAsStream(path);
@@ -53,13 +45,6 @@ public class TelecareApplication {
 			e.printStackTrace();
 		}
 		SpringApplication.run(TelecareApplication.class, args);
-
-		Firestore db = FirestoreClient.getFirestore();
-
-		ApiFuture<QuerySnapshot> query = db.collection("users").get();
-		QuerySnapshot querySnapshot = query.get();
-		List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
-		System.out.println(documents.size());
 	}
 
 }

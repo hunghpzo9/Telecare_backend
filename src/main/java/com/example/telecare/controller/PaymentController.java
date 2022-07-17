@@ -126,7 +126,6 @@ public class PaymentController {
         Map fields = new HashMap();
         for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
             String fieldName = (String) params.nextElement();
-            System.out.println(fieldName);
             String fieldValue = request.getParameter(fieldName);
             if ((fieldValue != null) && (fieldValue.length() > 0)) {
                 fields.put(fieldName, fieldValue);
@@ -140,12 +139,16 @@ public class PaymentController {
             fields.remove("vnp_SecureHash");
         }
 
+        String signValue = VnpayConfig.hashAllFields(fields);
+        if (signValue.equals(vnp_SecureHash)) {
+            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                System.out.println("GD Thanh cong");
+            } else {
+                System.out.println("GD Khong thanh cong");
+            }
 
-
-        if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
-            System.out.println("GD Thanh cong");
         } else {
-            System.out.println("GD Khong thanh cong");
+            System.out.println("Chu ky khong hop le");
         }
 
 
@@ -154,43 +157,37 @@ public class PaymentController {
     @PostMapping(value = "/createPayment")
     public ResponseEntity<?> createPayment(@RequestBody PaymentDTO paymentDTO,
                                            HttpServletRequest req) throws UnsupportedEncodingException {
-
-        String vnp_Version = VnpayConfig.vnp_Version;
-        String vnp_Command = VnpayConfig.vnp_Command;
+        String vnp_Version = "2.1.0";
+        String vnp_Command = "pay";
+        String vnp_OrderInfo = VnpayConfig.vnp_OrderInfo;
         String orderType = VnpayConfig.orderType;
-        String vnp_TxnRef = VnpayConfig.getRandomNumber(20);
+        String vnp_TxnRef = VnpayConfig.getRandomNumber(8);
         String vnp_IpAddr = VnpayConfig.getIpAddress(req);
         String vnp_TmnCode = VnpayConfig.vnp_TmnCode;
-        String vnp_CurrCode = VnpayConfig.vnp_CurrCode;
-        String vnp_OrderInfo = "Test vnpay";
-        String vnp_Returnurl = VnpayConfig.vnp_Returnurl;
 
         int amount = paymentDTO.getAmount() * 100;
-
         Map vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
-        vnp_Params.put("vnp_CurrCode", vnp_CurrCode);
-        if (paymentDTO.getBankCode() != null && !paymentDTO.getBankCode().isEmpty()) {
-            vnp_Params.put("vnp_BankCode", VnpayConfig.vnp_BankCode);
-        }
+        vnp_Params.put("vnp_CurrCode", "VND");
+        vnp_Params.put("vnp_BankCode", paymentDTO.getBankCode());
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl", vnp_Returnurl);
+        vnp_Params.put("vnp_ReturnUrl", VnpayConfig.vnp_Returnurl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
-
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
 
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-
         cld.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(cld.getTime());
+        //Add Params of 2.1.0 Version
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 
         //Build data to hash and querystring
@@ -222,7 +219,7 @@ public class PaymentController {
 
         String queryUrl = query.toString();
         String vnp_SecureHash = VnpayConfig.hmacSHA512(VnpayConfig.vnp_HashSecret, hashData.toString());
-        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        queryUrl += "&vnp_SecureHashType=HmacSHA512&vnp_SecureHash=" + vnp_SecureHash;
 
         String paymentUrl = VnpayConfig.vnp_PayUrl + "?" + queryUrl;
         HashMap<String, String> json = new HashMap<>();
