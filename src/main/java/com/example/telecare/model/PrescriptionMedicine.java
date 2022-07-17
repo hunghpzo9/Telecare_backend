@@ -14,6 +14,10 @@ public class PrescriptionMedicine {
     @Id
     @Column(name = "medicine_id")
     private int medicineId;
+    @Basic
+    @Column(name = "instruction")
+    private String instruction;
+
 
     public int getPrescriptionId() {
         return prescriptionId;
@@ -29,6 +33,14 @@ public class PrescriptionMedicine {
 
     public void setMedicineId(int medicineId) {
         this.medicineId = medicineId;
+    }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
     }
 
     @Override
@@ -50,4 +62,6 @@ public class PrescriptionMedicine {
         result = 31 * result + medicineId;
         return result;
     }
+
+
 }

@@ -1,8 +1,11 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.MedicalRecordDTOInf;
+import com.example.telecare.dto.MedicalRecordDetailDTO;
+import com.example.telecare.model.MedicalRecord;
 import com.example.telecare.service.impl.MedicalRecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +18,24 @@ public class MedicalRecordController {
     MedicalRecordServiceImpl medicalRecordService;
 
     @GetMapping(value = "/getAll")
-    List<MedicalRecordDTOInf> medicalRecordDTOInfList (@RequestParam int patientId, @RequestParam int page){
+    public List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(@RequestParam int patientId, @RequestParam int page) {
         return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
+    }
+
+    @GetMapping(value = "/getMedicalRecordDetail")
+    public MedicalRecordDetailDTO medicalRecordDTOInfList(@RequestParam int appointmentId) {
+        return medicalRecordService.getMedicalRecordDetailByAppointmentId(appointmentId);
+    }
+
+    @PutMapping(value = "/addMedicalRecord")
+    public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord);
+        return addMedicalRecord;
+    }
+
+    @PutMapping(value = "/updateMedicalRecord")
+    public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int appointmentId) {
+        medicalRecordService.updateMedicalRecord(medicalRecord, appointmentId);
+        return ResponseEntity.ok(medicalRecord);
     }
 }

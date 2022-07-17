@@ -36,6 +36,12 @@ public class MedicalRecord {
     @Column(name = "medical_record_name")
     private String medicalRecordName;
     @Basic
+    @Column(name = "type")
+    private int type;
+    @Basic
+    @Column(name = "external")
+    private String external;
+    @Basic
     @Column(name = "guardian_detail")
     private String guardianDetail;
     @Basic

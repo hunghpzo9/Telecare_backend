@@ -1,7 +1,9 @@
 package com.example.telecare.repository;
 
 import com.example.telecare.dto.PrescriptionDTOInf;
+import com.example.telecare.dto.PrescriptionDetailDTO;
 import com.example.telecare.model.Prescription;
+import com.example.telecare.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -25,4 +27,24 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Inte
             "    a.patient_id = ?1\n" +
             "LIMIT 5 OFFSET ?2", nativeQuery = true)
     List<PrescriptionDTOInf> getAllPrescription(int id, int page);
+
+    @Query(value = "SELECT \n" +
+            "    id,\n" +
+            "    diagnosis AS prescriptionDiagnosis,\n" +
+            "    note,\n" +
+            "    guardian,\n" +
+            "    url\n" +
+            "FROM\n" +
+            "    telecare.prescription\n" +
+            "WHERE\n" +
+            "    appointment_id = ?1", nativeQuery = true)
+    PrescriptionDetailDTO getPrescriptionDetailByAppointmentId(int id);
+
+    @Query(value = "SELECT * FROM telecare.prescription WHERE trace = ?1",
+            nativeQuery = true)
+    Prescription checkDuplicateTrace(String trace);
+
+    @Query(value = "SELECT * FROM telecare.prescription WHERE appointment_id = ?1",
+            nativeQuery = true)
+    Prescription findPrescriptionByAppointmentId(int id);
 }
