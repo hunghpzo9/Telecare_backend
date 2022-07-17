@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers("/api/v1/payment/returnIpn").permitAll()
                 .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)
 
                 .anyRequest().authenticated()
