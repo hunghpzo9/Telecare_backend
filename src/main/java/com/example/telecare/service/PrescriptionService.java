@@ -13,9 +13,4 @@ public interface PrescriptionService {
 
     Prescription addPrescription(Prescription prescription);
 
-    void updatePrescription(Prescription prescription, int id);
-
-    void addMedicineForPrescription(int preId, int medicineId);
-
-    void removeMedicineOfPrescription(int preId, int medicineId);
 }

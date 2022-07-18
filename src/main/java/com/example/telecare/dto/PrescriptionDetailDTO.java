@@ -9,6 +9,5 @@ public interface PrescriptionDetailDTO {
     String getNote();
     String getGuardian();
     String getUrl();
-    List<MedicinePrescriptionDTO> getListMedicine();
 }
 

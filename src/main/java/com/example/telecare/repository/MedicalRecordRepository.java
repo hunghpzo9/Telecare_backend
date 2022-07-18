@@ -3,6 +3,7 @@ package com.example.telecare.repository;
 import com.example.telecare.dto.MedicalRecordDTOInf;
 import com.example.telecare.dto.MedicalRecordDetailDTO;
 import com.example.telecare.model.MedicalRecord;
+import com.example.telecare.model.Prescription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -57,6 +58,10 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
             "and  is_edited = 0 \n"
             , nativeQuery = true)
     List<MedicalRecord> getOverDueMedicalRecord(String date);
+
+    @Query(value = "SELECT * FROM telecare.medical_record WHERE trace = ?1",
+            nativeQuery = true)
+    MedicalRecord checkDuplicateTrace(String trace);
 
     @Query(value = "SELECT * FROM telecare.medical_record where appointment_id = ?1", nativeQuery = true)
     MedicalRecord findMedicalRecordByAppointmentId(int id);

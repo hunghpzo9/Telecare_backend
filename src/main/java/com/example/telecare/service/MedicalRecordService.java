@@ -11,7 +11,7 @@ public interface MedicalRecordService {
 
     MedicalRecordDetailDTO getMedicalRecordDetailByAppointmentId(int id);
 
-    MedicalRecord addMedicalRecord(MedicalRecord medicalRecord);
+    MedicalRecord addMedicalRecord(MedicalRecord medicalRecord, int yearCode);
 
     void updateMedicalRecord(MedicalRecord medicalRecord, int id);
 }

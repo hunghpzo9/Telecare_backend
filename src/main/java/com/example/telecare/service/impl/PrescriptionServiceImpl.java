@@ -4,11 +4,8 @@ import com.example.telecare.dto.MedicinePrescriptionDTO;
 import com.example.telecare.dto.PrescriptionDTOInf;
 import com.example.telecare.dto.PrescriptionDetailDTO;
 import com.example.telecare.exception.NotFoundException;
-import com.example.telecare.exception.ResourceNotFoundException;
-import com.example.telecare.model.Medicine;
 import com.example.telecare.model.Prescription;
 import com.example.telecare.repository.MedicineRepository;
-import com.example.telecare.repository.PrescriptionMedicineRepository;
 import com.example.telecare.repository.PrescriptionRepository;
 import com.example.telecare.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +24,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     MedicineServiceImpl medicineService;
     @Autowired
     MedicineRepository medicineRepository;
-    @Autowired
-    PrescriptionMedicineRepository prescriptionMedicineRepository;
 
     @Override
     public List<PrescriptionDTOInf> listAllPrescriptionByPatientId(int id, int page) {
@@ -50,47 +45,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Prescription checkDuplicateTrace = prescriptionRepository.checkDuplicateTrace(prescription.getTrace());
 
         do {
-            prescription.setTrace(generateMedicalRecordNumber());
+            prescription.setTrace(generatePrescriptionNumber());
             System.out.println(prescription.getTrace());
         } while (checkDuplicateTrace != null);
 
 
         return prescriptionRepository.save(prescription);
-    }
-
-    @Override
-    public void updatePrescription(Prescription prescription, int appointmentId) {
-        Prescription updatePrescription = prescriptionRepository.findPrescriptionByAppointmentId(appointmentId);
-
-        updatePrescription.setDiagnosis(prescription.getDiagnosis());
-        updatePrescription.setGuardian(prescription.getGuardian());
-        updatePrescription.setNote(prescription.getNote());
-        updatePrescription.setUrl(prescription.getUrl());
-
-        prescriptionRepository.save(updatePrescription);
-    }
-
-    @Override
-    public void addMedicineForPrescription(int preId, int medicineId) {
-        Prescription prescription = prescriptionRepository.findById(preId).orElseThrow(()
-                -> new ResourceNotFoundException("Not found prescription"));
-
-        prescription.addMedicines(medicineRepository.findMedicineById(medicineId));
-
-        prescriptionRepository.save(prescription);
-    }
-
-    @Override
-    public void removeMedicineOfPrescription(int preId, int medicineId) {
-        Prescription prescription = prescriptionRepository.findById(preId).orElseThrow(()
-                -> new ResourceNotFoundException("Not found prescription"));
-
-        Medicine medicine = medicineRepository.findById(medicineId).orElseThrow(()
-                -> new ResourceNotFoundException("Not found medicine"));
-
-        prescription.getMedicines().remove(medicine);
-
-        prescriptionRepository.save(prescription);
     }
 
     private PrescriptionDetailDTO setReturnPrescriptionDetail(PrescriptionDetailDTO prescriptionDetailDTO) {
@@ -120,20 +80,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 return prescriptionDetailDTO.getUrl();
             }
 
-            @Override
-            public List<MedicinePrescriptionDTO> getListMedicine() {
-                List<MedicinePrescriptionDTO> medicines = new ArrayList<>();
-                for (MedicinePrescriptionDTO m : medicineService.findAllMedicineByPrescriptionId(prescriptionDetailDTO.getId())) {
-                    medicines.add(m);
-                }
-                return medicines;
-            }
         };
         return returnPrescriptionDetailDTO;
 
     }
 
-    protected String generateMedicalRecordNumber() {
+    protected String generatePrescriptionNumber() {
         String root = "abcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
