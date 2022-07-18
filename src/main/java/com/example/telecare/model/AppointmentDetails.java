@@ -31,6 +31,41 @@ public class AppointmentDetails {
     @MapsId
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
+    @Basic
+    @Column(name = "refuse_fill_reason")
+    private String refuseFillReason;
+
+    public int getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -49,5 +84,11 @@ public class AppointmentDetails {
         return result;
     }
 
+    public String getRefuseFillReason() {
+        return refuseFillReason;
+    }
 
+    public void setRefuseFillReason(String refuseFillReason) {
+        this.refuseFillReason = refuseFillReason;
+    }
 }

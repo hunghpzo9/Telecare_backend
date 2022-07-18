@@ -32,6 +32,8 @@ public interface AppointmentService {
 
     void endAppointment(int id);
 
+    void writeRefuseFillReason(int id,String reason);
+
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
 
     List<AppointmentDTOInf> findAppointmentOverdue();
