@@ -572,10 +572,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public void writeRefuseFillReason(int id,String reason) {
+        AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
+        appointmentDs.setRefuseFillReason(reason);
+        appointmentDetailRepository.save(appointmentDs);
+    }
+
+    @Override
     public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone, String date, String time) {
         User patient = userRepository.findUserByPhone(patientPhone);
         User doctor = userRepository.findUserByPhone(doctorPhone);
-
         return appointmentRepository.getCurrentAppointmentAvailable(patient.getId(), doctor.getId(), date, time);
     }
 

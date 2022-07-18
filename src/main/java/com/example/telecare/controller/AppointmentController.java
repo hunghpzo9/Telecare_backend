@@ -99,6 +99,11 @@ public class AppointmentController {
         appointmentService.confirmAppointment(appointmentDetails, id);
         return ResponseEntity.ok(appointmentDetails);
     }
+    @PutMapping(value = "/refuseReason")
+    public ResponseEntity<?> confirmAppointment(@RequestParam("id") int id, @RequestParam("reason") String reason) {
+        appointmentService.writeRefuseFillReason(id, reason);
+        return ResponseEntity.ok(new ResponseOkMessage("Điền lý do từ chối thành công", new Date()));
+    }
 
     @PutMapping(value = "/end")
     public ResponseEntity<?> endAppointment(@RequestParam("id") int id) {
