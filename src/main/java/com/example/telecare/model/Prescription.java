@@ -7,16 +7,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Getter
 @Setter
 @Entity
 public class Prescription {
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "prescription_medicine", joinColumns = @JoinColumn(name = "prescription_id"), inverseJoinColumns = @JoinColumn(name = "medicine_id"))
-    public List<Medicine> medicines = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -137,10 +133,6 @@ public class Prescription {
         result = 31 * result + (note != null ? note.hashCode() : 0);
         result = 31 * result + (guardian != null ? guardian.hashCode() : 0);
         return result;
-    }
-
-    public void addMedicines(Medicine medicine) {
-        this.medicines.add(medicine);
     }
 
 }

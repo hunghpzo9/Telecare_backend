@@ -3,12 +3,14 @@ package com.example.telecare.service.impl;
 import com.example.telecare.dto.MedicalRecordDTOInf;
 import com.example.telecare.dto.MedicalRecordDetailDTO;
 import com.example.telecare.model.MedicalRecord;
+import com.example.telecare.model.Prescription;
 import com.example.telecare.repository.MedicalRecordRepository;
 import com.example.telecare.service.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class MedicalRecordServiceImpl implements MedicalRecordService {
@@ -28,7 +30,13 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord) {
+    public MedicalRecord addMedicalRecord(MedicalRecord medicalRecord, int yearCode) {
+        MedicalRecord checkDuplicateTrace = medicalRecordRepository.checkDuplicateTrace(medicalRecord.getTrace());
+
+        do {
+            medicalRecord.setTrace(generateMedicalRecordNumber(yearCode));
+        } while (checkDuplicateTrace != null);
+
         return medicalRecordRepository.save(medicalRecord);
     }
 
@@ -54,7 +62,19 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         medicalRecord.setFirstAmount(medicalRecordDetails.getFirstAmount());
         medicalRecord.setSecondAmount(medicalRecordDetails.getSecondAmount());
 
-       medicalRecordRepository.save(medicalRecord);
+        medicalRecordRepository.save(medicalRecord);
+    }
+
+    protected String generateMedicalRecordNumber(int yearCode) {
+        String root = "1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 6) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * root.length());
+            salt.append(root.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return "101TLC" + yearCode + saltStr;
     }
 
 
