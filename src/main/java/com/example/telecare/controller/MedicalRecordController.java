@@ -28,8 +28,8 @@ public class MedicalRecordController {
     }
 
     @PutMapping(value = "/addMedicalRecord")
-    public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord);
+    public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int yearCode) {
+        MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord, yearCode);
         return addMedicalRecord;
     }
 

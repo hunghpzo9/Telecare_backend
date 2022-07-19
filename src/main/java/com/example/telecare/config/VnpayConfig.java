@@ -1,7 +1,10 @@
 package com.example.telecare.config;
 
 
+import com.example.telecare.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,7 +17,12 @@ import java.util.*;
 
 
 @AllArgsConstructor
+
+@Configuration
 public class VnpayConfig {
+    @Autowired
+
+    PaymentRepository paymentRepository;
 
     public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static final String vnp_Returnurl = "https://telecare-doxr4lwcja-as.a.run.app/api/v1/payment/returnPayment";
@@ -30,7 +38,7 @@ public class VnpayConfig {
     public static final String vnp_CurrCode = "VND";
     public static final String vnp_BankCode = "NCB";
 
-    public static String md5(String message) {
+    public  String md5(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -53,7 +61,7 @@ public class VnpayConfig {
         return digest;
     }
 
-    public static String Sha256(String message) {
+    public  String Sha256(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -79,7 +87,7 @@ public class VnpayConfig {
         return digest;
     }
 
-    public static String hmacSHA512(final String key, final String data) {
+    public  String hmacSHA512(final String key, final String data) {
         try {
 
             if (key == null || data == null) {
@@ -103,7 +111,7 @@ public class VnpayConfig {
     }
 
     //Util for VNPAY
-    public static String hashAllFields(Map fields) {
+    public  String hashAllFields(Map fields) {
         // create a list and sort it
         List fieldNames = new ArrayList(fields.keySet());
         Collections.sort(fieldNames);
@@ -139,14 +147,15 @@ public class VnpayConfig {
         return ipAdress;
     }
 
-    public static String getRandomNumber(int len) {
-        Random rnd = new Random();
-        String chars = "0123456789";
-        StringBuilder sb = new StringBuilder(len);
-        for (int i = 0; i < len; i++) {
-            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+    public  String getTraceNumber() {
+        String lastTrace = paymentRepository.getLastTractNumber();
+        int lastTraceNo = 0;
+        if (lastTrace != null && !lastTrace.isEmpty() ) {
+            lastTraceNo = Integer.valueOf(lastTrace);
+            lastTraceNo++;
         }
-        return sb.toString();
+
+        return String.format("%08d", lastTraceNo);
     }
 }
 

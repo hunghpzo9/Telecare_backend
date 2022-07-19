@@ -9,18 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class MedicineServiceImpl implements MedicineService {
     @Autowired
     MedicineRepository medicineRepository;
 
     @Override
-    public List<Medicine> getAllMedicine(int index,String searchText) {
-        return medicineRepository.getAllMedicine(index,searchText);
-    }
-
-    public List<MedicinePrescriptionDTO> findAllMedicineByPrescriptionId(int prescriptionId) {
-        return medicineRepository.findAllMedicineByAppointmentId(prescriptionId);
+    public List<Medicine> getAllMedicine(int index, String searchText) {
+        return medicineRepository.getAllMedicine(index, searchText);
     }
 
     @Override
