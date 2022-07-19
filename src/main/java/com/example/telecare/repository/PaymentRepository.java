@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface PaymentRepository extends JpaRepository<Payment,Integer> {
     @Query(value = "SELECT \n" +
-            "case\n" +
-            "when count( trace) = 0 then \"0\"\n" +
-            "else trace\n" +
-            "end as trace\n" +
-            "FROM telecare.payment ORDER BY ID DESC LIMIT 1"
+            "            case\n" +
+            "            when count( trace) = 0 then \"0\"\n" +
+            "            else (SELECT trace FROM telecare.payment ORDER BY ID DESC LIMIT 1)\n" +
+            "            end as trace\n" +
+            "            FROM telecare.payment ORDER BY ID DESC LIMIT 1"
             ,nativeQuery = true)
     String getLastTractNumber();
     @Query(value = "SELECT * FROM telecare.payment where trace = ?1"

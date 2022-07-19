@@ -71,7 +71,17 @@ public class PaymentServiceImpl implements PaymentService {
     public ResponseEntity<?> returnIpn(String vnp_TmnCode,
                                        String vnp_Amount,
                                        String vnp_BankCode,
-                                       String vnp_BankTranNo, String vnp_CardType, String vnp_PayDate, String vnp_OrderInfo, String vnp_TransactionNo, String vnp_ResponseCode, String vnp_TransactionStatus, String vnp_TxnRef, String vnp_SecureHashType, String vnp_SecureHash, HttpServletRequest request) {
+                                       String vnp_BankTranNo,
+                                       String vnp_CardType,
+                                       String vnp_PayDate,
+                                       String vnp_OrderInfo,
+                                       String vnp_TransactionNo,
+                                       String vnp_ResponseCode,
+                                       String vnp_TransactionStatus,
+                                       String vnp_TxnRef,
+                                       String vnp_SecureHashType,
+                                       String vnp_SecureHash,
+                                       HttpServletRequest request) {
         try {
 
 
@@ -101,15 +111,15 @@ public class PaymentServiceImpl implements PaymentService {
                 boolean checkOrderStatus = true; // PaymentStatus = 0 (pending)
 
                 Payment payment = paymentRepository.findPaymentByTrace(vnp_TxnRef);
-                if(payment == null){
+                if (payment == null) {
                     checkOrderId = false;
                 }
                 if (checkOrderId) {
-                    if(!vnp_Amount.equals(payment.getAmmount())){
+                    if (!vnp_Amount.equals(payment.getAmmount())) {
                         checkAmount = false;
                     }
                     if (checkAmount) {
-                        if(payment.getStatus() != PaymentStatusPending){
+                        if (payment.getStatus() != PaymentStatusPending) {
                             checkOrderStatus = false;
                         }
                         if (checkOrderStatus) {
@@ -129,9 +139,7 @@ public class PaymentServiceImpl implements PaymentService {
                             paymentRepository.save(payment);
                             return ResponseEntity.ok(new PaymentStatusDTO("00", "Confirm Success"));
 
-                        }
-
-                        else {
+                        } else {
                             return ResponseEntity.ok(new PaymentStatusDTO("02", "Order already confirmed"));
 
                         }

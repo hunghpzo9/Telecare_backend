@@ -152,9 +152,9 @@ public class VnpayConfig {
         int lastTraceNo = 0;
         if (lastTrace != null && !lastTrace.isEmpty() ) {
             lastTraceNo = Integer.valueOf(lastTrace);
-            lastTraceNo++;
-        }
 
+        }
+        lastTraceNo++;
         return String.format("%08d", lastTraceNo);
     }
 }
