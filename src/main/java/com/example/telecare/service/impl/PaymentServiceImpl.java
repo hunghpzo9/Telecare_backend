@@ -1,0 +1,240 @@
+package com.example.telecare.service.impl;
+
+import com.example.telecare.config.VnpayConfig;
+import com.example.telecare.dto.PaymentDTO;
+import com.example.telecare.dto.PaymentStatusDTO;
+import com.example.telecare.dto.ResponseOkMessage;
+import com.example.telecare.enums.PaymentStatus;
+import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.model.Appointment;
+import com.example.telecare.model.Payment;
+import com.example.telecare.repository.AppointmentRepository;
+import com.example.telecare.repository.PaymentRepository;
+import com.example.telecare.service.PaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Service
+public class PaymentServiceImpl implements PaymentService {
+    @Autowired
+    VnpayConfig vnpayConfig;
+    @Autowired
+    PaymentRepository paymentRepository;
+    @Autowired
+    AppointmentRepository appointmentRepository;
+
+    private final int PaymentStatusPending = 0;
+    private final int PaymentStatusSuccess = 1;
+    private final int PaymentStatusFailed = 2;
+
+    @Override
+    public ResponseEntity<?> returnPayment(String vnp_TmnCode, String vnp_Amount, String vnp_BankCode, String vnp_BankTranNo, String vnp_CardType, String vnp_PayDate, String vnp_OrderInfo, String vnp_TransactionNo, String vnp_ResponseCode, String vnp_TransactionStatus, String vnp_TxnRef, String vnp_SecureHashType, String vnp_SecureHash, HttpServletRequest request) {
+        Map fields = new HashMap();
+        for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
+            String fieldName = (String) params.nextElement();
+            String fieldValue = request.getParameter(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                fields.put(fieldName, fieldValue);
+            }
+        }
+
+        if (fields.containsKey("vnp_SecureHashType")) {
+            fields.remove("vnp_SecureHashType");
+        }
+        if (fields.containsKey("vnp_SecureHash")) {
+            fields.remove("vnp_SecureHash");
+        }
+
+        String signValue = vnpayConfig.hashAllFields(fields);
+        if (signValue.equals(vnp_SecureHash)) {
+            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                return ResponseEntity.ok(new ResponseOkMessage("Giao dich thanh cong", new Date()));
+            } else {
+                return ResponseEntity.ok(new ResponseOkMessage("Giao dich khong thanh cong", new Date()));
+            }
+
+        } else {
+            return ResponseEntity.ok(new ResponseOkMessage("Chu ky khong hop le", new Date()));
+
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> returnIpn(String vnp_TmnCode,
+                                       String vnp_Amount,
+                                       String vnp_BankCode,
+                                       String vnp_BankTranNo, String vnp_CardType, String vnp_PayDate, String vnp_OrderInfo, String vnp_TransactionNo, String vnp_ResponseCode, String vnp_TransactionStatus, String vnp_TxnRef, String vnp_SecureHashType, String vnp_SecureHash, HttpServletRequest request) {
+        try {
+
+
+            //Begin process return from VNPAY
+            Map fields = new HashMap();
+            for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
+                String fieldName = (String) params.nextElement();
+                String fieldValue = request.getParameter(fieldName);
+                if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                    fields.put(fieldName, fieldValue);
+                }
+            }
+
+            if (fields.containsKey("vnp_SecureHashType")) {
+                fields.remove("vnp_SecureHashType");
+            }
+            if (fields.containsKey("vnp_SecureHash")) {
+                fields.remove("vnp_SecureHash");
+            }
+
+            // Check checksum
+            String signValue = vnpayConfig.hashAllFields(fields);
+            if (signValue.equals(vnp_SecureHash)) {
+
+                boolean checkOrderId = true; // vnp_TxnRef exists in your database
+                boolean checkAmount = true; // vnp_Amount is valid (Check vnp_Amount VNPAY returns compared to the amount of the code (vnp_TxnRef) in the Your database).
+                boolean checkOrderStatus = true; // PaymentStatus = 0 (pending)
+
+                Payment payment = paymentRepository.findPaymentByTrace(vnp_TxnRef);
+                if(payment == null){
+                    checkOrderId = false;
+                }
+                if (checkOrderId) {
+                    if(!vnp_Amount.equals(payment.getAmmount())){
+                        checkAmount = false;
+                    }
+                    if (checkAmount) {
+                        if(payment.getStatus() != PaymentStatusPending){
+                            checkOrderStatus = false;
+                        }
+                        if (checkOrderStatus) {
+                            payment.setBanktranNo(vnp_BankTranNo);
+                            payment.setCardtype(vnp_CardType);
+                            payment.setTransactionNo(vnp_TransactionNo);
+                            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                                Appointment appointment = appointmentRepository.findById(payment.getAppointmentId())
+                                        .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+                                appointment.setPaymentStatusId(PaymentStatus.PAID.status);
+                                payment.setStatus(PaymentStatusSuccess);
+                                //Here Code update PaymnentStatus = 1 into your Database
+                            } else {
+                                payment.setStatus(PaymentStatusFailed);
+                                // Here Code update PaymnentStatus = 2 into your Database
+                            }
+                            paymentRepository.save(payment);
+                            return ResponseEntity.ok(new PaymentStatusDTO("00", "Confirm Success"));
+
+                        }
+
+                        else {
+                            return ResponseEntity.ok(new PaymentStatusDTO("02", "Order already confirmed"));
+
+                        }
+                    } else {
+                        return ResponseEntity.ok(new PaymentStatusDTO("04", "Invalid Amount"));
+
+                    }
+                } else {
+                    return ResponseEntity.ok(new PaymentStatusDTO("01", "Order not Found"));
+
+                }
+            } else {
+                return ResponseEntity.ok(new PaymentStatusDTO("97", "Invalid Checksum"));
+
+            }
+        } catch (Exception e) {
+            return ResponseEntity.ok(new PaymentStatusDTO("99", "Unknow error"));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> createPayment(PaymentDTO paymentDTO, HttpServletRequest req) throws UnsupportedEncodingException {
+        String vnp_Version = "2.1.0";
+        String vnp_Command = "pay";
+        String orderType = vnpayConfig.orderType;
+        String vnp_TxnRef = vnpayConfig.getTraceNumber();
+        String vnp_IpAddr = vnpayConfig.getIpAddress(req);
+        String vnp_TmnCode = vnpayConfig.vnp_TmnCode;
+
+        int amount = paymentDTO.getAmount() * 100;
+        Map vnp_Params = new HashMap<>();
+        vnp_Params.put("vnp_Version", vnp_Version);
+        vnp_Params.put("vnp_Command", vnp_Command);
+        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        vnp_Params.put("vnp_CurrCode", "VND");
+        vnp_Params.put("vnp_BankCode", paymentDTO.getBankCode());
+        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", paymentDTO.getDescription());
+        vnp_Params.put("vnp_OrderType", orderType);
+        vnp_Params.put("vnp_Locale", "vn");
+        vnp_Params.put("vnp_ReturnUrl", vnpayConfig.vnp_Returnurl);
+        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+        cld.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(cld.getTime());
+        //Add Params of 2.1.0 Version
+        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+        //Build data to hash and querystring
+        List fieldNames = new ArrayList(vnp_Params.keySet());
+        Collections.sort(fieldNames);
+        StringBuilder hashData = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        Iterator itr = fieldNames.iterator();
+        while (itr.hasNext()) {
+            String fieldName = (String) itr.next();
+            String fieldValue = (String) vnp_Params.get(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                //Build hash data
+                hashData.append(fieldName);
+                hashData.append('=');
+                hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+
+                //Build query
+                query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                query.append('=');
+                query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+
+                if (itr.hasNext()) {
+                    query.append('&');
+                    hashData.append('&');
+                }
+            }
+        }
+
+        String queryUrl = query.toString();
+        String vnp_SecureHash = vnpayConfig.hmacSHA512(vnpayConfig.vnp_HashSecret, hashData.toString());
+        queryUrl += "&vnp_SecureHashType=HmacSHA512&vnp_SecureHash=" + vnp_SecureHash;
+
+        String paymentUrl = vnpayConfig.vnp_PayUrl + "?" + queryUrl;
+        HashMap<String, String> json = new HashMap<>();
+        json.put("code", "00");
+        json.put("message", "success");
+        json.put("data", paymentUrl);
+
+        //save pending payment to database
+        Payment payment = new Payment();
+        payment.setStatus(0);
+        payment.setAppointmentId(paymentDTO.getAppointmentId());
+        payment.setAmmount(String.valueOf(paymentDTO.getAmount()));
+        payment.setBankcode(paymentDTO.getBankCode());
+        payment.setDescription(paymentDTO.getDescription());
+        payment.setTransactionDate(vnp_CreateDate);
+        payment.setTrace(vnp_TxnRef);
+        payment.setInstallment("No");
+        paymentRepository.save(payment);
+
+        return ResponseEntity.ok(json);
+    }
+}
