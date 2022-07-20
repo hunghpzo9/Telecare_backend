@@ -1,6 +1,7 @@
 package com.example.telecare.repository;
 
 import com.example.telecare.dto.AppointmentDTOInf;
+import com.example.telecare.dto.AppointmentDTOInf2;
 import com.example.telecare.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -155,4 +156,26 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                    ",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentOverdue(String date,String time);
+    @Query(value = "select  up.full_name patientName,up.id patientId,up.phone patientPhone,ud.full_name doctorName,ud.id doctorId,p.trace prescriptionTrace,p.url prescriptionUrl,mr.trace medicalRecordTrace,mr.url medicalRecordUrl,ad.time\n" +
+            "from appointment as a \n" +
+            "left join user as up on a.patient_id=up.id\n" +
+            "left join prescription as p on a.id = p.appointment_id\n" +
+            "left join user as ud on a.doctor_id=ud.id\n" +
+            "left join medical_record as mr on a.id=mr.appointment_id\n" +
+            "left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "where up.full_name like %?2% or ud.full_name like %?2% or up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% \n" +
+            "limit ?1,10", nativeQuery = true)
+    List<AppointmentDTOInf2> getAllAppointmentForAdmin(int index,String search);
+
+
+    @Query(value = "select  count(*)\n" +
+            "from appointment as a \n" +
+            "left join user as up on a.patient_id=up.id\n" +
+            "left join prescription as p on a.id = p.appointment_id\n" +
+            "left join user as ud on a.doctor_id=ud.id\n" +
+            "left join medical_record as mr on a.id=mr.appointment_id\n" +
+            "left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "where up.full_name like %?1% or ud.full_name like %?1% or up.phone like %?1% or p.trace like %?1% or mr.trace like %?1% or ad.time like %?1% "
+            ,nativeQuery = true)
+    int getNumberOfAppointmentForAdmin(String search);
 }
