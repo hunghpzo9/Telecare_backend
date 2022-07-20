@@ -1,9 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.CancelDTOInf;
-import com.example.telecare.dto.DoctorDTOInf;
-import com.example.telecare.dto.PatientDTOInf;
+import com.example.telecare.dto.*;
 import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.enums.PaymentStatus;
 import com.example.telecare.exception.BadRequestException;
@@ -609,6 +606,16 @@ public class AppointmentServiceImpl implements AppointmentService {
         String time = dateFormatTime.format(d);
 
         return appointmentRepository.findAppointmentOverdue(date, time);
+    }
+
+    @Override
+    public List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search) {
+        return appointmentRepository.getAllAppointmentForAdmin(index,search);
+    }
+
+    @Override
+    public int getNumberOfAppointmentForAdmin(String search) {
+        return appointmentRepository.getNumberOfAppointmentForAdmin(search);
     }
 
     @Override

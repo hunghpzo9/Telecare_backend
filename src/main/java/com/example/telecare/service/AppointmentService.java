@@ -1,11 +1,11 @@
 package com.example.telecare.service;
 
 import com.example.telecare.dto.AppointmentDTOInf;
+import com.example.telecare.dto.AppointmentDTOInfForAdmin;
 import com.example.telecare.dto.CancelDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.AppointmentDetails;
 import com.example.telecare.model.CancelAppointment;
-import com.example.telecare.model.CancelReason;
 
 import java.util.List;
 
@@ -37,6 +37,9 @@ public interface AppointmentService {
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
 
     List<AppointmentDTOInf> findAppointmentOverdue();
+    List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
+
+    int getNumberOfAppointmentForAdmin(String search);
 
     List<AppointmentDTOInf> findDoneAppointment(int patientId,int paymentStatusId);
 }

@@ -10,6 +10,7 @@ import com.example.telecare.service.impl.EthnicServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,6 +116,17 @@ public class AppointmentController {
     public ResponseEntity<?> endAppointment(@RequestParam("id") int id) {
         appointmentService.endAppointment(id);
         return ResponseEntity.ok(new ResponseOkMessage("Kết thúc phiên khám thành công", new Date()));
+    }
+    @GetMapping(value = "/getAll")
+    public ResponseEntity<List<AppointmentDTOInfForAdmin>> getAllAppointmentForAdmin(@RequestParam int index, @RequestParam String searchText) {
+        return new ResponseEntity<>(appointmentService.getAllAppointmentForAdmin(index,searchText), HttpStatus.OK);
+    }
+
+    @GetMapping("/numberOfAppointment")
+    public ResponseEntity<Integer> getNumberOfAppointment(@RequestParam String searchText) {
+        int noa = appointmentService.getNumberOfAppointmentForAdmin(searchText);
+        return new ResponseEntity<Integer>(noa, HttpStatus.OK);
+
     }
 
 }
