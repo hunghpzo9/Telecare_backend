@@ -2,7 +2,7 @@ package com.example.telecare.service;
 
 import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.PatientDTOInf;
-import com.example.telecare.dto.PatientDTOInf2;
+import com.example.telecare.dto.PatientDTOAdminInf;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ public interface PatientService {
 
     void updatePatient(PatientDTO patient, int id);
 
-    PatientDTOInf2 findPatientByIdForAdmin(int uid);
+    PatientDTOAdminInf findPatientByIdForAdmin(int uid);
 
-    List<PatientDTOInf2> getAllPatient(int index, String search);
+    List<PatientDTOAdminInf> getAllPatient(int index, String search);
 
     int getNumberOfPatient(String search);
 }

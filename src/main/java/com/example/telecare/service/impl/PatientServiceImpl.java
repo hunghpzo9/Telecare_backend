@@ -2,7 +2,7 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.PatientDTOInf;
-import com.example.telecare.dto.PatientDTOInf2;
+import com.example.telecare.dto.PatientDTOAdminInf;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Address;
@@ -70,12 +70,12 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientDTOInf2 findPatientByIdForAdmin(int uid) {
+    public PatientDTOAdminInf findPatientByIdForAdmin(int uid) {
         return patientRepository.findPatientByIdForAdmin(uid);
     }
 
     @Override
-    public List<PatientDTOInf2> getAllPatient(int index, String search) {
+    public List<PatientDTOAdminInf> getAllPatient(int index, String search) {
         return patientRepository.getAllPatient(index,search);
     }
 

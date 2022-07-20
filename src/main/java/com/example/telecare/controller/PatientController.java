@@ -1,9 +1,8 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.PatientDTOInf;
-import com.example.telecare.dto.PatientDTOInf2;
+import com.example.telecare.dto.PatientDTOAdminInf;
 import com.example.telecare.service.impl.AddressServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
@@ -36,11 +35,11 @@ public class PatientController {
         return ResponseEntity.ok(patientDetail);
     }
     @GetMapping(value = "")
-    public PatientDTOInf2 findPatientForAdmin(@RequestParam int id) {
+    public PatientDTOAdminInf findPatientForAdmin(@RequestParam int id) {
         return  patientService.findPatientByIdForAdmin(id);
     }
     @GetMapping(value = "/getAll")
-    public ResponseEntity<List<PatientDTOInf2>> getAllDoctor(@RequestParam int index, @RequestParam String searchText) {
+    public ResponseEntity<List<PatientDTOAdminInf>> getAllDoctor(@RequestParam int index, @RequestParam String searchText) {
         return new ResponseEntity<>(patientService.getAllPatient(index,searchText), HttpStatus.OK);
     }
     @GetMapping("/numberOfPatient")

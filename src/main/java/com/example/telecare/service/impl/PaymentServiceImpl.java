@@ -2,7 +2,6 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.config.VnpayConfig;
 import com.example.telecare.dto.PaymentDTO;
-import com.example.telecare.dto.PaymentStatusDTO;
 import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.enums.PaymentStatus;
 import com.example.telecare.exception.ResourceNotFoundException;

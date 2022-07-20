@@ -37,4 +37,6 @@ public interface AppointmentService {
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
 
     List<AppointmentDTOInf> findAppointmentOverdue();
+
+    List<AppointmentDTOInf> findDoneAppointment(int patientId,int paymentStatusId);
 }
