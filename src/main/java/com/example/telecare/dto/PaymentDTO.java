@@ -10,6 +10,7 @@ import lombok.Setter;
 public class PaymentDTO {
     Long idServicePack;
     int amount;
+    int appointmentId;
     String description;
     String bankCode;
 }

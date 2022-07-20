@@ -1,6 +1,9 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.*;
+import com.example.telecare.dto.AppointmentDTOInf;
+import com.example.telecare.dto.CancelDTOInf;
+import com.example.telecare.dto.DoctorDTOInf;
+import com.example.telecare.dto.PatientDTOInf;
 import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.enums.PaymentStatus;
 import com.example.telecare.exception.BadRequestException;
@@ -106,6 +109,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public String getAmount() {
+                    return null;
+                }
+
+                @Override
                 public String getPatientName() {
                     return patient.getFullName();
                 }
@@ -197,6 +205,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             DoctorDTOInf doctorDTOInf = doctorService.findDoctorById(finalAppointmentDTO.getDoctorId());
             Relative relative = null;
+            System.out.println(appointmentDTO.getRelativeId());
             if (appointmentDTO.getRelativeId() != null) {
                 relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
             }
@@ -250,6 +259,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Integer getRelativeId() {
+                    return null;
+                }
+
+                @Override
+                public String getAmount() {
                     return null;
                 }
 
@@ -381,6 +395,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
         appointmentDetails.setDescription(description);
+        appointmentDetails.setAmount(Constants.APPOINTMENT_LIST_PRICE);
 
         //format String time to date
         try {
@@ -404,16 +419,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
             //get schedule
-            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId()).orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
             String startAt = schedule.getStartAt().toString();
             startAt = startAt.substring(0, startAt.length() - 3);
             String endAt = schedule.getEndAt().toString();
             endAt = endAt.substring(0, endAt.length() - 3);
 
             //notification for patient
-            notificationService.sendNotification(appointment.getPatientId(), "Bạn đã đặt lịch thành công bác sĩ " + doctor.getFullName() + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+            notificationService.sendNotification(appointment.getPatientId(), "Bạn đã đặt lịch thành công bác sĩ "
+                    + doctor.getFullName() + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
             //notification for doctor
-            notificationService.sendNotification(appointment.getDoctorId(), "Bạn đã được một bệnh nhân đặt lịch" + " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
+            notificationService.sendNotification(appointment.getDoctorId(), "Bạn đã được một bệnh nhân đặt lịch" +
+                    " vào lúc " + startAt + " - " + endAt + " ngày " + simpleDateFormat.format(notificationDate));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -433,7 +451,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Integer countCancelAppointmentInOneWeek(int userId) {
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = formatter.format(cld.getTime());
         return appointmentRepository.countCancelAppointmentInOneWeek(userId, date);
     }
@@ -447,8 +465,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void cancelAppointment(CancelAppointment cancelAppointment, int userId) {
 
 
-        AppointmentDetails appointmentDetails = appointmentDetailRepository.findById(cancelAppointment.getAppointmentId()).orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
-        Appointment appointment = appointmentRepository.findById(cancelAppointment.getAppointmentId()).orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+        AppointmentDetails appointmentDetails = appointmentDetailRepository.findById(cancelAppointment.getAppointmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+        Appointment appointment = appointmentRepository.findById(cancelAppointment.getAppointmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
 
         if (appointmentDetails != null) {
             appointmentDetails.setStatusId(AppointmentStatus.CANCEL.status);
@@ -459,8 +479,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
 
+
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = formatter.format(cld.getTime());
         if (appointmentRepository.countCancelAppointmentInOneWeek(userId, date) >= 3) {
             User user = userRepository.findById(userId)
@@ -469,6 +490,30 @@ public class AppointmentServiceImpl implements AppointmentService {
             user.setReason("Huỷ quá 3 lần trong 1 tuần");
             userRepository.save(user);
         }
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDetails.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+
+            //notification for doctor
+            notificationService.sendNotification(appointment.getDoctorId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -476,12 +521,71 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
         appointmentDs.setStatusId(appointmentDetails.getStatusId());
         appointmentDetailRepository.save(appointmentDs);
+
+        //send notification
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd")
+                    .parse(appointmentDs.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã được bác sĩ xác nhận.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void endAppointment(int id) {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
-        appointmentDs.setStatusId(3);
+        appointmentDs.setStatusId(AppointmentStatus.COMPLETE.status);
+        appointmentDetailRepository.save(appointmentDs);
+
+        //send notification
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+
+        try {
+            Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDs.getTime().toString());
+            Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String startAt = schedule.getStartAt().toString();
+            startAt = startAt.substring(0, startAt.length() - 3);
+            String endAt = schedule.getEndAt().toString();
+            endAt = endAt.substring(0, endAt.length() - 3);
+
+            //notification for patient
+            notificationService.sendNotification(appointment.getPatientId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+
+            //notification for doctor
+            notificationService.sendNotification(appointment.getDoctorId(),
+                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void writeRefuseFillReason(int id,String reason) {
+        AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
+        appointmentDs.setRefuseFillReason(reason);
         appointmentDetailRepository.save(appointmentDs);
     }
 
@@ -489,7 +593,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone, String date, String time) {
         User patient = userRepository.findUserByPhone(patientPhone);
         User doctor = userRepository.findUserByPhone(doctorPhone);
-
         return appointmentRepository.getCurrentAppointmentAvailable(patient.getId(), doctor.getId(), date, time);
     }
 
@@ -509,13 +612,147 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTOInf2> getAllAppointmentForAdmin(int index,String search) {
-        return appointmentRepository.getAllAppointmentForAdmin(index,search);
-    }
+    public List<AppointmentDTOInf> findDoneAppointment(int patientId, int paymentStatusId) {
+        List<AppointmentDTOInf> appointmentList = appointmentRepository.findDoneAppointment(patientId, paymentStatusId);
+        List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
+        for (AppointmentDTOInf appointmentDTO : appointmentList) {
 
-    @Override
-    public int getNumberOfAppointmentForAdmin(String search) {
-        return appointmentRepository.getNumberOfAppointmentForAdmin(search);
+            AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
+            PatientDTOInf patient = patientService.findPatientById(finalAppointmentDTO.getPatientId());
+            appointmentDTO = new AppointmentDTOInf() {
+                @Override
+                public Integer getId() {
+                    return finalAppointmentDTO.getId();
+                }
+
+                @Override
+                public Integer getDoctorId() {
+                    return null;
+                }
+
+                @Override
+                public Integer getPatientId() {
+                    return null;
+                }
+
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+
+                @Override
+                public Time getStartAt() {
+                    return finalAppointmentDTO.getStartAt();
+                }
+
+                @Override
+                public Time getEndAt() {
+                    return finalAppointmentDTO.getEndAt();
+                }
+
+                @Override
+                public String getTime() {
+                    return finalAppointmentDTO.getTime();
+                }
+
+                @Override
+                public String getStatus() {
+                    return finalAppointmentDTO.getStatus();
+                }
+
+                @Override
+                public Integer getStatusId() {
+                    return finalAppointmentDTO.getStatusId();
+                }
+
+                @Override
+                public Integer getRelativeId() {
+                    return null;
+                }
+
+                @Override
+                public String getAmount() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientName() {
+                    return patient.getFullName();
+                }
+
+                @Override
+                public String getPatientImageUrl() {
+                    return null;
+                }
+
+                @Override
+                public Byte getPatientGender() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientPhone() {
+                    return patient.getPhone();
+                }
+
+                @Override
+                public Date getPatientDob() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientEthnic() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientEmail() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientAddress() {
+                    return null;
+                }
+
+                @Override
+                public String getDoctorName() {
+                    return finalAppointmentDTO.getDoctorName();
+                }
+
+                @Override
+                public String getDoctorImageUrl() {
+                    return finalAppointmentDTO.getDoctorImageUrl();
+                }
+
+                @Override
+                public Byte getDoctorGender() {
+                    return null;
+                }
+
+                @Override
+                public String getDoctorSpecialty() {
+                    return finalAppointmentDTO.getDoctorSpecialty();
+                }
+
+                @Override
+                public String getDoctorPhone() {
+                    return finalAppointmentDTO.getDoctorPhone();
+                }
+
+                @Override
+                public String getDoctorEmail() {
+                    return null;
+                }
+
+                @Override
+                public String getDoctorJobPlace() {
+                    return null;
+                }
+            };
+            returnAppointmentList.add(appointmentDTO);
+        }
+        return returnAppointmentList;
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
@@ -576,6 +813,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             @Override
             public Integer getRelativeId() {
                 return appointmentDTO.getRelativeId();
+            }
+
+            @Override
+            public String getAmount() {
+                return appointmentDTO.getAmount();
             }
 
             @Override

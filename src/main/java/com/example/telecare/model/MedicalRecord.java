@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
@@ -36,8 +35,11 @@ public class MedicalRecord {
     @Column(name = "medical_record_name")
     private String medicalRecordName;
     @Basic
-    @Column(name = "subject")
-    private String subject;
+    @Column(name = "type")
+    private int type;
+    @Basic
+    @Column(name = "external")
+    private String external;
     @Basic
     @Column(name = "guardian_detail")
     private String guardianDetail;
@@ -80,6 +82,9 @@ public class MedicalRecord {
     @Basic
     @Column(name = "is_edited")
     private Byte isEdited;
+    @Basic
+    @Column(name = "trace")
+    private String trace;
 
 
 

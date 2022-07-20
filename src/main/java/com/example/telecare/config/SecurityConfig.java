@@ -67,14 +67,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/v1/experience").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers(HttpMethod.GET, "/api/v1/doctorSpecialty").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers(HttpMethod.GET, "/api/v1/specialty").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/prescription/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_PATIENT)
-                .antMatchers(HttpMethod.GET, "/api/v1/medicalRecord/**").hasAnyAuthority(Constants.ROLE_ADMIN, Constants.ROLE_PATIENT)
+                .antMatchers(HttpMethod.GET, "/api/v1/prescription/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/medicalRecord/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/agora/**").permitAll()
                 .antMatchers("/api/v1/specialty/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/relative/**").hasAnyAuthority(Constants.ROLE_PATIENT, Constants.ROLE_ADMIN)
                 .antMatchers("/api/v1/address/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers(HttpMethod.GET,"/api/v1/payment/returnIpn").permitAll()
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)

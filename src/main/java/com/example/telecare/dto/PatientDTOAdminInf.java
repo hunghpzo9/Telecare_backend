@@ -2,7 +2,8 @@ package com.example.telecare.dto;
 
 import java.util.Date;
 
-public interface PatientDTOInf2 {
+public interface PatientDTOAdminInf {
+
     Integer getId();
 
     String getFullName();

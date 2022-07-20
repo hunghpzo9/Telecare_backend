@@ -88,6 +88,12 @@ public class AppointmentController {
         return appointmentService.getCurrentAppointmentAvailable(patientPhone, doctorPhone, date, time);
     }
 
+    @GetMapping(value = "/getListDoneAppointment")
+    public List<AppointmentDTOInf> getListDoneAppointment(@RequestParam("patientId") int patientId,
+                                                          @RequestParam("paymentStatusId") int paymentStatusId) {
+        return appointmentService.findDoneAppointment(patientId,paymentStatusId);
+    }
+
 
     @Cacheable(value = "allCancel")
     @GetMapping(value = "/getAllCancelReason")
@@ -99,6 +105,11 @@ public class AppointmentController {
     public ResponseEntity<?> confirmAppointment(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) {
         appointmentService.confirmAppointment(appointmentDetails, id);
         return ResponseEntity.ok(appointmentDetails);
+    }
+    @PutMapping(value = "/refuseReason")
+    public ResponseEntity<?> confirmAppointment(@RequestParam("id") int id, @RequestParam("reason") String reason) {
+        appointmentService.writeRefuseFillReason(id, reason);
+        return ResponseEntity.ok(new ResponseOkMessage("Điền lý do từ chối thành công", new Date()));
     }
 
     @PutMapping(value = "/end")

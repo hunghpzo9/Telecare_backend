@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
 @Getter
 @Setter
 @Entity
@@ -26,9 +27,6 @@ public class Prescription {
     @Column(name = "note")
     private String note;
     @Basic
-    @Column(name = "medicine_id")
-    private Integer medicineId;
-    @Basic
     @Column(name = "guardian")
     private String guardian;
     @Basic
@@ -39,9 +37,6 @@ public class Prescription {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Timestamp updatedAt;
-    @Basic
-    @Column(name = "prescription_medicine_id")
-    private String prescriptionMedicineId;
     @Basic
     @Column(name = "url")
     private String url;
@@ -125,7 +120,6 @@ public class Prescription {
             return false;
         if (diagnosis != null ? !diagnosis.equals(that.diagnosis) : that.diagnosis != null) return false;
         if (note != null ? !note.equals(that.note) : that.note != null) return false;
-        if (medicineId != null ? !medicineId.equals(that.medicineId) : that.medicineId != null) return false;
         if (guardian != null ? !guardian.equals(that.guardian) : that.guardian != null) return false;
 
         return true;
@@ -137,16 +131,8 @@ public class Prescription {
         result = 31 * result + (appointmentId != null ? appointmentId.hashCode() : 0);
         result = 31 * result + (diagnosis != null ? diagnosis.hashCode() : 0);
         result = 31 * result + (note != null ? note.hashCode() : 0);
-        result = 31 * result + (medicineId != null ? medicineId.hashCode() : 0);
         result = 31 * result + (guardian != null ? guardian.hashCode() : 0);
         return result;
     }
 
-    public String getTrace() {
-        return trace;
-    }
-
-    public void setTrace(String trace) {
-        this.trace = trace;
-    }
 }

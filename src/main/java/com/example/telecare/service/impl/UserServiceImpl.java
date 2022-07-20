@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService {
             doctor.setPosition(doctorDTO.getPosition());
             doctor.setIdentificationFront(doctorDTO.getIdentificationFront());
             doctor.setIdentificationBack(doctorDTO.getIdentificationBack());
+            doctor.setSignature(doctorDTO.getSignature());
 
             Specialty specialty = specialtyRepository.findById(doctorDTO.getSpecialtyId())
                     .orElseThrow(() -> new ResourceNotFoundException("Not found patient"));

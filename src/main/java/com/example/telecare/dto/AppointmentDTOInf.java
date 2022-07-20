@@ -13,6 +13,7 @@ public interface AppointmentDTOInf {
     String getStatus();
     Integer getStatusId();
     Integer getRelativeId();
+    String getAmount();
 
     String getPatientName();
     String getPatientImageUrl();

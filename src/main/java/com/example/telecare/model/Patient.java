@@ -12,6 +12,9 @@ import java.util.Set;
 @Setter
 @Entity
 public class Patient {
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "favorite_doctor", joinColumns = @JoinColumn(name = "patient_id"), inverseJoinColumns = @JoinColumn(name = "doctor_id"))
+    public Set<Doctor> favoriteDoctor = new HashSet<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "patient_id")
@@ -39,10 +42,9 @@ public class Patient {
     @MapsId
     @JoinColumn(name = "patient_id")
     private User user;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "favorite_doctor", joinColumns = @JoinColumn(name = "patient_id"), inverseJoinColumns = @JoinColumn(name = "doctor_id"))
-    public Set<Doctor> favoriteDoctor = new HashSet<>();
+    @Basic
+    @Column(name = "insurance")
+    private String insurance;
 
     public int getPatientId() {
         return patientId;
@@ -128,5 +130,13 @@ public class Patient {
         result = 31 * result + (jobPlace != null ? jobPlace.hashCode() : 0);
         result = 31 * result + (ethnicId != null ? ethnicId.hashCode() : 0);
         return result;
+    }
+
+    public String getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(String insurance) {
+        this.insurance = insurance;
     }
 }

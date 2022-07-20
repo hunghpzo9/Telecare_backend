@@ -16,7 +16,7 @@ import java.util.Date;
 public class NotificationServiceImpl implements NotificationService {
 
     @Override
-    public ResponseEntity<?> sendNotification(int uid,String message) {
+    public void sendNotification(int uid,String message) {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference collectionReference = db.collection(Constants.COLLECTION_NOTIFICATION)
                 .document(String.valueOf(uid))
@@ -25,7 +25,6 @@ public class NotificationServiceImpl implements NotificationService {
         NotificationDTO notificationDTO = new NotificationDTO(message, new Date());
         collectionReference.document().set(notificationDTO);
 
-        return ResponseEntity.ok(notificationDTO);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.example.telecare.service;
 
 import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.AppointmentDTOInf2;
 import com.example.telecare.dto.CancelDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.AppointmentDetails;
@@ -33,10 +32,14 @@ public interface AppointmentService {
 
     void endAppointment(int id);
 
+    void writeRefuseFillReason(int id,String reason);
+
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
 
     List<AppointmentDTOInf> findAppointmentOverdue();
     List<AppointmentDTOInf2> getAllAppointmentForAdmin(int index,String search);
 
     int getNumberOfAppointmentForAdmin(String search);
+
+    List<AppointmentDTOInf> findDoneAppointment(int patientId,int paymentStatusId);
 }

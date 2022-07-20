@@ -4,25 +4,20 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ResourceUtils;
+import java.io.InputStream;
 
-import java.io.File;
-import java.io.FileInputStream;
 
 @Configuration
 public class FirebaseConfig {
-    public void initialization(){
-        FileInputStream serviceAccount;
-        try{
-            File file = ResourceUtils.getFile("serviceAccountKey.json");
-            serviceAccount = new FileInputStream(file.getAbsolutePath());
-
+    public void initialization() {
+        try {
+            String path = "/serviceAccountKey.json";
+            InputStream in = this.getClass().getResourceAsStream(path);
             FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setCredentials(GoogleCredentials.fromStream(in))
                     .build();
-
             FirebaseApp.initializeApp(options);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

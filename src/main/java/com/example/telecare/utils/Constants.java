@@ -39,6 +39,8 @@ public class Constants {
 
     public static final int IS_CIRCULATE= 0;
 
+    public static final int APPOINTMENT_LIST_PRICE = 38700;
+
     //Firebase
 
     public static final String COLLECTION_NOTIFICATION= "notifications";

@@ -1,7 +1,10 @@
 package com.example.telecare.config;
 
 
+import com.example.telecare.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,14 +17,19 @@ import java.util.*;
 
 
 @AllArgsConstructor
+
+@Configuration
 public class VnpayConfig {
+    @Autowired
+
+    PaymentRepository paymentRepository;
 
     public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static final String vnp_Returnurl = "http://localhost:8080/api/v1/payment/returnPayment";
+    public static final String vnp_Returnurl = "https://telecare-doxr4lwcja-as.a.run.app/api/v1/payment/returnPayment";
     public static final String vnp_TmnCode = "HEZES5XN";
     public static final String vnp_HashSecret = "JGAWVSUVYAQETSOFRBNLWUHDHZTUUVYU";
     public static final String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
-    public static final String vnp_IpnUrl = "https://sandbox.vnpayment.vn/tryitnow/Home/VnPayIPN";
+    public static final String vnp_IpnUrl = "https://telecare-doxr4lwcja-as.a.run.app/api/v1/payment/returnIpn";
 
     public static final String vnp_Version = "2.1.0";
     public static final String vnp_Command = "pay";
@@ -30,7 +38,7 @@ public class VnpayConfig {
     public static final String vnp_CurrCode = "VND";
     public static final String vnp_BankCode = "NCB";
 
-    public static String md5(String message) {
+    public  String md5(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -53,7 +61,7 @@ public class VnpayConfig {
         return digest;
     }
 
-    public static String Sha256(String message) {
+    public  String Sha256(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -79,7 +87,7 @@ public class VnpayConfig {
         return digest;
     }
 
-    public static String hmacSHA512(final String key, final String data) {
+    public  String hmacSHA512(final String key, final String data) {
         try {
 
             if (key == null || data == null) {
@@ -103,7 +111,7 @@ public class VnpayConfig {
     }
 
     //Util for VNPAY
-    public static String hashAllFields(Map fields) {
+    public  String hashAllFields(Map fields) {
         // create a list and sort it
         List fieldNames = new ArrayList(fields.keySet());
         Collections.sort(fieldNames);
