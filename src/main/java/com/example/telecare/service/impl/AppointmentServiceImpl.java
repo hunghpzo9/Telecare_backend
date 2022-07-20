@@ -395,6 +395,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
         appointmentDetails.setDescription(description);
+        appointmentDetails.setAmount(Constants.APPOINTMENT_LIST_PRICE);
 
         //format String time to date
         try {
