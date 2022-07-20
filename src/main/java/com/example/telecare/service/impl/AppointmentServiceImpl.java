@@ -106,7 +106,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
-                public String getAmount() {
+                public Integer getAmount() {
                     return null;
                 }
 
@@ -260,7 +260,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
-                public String getAmount() {
+                public Integer getAmount() {
                     return null;
                 }
 
@@ -678,7 +678,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
-                public String getAmount() {
+                public Integer getAmount() {
                     return finalAppointmentDTO.getAmount();
                 }
 
@@ -823,7 +823,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public String getAmount() {
+            public Integer getAmount() {
                 return appointmentDTO.getAmount();
             }
 
