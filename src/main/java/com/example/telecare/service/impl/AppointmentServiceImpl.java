@@ -109,6 +109,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public String getAmount() {
+                    return null;
+                }
+
+                @Override
                 public String getPatientName() {
                     return patient.getFullName();
                 }
@@ -258,6 +263,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public String getAmount() {
+                    return null;
+                }
+
+                @Override
                 public String getPatientName() {
                     if (finalRelative != null) {
                         return finalRelative.getFullName();
@@ -385,6 +395,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
         appointmentDetails.setDescription(description);
+        appointmentDetails.setAmount(Constants.APPOINTMENT_LIST_PRICE);
 
         //format String time to date
         try {
@@ -600,6 +611,150 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findAppointmentOverdue(date, time);
     }
 
+    @Override
+    public List<AppointmentDTOInf> findDoneAppointment(int patientId, int paymentStatusId) {
+        List<AppointmentDTOInf> appointmentList = appointmentRepository.findDoneAppointment(patientId, paymentStatusId);
+        List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
+        for (AppointmentDTOInf appointmentDTO : appointmentList) {
+
+            AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
+            PatientDTOInf patient = patientService.findPatientById(finalAppointmentDTO.getPatientId());
+            appointmentDTO = new AppointmentDTOInf() {
+                @Override
+                public Integer getId() {
+                    return finalAppointmentDTO.getId();
+                }
+
+                @Override
+                public Integer getDoctorId() {
+                    return null;
+                }
+
+                @Override
+                public Integer getPatientId() {
+                    return null;
+                }
+
+                @Override
+                public String getDescription() {
+                    return null;
+                }
+
+                @Override
+                public Time getStartAt() {
+                    return finalAppointmentDTO.getStartAt();
+                }
+
+                @Override
+                public Time getEndAt() {
+                    return finalAppointmentDTO.getEndAt();
+                }
+
+                @Override
+                public String getTime() {
+                    return finalAppointmentDTO.getTime();
+                }
+
+                @Override
+                public String getStatus() {
+                    return finalAppointmentDTO.getStatus();
+                }
+
+                @Override
+                public Integer getStatusId() {
+                    return finalAppointmentDTO.getStatusId();
+                }
+
+                @Override
+                public Integer getRelativeId() {
+                    return null;
+                }
+
+                @Override
+                public String getAmount() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientName() {
+                    return patient.getFullName();
+                }
+
+                @Override
+                public String getPatientImageUrl() {
+                    return null;
+                }
+
+                @Override
+                public Byte getPatientGender() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientPhone() {
+                    return patient.getPhone();
+                }
+
+                @Override
+                public Date getPatientDob() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientEthnic() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientEmail() {
+                    return null;
+                }
+
+                @Override
+                public String getPatientAddress() {
+                    return null;
+                }
+
+                @Override
+                public String getDoctorName() {
+                    return finalAppointmentDTO.getDoctorName();
+                }
+
+                @Override
+                public String getDoctorImageUrl() {
+                    return finalAppointmentDTO.getDoctorImageUrl();
+                }
+
+                @Override
+                public Byte getDoctorGender() {
+                    return null;
+                }
+
+                @Override
+                public String getDoctorSpecialty() {
+                    return finalAppointmentDTO.getDoctorSpecialty();
+                }
+
+                @Override
+                public String getDoctorPhone() {
+                    return finalAppointmentDTO.getDoctorPhone();
+                }
+
+                @Override
+                public String getDoctorEmail() {
+                    return null;
+                }
+
+                @Override
+                public String getDoctorJobPlace() {
+                    return null;
+                }
+            };
+            returnAppointmentList.add(appointmentDTO);
+        }
+        return returnAppointmentList;
+    }
+
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());
@@ -658,6 +813,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             @Override
             public Integer getRelativeId() {
                 return appointmentDTO.getRelativeId();
+            }
+
+            @Override
+            public String getAmount() {
+                return appointmentDTO.getAmount();
             }
 
             @Override

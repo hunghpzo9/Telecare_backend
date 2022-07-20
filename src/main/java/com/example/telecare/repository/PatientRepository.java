@@ -1,8 +1,7 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.DoctorDTOInf;
 import com.example.telecare.dto.PatientDTOInf;
-import com.example.telecare.dto.PatientDTOInf2;
+import com.example.telecare.dto.PatientDTOAdminInf;
 import com.example.telecare.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -38,7 +37,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "            left outer join ward w on a.ward_id=w.id\n"+
             "            WHERE u.id = ?1"
             ,nativeQuery = true)
-    PatientDTOInf2 findPatientByIdForAdmin(int uid);
+    PatientDTOAdminInf findPatientByIdForAdmin(int uid);
 
     @Query(value = "SELECT u.id,u.full_name as fullName,u.date_of_birth as dob ,u.email as email,\n" +
             "           u.phone as phone,u.gender as gender,u.image_url as imageUrl,\n" +
@@ -55,7 +54,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "            where u.full_name like %?2% or u.phone like %?2% or p.job_place like %?2% or p.job like %?2%\n" +
             "            limit ?1,10",
             nativeQuery = true)
-    List<PatientDTOInf2> getAllPatient(int index, String search);
+    List<PatientDTOAdminInf> getAllPatient(int index, String search);
 
     @Query(value = " SELECT count(*)\n" +
             "            FROM user u   join patient p ON u.id = p.patient_id\n" +

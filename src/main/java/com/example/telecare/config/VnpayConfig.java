@@ -147,16 +147,6 @@ public class VnpayConfig {
         return ipAdress;
     }
 
-    public  String getTraceNumber() {
-        String lastTrace = paymentRepository.getLastTractNumber();
-        int lastTraceNo = 0;
-        if (lastTrace != null && !lastTrace.isEmpty() ) {
-            lastTraceNo = Integer.valueOf(lastTrace);
-
-        }
-        lastTraceNo++;
-        return String.format("%08d", lastTraceNo);
-    }
     public static String getRandomNumber(int len) {
         Random rnd = new Random();
         String chars = "0123456789";

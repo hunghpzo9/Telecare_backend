@@ -87,6 +87,12 @@ public class AppointmentController {
         return appointmentService.getCurrentAppointmentAvailable(patientPhone, doctorPhone, date, time);
     }
 
+    @GetMapping(value = "/getListDoneAppointment")
+    public List<AppointmentDTOInf> getListDoneAppointment(@RequestParam("patientId") int patientId,
+                                                          @RequestParam("paymentStatusId") int paymentStatusId) {
+        return appointmentService.findDoneAppointment(patientId,paymentStatusId);
+    }
+
 
     @Cacheable(value = "allCancel")
     @GetMapping(value = "/getAllCancelReason")

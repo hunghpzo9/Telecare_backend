@@ -34,6 +34,9 @@ public class AppointmentDetails {
     @Basic
     @Column(name = "refuse_fill_reason")
     private String refuseFillReason;
+    @Basic
+    @Column(name = "amount")
+    private Integer amount;
 
     public int getAppointmentId() {
         return appointmentId;
@@ -90,5 +93,13 @@ public class AppointmentDetails {
 
     public void setRefuseFillReason(String refuseFillReason) {
         this.refuseFillReason = refuseFillReason;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }
