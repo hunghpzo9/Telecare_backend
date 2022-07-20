@@ -39,7 +39,20 @@ public class PaymentServiceImpl implements PaymentService {
     private static final Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
 
     @Override
-    public ResponseEntity<?> returnPayment(String vnp_TmnCode, String vnp_Amount, String vnp_BankCode, String vnp_BankTranNo, String vnp_CardType, String vnp_PayDate, String vnp_OrderInfo, String vnp_TransactionNo, String vnp_ResponseCode, String vnp_TransactionStatus, String vnp_TxnRef, String vnp_SecureHashType, String vnp_SecureHash, HttpServletRequest request) {
+    public ResponseEntity<?> returnPayment(String vnp_TmnCode,
+                                           String vnp_Amount,
+                                           String vnp_BankCode,
+                                           String vnp_BankTranNo,
+                                           String vnp_CardType,
+                                           String vnp_PayDate,
+                                           String vnp_OrderInfo,
+                                           String vnp_TransactionNo,
+                                           String vnp_ResponseCode,
+                                           String vnp_TransactionStatus,
+                                           String vnp_TxnRef,
+                                           String vnp_SecureHashType,
+                                           String vnp_SecureHash,
+                                           HttpServletRequest request) {
         Map fields = new HashMap();
         for (Enumeration params = request.getParameterNames(); params.hasMoreElements(); ) {
             String fieldName = (String) params.nextElement();
@@ -70,20 +83,21 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 
-    @Override public void returnIpn(String vnp_TmnCode,
-                                       String vnp_Amount,
-                                       String vnp_BankCode,
-                                       String vnp_BankTranNo,
-                                       String vnp_CardType,
-                                       String vnp_PayDate,
-                                       String vnp_OrderInfo,
-                                       String vnp_TransactionNo,
-                                       String vnp_ResponseCode,
-                                       String vnp_TransactionStatus,
-                                       String vnp_TxnRef,
-                                       String vnp_SecureHashType,
-                                       String vnp_SecureHash,
-                                       HttpServletRequest request) {
+    @Override
+    public void returnIpn(String vnp_TmnCode,
+                          String vnp_Amount,
+                          String vnp_BankCode,
+                          String vnp_BankTranNo,
+                          String vnp_CardType,
+                          String vnp_PayDate,
+                          String vnp_OrderInfo,
+                          String vnp_TransactionNo,
+                          String vnp_ResponseCode,
+                          String vnp_TransactionStatus,
+                          String vnp_TxnRef,
+                          String vnp_SecureHashType,
+                          String vnp_SecureHash,
+                          HttpServletRequest request) {
         try {
 
 
@@ -116,8 +130,9 @@ public class PaymentServiceImpl implements PaymentService {
                 if (payment == null) {
                     checkOrderId = false;
                 }
+                int amount = Integer.valueOf(vnp_Amount)/100;
                 if (checkOrderId) {
-                    if (!vnp_Amount.equals(payment.getAmmount())) {
+                    if (!String.valueOf(amount).equals(payment.getAmmount())) {
                         checkAmount = false;
                     }
                     if (checkAmount) {
@@ -133,6 +148,7 @@ public class PaymentServiceImpl implements PaymentService {
                                         .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
                                 appointment.setPaymentStatusId(PaymentStatus.PAID.status);
                                 payment.setStatus(PaymentStatusSuccess);
+                                appointmentRepository.save(appointment);
                                 //Here Code update PaymnentStatus = 1 into your Database
                             } else {
                                 payment.setStatus(PaymentStatusFailed);
@@ -167,10 +183,18 @@ public class PaymentServiceImpl implements PaymentService {
     public ResponseEntity<?> createPayment(PaymentDTO paymentDTO, HttpServletRequest req) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
-        String orderType = vnpayConfig.orderType;
-        String vnp_TxnRef = vnpayConfig.getTraceNumber();
-        String vnp_IpAddr = vnpayConfig.getIpAddress(req);
-        String vnp_TmnCode = vnpayConfig.vnp_TmnCode;
+        String orderType = VnpayConfig.orderType;
+        Payment existedPayment;
+        String vnp_TxnRef;
+        do{
+            String trace = VnpayConfig.getRandomNumber(20);
+            existedPayment = paymentRepository.findPaymentByTrace(trace);
+            vnp_TxnRef = trace;
+        }while(existedPayment != null);
+
+
+        String vnp_IpAddr = VnpayConfig.getIpAddress(req);
+        String vnp_TmnCode = VnpayConfig.vnp_TmnCode;
 
         int amount = paymentDTO.getAmount() * 100;
         Map vnp_Params = new HashMap<>();
@@ -181,10 +205,10 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", paymentDTO.getBankCode());
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", paymentDTO.getDescription());
+        vnp_Params.put("vnp_OrderInfo", VnpayConfig.vnp_OrderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl", vnpayConfig.vnp_Returnurl);
+        vnp_Params.put("vnp_ReturnUrl", VnpayConfig.vnp_Returnurl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
