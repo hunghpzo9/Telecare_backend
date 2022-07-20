@@ -11,6 +11,8 @@ import com.example.telecare.model.Payment;
 import com.example.telecare.repository.AppointmentRepository;
 import com.example.telecare.repository.PaymentRepository;
 import com.example.telecare.service.PaymentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final int PaymentStatusPending = 0;
     private final int PaymentStatusSuccess = 1;
     private final int PaymentStatusFailed = 2;
+    private static final Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
 
     @Override
     public ResponseEntity<?> returnPayment(String vnp_TmnCode, String vnp_Amount, String vnp_BankCode, String vnp_BankTranNo, String vnp_CardType, String vnp_PayDate, String vnp_OrderInfo, String vnp_TransactionNo, String vnp_ResponseCode, String vnp_TransactionStatus, String vnp_TxnRef, String vnp_SecureHashType, String vnp_SecureHash, HttpServletRequest request) {
@@ -67,8 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
     }
 
-    @Override
-    public ResponseEntity<?> returnIpn(String vnp_TmnCode,
+    @Override public void returnIpn(String vnp_TmnCode,
                                        String vnp_Amount,
                                        String vnp_BankCode,
                                        String vnp_BankTranNo,
@@ -137,26 +139,27 @@ public class PaymentServiceImpl implements PaymentService {
                                 // Here Code update PaymnentStatus = 2 into your Database
                             }
                             paymentRepository.save(payment);
-                            return ResponseEntity.ok(new PaymentStatusDTO("00", "Confirm Success"));
+                            logger.info("{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}");
+
 
                         } else {
-                            return ResponseEntity.ok(new PaymentStatusDTO("02", "Order already confirmed"));
+                            logger.info("{\"RspCode\":\"02\",\"Message\":\"Order already confirmed\"}");
 
                         }
                     } else {
-                        return ResponseEntity.ok(new PaymentStatusDTO("04", "Invalid Amount"));
+                        logger.info("{\"RspCode\":\"04\",\"Message\":\"Invalid Amount\"}");
 
                     }
                 } else {
-                    return ResponseEntity.ok(new PaymentStatusDTO("01", "Order not Found"));
+                    logger.info("{\"RspCode\":\"01\",\"Message\":\"Order not Found\"}");
 
                 }
             } else {
-                return ResponseEntity.ok(new PaymentStatusDTO("97", "Invalid Checksum"));
+                logger.info("{\"RspCode\":\"97\",\"Message\":\"Invalid Checksum\"}");
 
             }
         } catch (Exception e) {
-            return ResponseEntity.ok(new PaymentStatusDTO("99", "Unknow error"));
+            logger.info("{\"RspCode\":\"99\",\"Message\":\"Unknow error\"}");
         }
     }
 
