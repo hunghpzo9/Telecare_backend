@@ -637,7 +637,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDescription() {
-                    return null;
+                    return finalAppointmentDTO.getDescription();
                 }
 
                 @Override
@@ -672,7 +672,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getAmount() {
-                    return null;
+                    return finalAppointmentDTO.getAmount();
                 }
 
                 @Override
