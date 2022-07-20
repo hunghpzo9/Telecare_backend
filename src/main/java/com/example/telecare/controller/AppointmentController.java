@@ -118,7 +118,7 @@ public class AppointmentController {
         return ResponseEntity.ok(new ResponseOkMessage("Kết thúc phiên khám thành công", new Date()));
     }
     @GetMapping(value = "/getAll")
-    public ResponseEntity<List<AppointmentDTOInf2>> getAllAppointmentForAdmin(@RequestParam int index,@RequestParam String searchText) {
+    public ResponseEntity<List<AppointmentDTOInfForAdmin>> getAllAppointmentForAdmin(@RequestParam int index, @RequestParam String searchText) {
         return new ResponseEntity<>(appointmentService.getAllAppointmentForAdmin(index,searchText), HttpStatus.OK);
     }
 

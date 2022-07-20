@@ -1,6 +1,7 @@
 package com.example.telecare.repository;
 
 import com.example.telecare.dto.AppointmentDTOInf;
+import com.example.telecare.dto.AppointmentDTOInfForAdmin;
 import com.example.telecare.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -182,7 +183,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left join appointment_details as ad on a.id=ad.appointment_id\n" +
             "where up.full_name like %?2% or ud.full_name like %?2% or up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% \n" +
             "limit ?1,10", nativeQuery = true)
-    List<AppointmentDTOInf2> getAllAppointmentForAdmin(int index,String search);
+    List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 
 
     @Query(value = "select  count(*)\n" +

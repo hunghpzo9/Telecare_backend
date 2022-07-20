@@ -2,7 +2,7 @@ package com.example.telecare.dto;
 
 import java.util.Date;
 
-public interface AppointmentDTOInf2 {
+public interface AppointmentDTOInfForAdmin {
     Integer getPatientId();
     String getPatientName();
     String getPatientPhone();
