@@ -39,7 +39,20 @@ public class PaymentController {
             @RequestParam(value = "vnp_SecureHashType", required = false) String vnp_SecureHashType,
             @RequestParam(value = "vnp_SecureHash", required = false) String vnp_SecureHash,
             HttpServletRequest request) {
-         paymentService.returnIpn(vnp_TmnCode, vnp_Amount, vnp_BankCode, vnp_BankTranNo, vnp_CardType, vnp_PayDate, vnp_OrderInfo, vnp_TransactionNo, vnp_ResponseCode, vnp_TransactionStatus, vnp_TxnRef, vnp_SecureHashType, vnp_SecureHash, request);
+        paymentService.returnIpn(vnp_TmnCode,
+                vnp_Amount,
+                vnp_BankCode,
+                vnp_BankTranNo,
+                vnp_CardType,
+                vnp_PayDate,
+                vnp_OrderInfo,
+                vnp_TransactionNo,
+                vnp_ResponseCode,
+                vnp_TransactionStatus,
+                vnp_TxnRef,
+                vnp_SecureHashType,
+                vnp_SecureHash,
+                request);
     }
 
     @GetMapping(value = "/returnPayment")
@@ -59,15 +72,27 @@ public class PaymentController {
             @RequestParam(value = "vnp_SecureHash", required = false) String vnp_SecureHash,
             HttpServletRequest request) {
 
-        return paymentService.returnPayment(vnp_TmnCode, vnp_Amount, vnp_BankCode, vnp_BankTranNo, vnp_CardType, vnp_PayDate, vnp_OrderInfo, vnp_TransactionNo, vnp_ResponseCode, vnp_TransactionStatus, vnp_TxnRef, vnp_SecureHashType, vnp_SecureHash, request);
-
+        return paymentService.returnPayment(vnp_TmnCode,
+                vnp_Amount,
+                vnp_BankCode,
+                vnp_BankTranNo,
+                vnp_CardType,
+                vnp_PayDate,
+                vnp_OrderInfo,
+                vnp_TransactionNo,
+                vnp_ResponseCode,
+                vnp_TransactionStatus,
+                vnp_TxnRef,
+                vnp_SecureHashType,
+                vnp_SecureHash,
+                request);
 
     }
 
     @PostMapping(value = "/createPayment")
     public ResponseEntity<?> createPayment(@RequestBody PaymentDTO paymentDTO,
-                              HttpServletRequest req) throws UnsupportedEncodingException {
-       return paymentService.createPayment(paymentDTO, req);
+                                           HttpServletRequest req) throws UnsupportedEncodingException {
+        return paymentService.createPayment(paymentDTO, req);
 
     }
 }
