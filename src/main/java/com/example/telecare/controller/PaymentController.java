@@ -24,7 +24,7 @@ public class PaymentController {
     PaymentServiceImpl paymentService;
 
     @GetMapping(value = "/returnIpn")
-    public ResponseEntity<?> returnIpn(
+    public void returnIpn(
             @RequestParam(value = "vnp_TmnCode", required = false) String vnp_TmnCode,
             @RequestParam(value = "vnp_Amount", required = false) String vnp_Amount,
             @RequestParam(value = "vnp_BankCode", required = false) String vnp_BankCode,
@@ -39,7 +39,7 @@ public class PaymentController {
             @RequestParam(value = "vnp_SecureHashType", required = false) String vnp_SecureHashType,
             @RequestParam(value = "vnp_SecureHash", required = false) String vnp_SecureHash,
             HttpServletRequest request) {
-        return paymentService.returnIpn(vnp_TmnCode, vnp_Amount, vnp_BankCode, vnp_BankTranNo, vnp_CardType, vnp_PayDate, vnp_OrderInfo, vnp_TransactionNo, vnp_ResponseCode, vnp_TransactionStatus, vnp_TxnRef, vnp_SecureHashType, vnp_SecureHash, request);
+         paymentService.returnIpn(vnp_TmnCode, vnp_Amount, vnp_BankCode, vnp_BankTranNo, vnp_CardType, vnp_PayDate, vnp_OrderInfo, vnp_TransactionNo, vnp_ResponseCode, vnp_TransactionStatus, vnp_TxnRef, vnp_SecureHashType, vnp_SecureHash, request);
     }
 
     @GetMapping(value = "/returnPayment")

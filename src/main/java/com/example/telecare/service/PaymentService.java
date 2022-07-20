@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 public interface PaymentService {
-    public ResponseEntity<?> returnPayment(String vnp_TmnCode,
+     ResponseEntity<?> returnPayment(String vnp_TmnCode,
                                            String vnp_Amount,
                                            String vnp_BankCode,
                                            String vnp_BankTranNo,
@@ -25,7 +25,7 @@ public interface PaymentService {
                                            String vnp_SecureHash,
                                            HttpServletRequest request);
 
-    public ResponseEntity<?> returnIpn(String vnp_TmnCode,
+     void returnIpn(String vnp_TmnCode,
                                        String vnp_Amount,
                                        String vnp_BankCode,
                                        String vnp_BankTranNo,
@@ -40,7 +40,7 @@ public interface PaymentService {
                                        String vnp_SecureHash,
                                        HttpServletRequest request);
 
-    public ResponseEntity<?> createPayment(@RequestBody PaymentDTO paymentDTO,
+     ResponseEntity<?> createPayment(@RequestBody PaymentDTO paymentDTO,
                                            HttpServletRequest req) throws UnsupportedEncodingException;
 
 }
