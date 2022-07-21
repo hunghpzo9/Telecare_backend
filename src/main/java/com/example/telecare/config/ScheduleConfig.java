@@ -65,24 +65,30 @@ public class ScheduleConfig {
     @Scheduled(fixedRate = 1000 * 10)
     private void setOverdueMedicalRecord() {
 
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = formatter.format(cld.getTime());
+        TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(tz);
+        SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = databaseFormat.format(cal.getTime());
 
         List<MedicalRecord> medicalRecords = medicalRecordRepository.getOverDueMedicalRecord(date);
         if (!medicalRecords.isEmpty()) {
             for (MedicalRecord medicalRecord : medicalRecords) {
                 medicalRecord.setIsEdited((byte) 1);
                 medicalRecordRepository.save(medicalRecord);
+
             }
         }
     }
 
     @Scheduled(fixedRate = 1000 * 60 * 60)
     private void banDoctorExpireCertificate() {
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String date = formatter.format(cld.getTime());
+        TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(tz);
+        SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = databaseFormat.format(cal.getTime());
+
         List<Doctor> expireDoctor = doctorRepository.getAllExpireDoctor(date);
         if (!expireDoctor.isEmpty()) {
             for (Doctor doctor : expireDoctor) {

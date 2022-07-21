@@ -258,13 +258,19 @@ public class PaymentServiceImpl implements PaymentService {
         json.put("data", paymentUrl);
 
         //save pending payment to database
+        TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTimeZone(tz);
+        SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateDatabase = databaseFormat.format(cal2.getTime());
+
         Payment payment = new Payment();
         payment.setStatus(0);
         payment.setAppointmentId(paymentDTO.getAppointmentId());
         payment.setAmmount(String.valueOf(paymentDTO.getAmount()));
         payment.setBankcode(paymentDTO.getBankCode());
         payment.setDescription(paymentDTO.getDescription());
-        payment.setTransactionDate(vnp_CreateDate);
+        payment.setTransactionDate(dateDatabase);
         payment.setTrace(vnp_TxnRef);
         payment.setInstallment("No");
         paymentRepository.save(payment);
