@@ -19,21 +19,9 @@ public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
             "FROM\n" +
             "    telecare.medicine\n" +
             "WHERE\n" +
-            "    name LIKE %?1% AND status = 0", nativeQuery = true)
-    List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText);
+            "    name LIKE %?1% AND status = 0 LIMIT 10 OFFSET ?2", nativeQuery = true)
+    List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText, int index);
 
-    @Query(value = "SELECT \n" +
-            "    m.id, m.name, pm.instruction\n " +
-            "FROM\n" +
-            "    telecare.medicine m\n" +
-            "        LEFT OUTER JOIN\n" +
-            "    telecare.prescription_medicine pm ON pm.medicine_id = m.id\n" +
-            "WHERE\n" +
-            "    pm.prescription_id = ?1", nativeQuery = true)
-    List<MedicinePrescriptionDTO> findAllMedicineByAppointmentId(int id);
-
-    @Query(value = "SELECT * from telecare.medicine WHERE id = ?1", nativeQuery = true)
-    Medicine findMedicineById(int id);
 
     @Query(value = "SELECT count(*) FROM telecare.medicine as m" +
             "            where m.number_of_receipts like %?1% or m.year_of_receipts like %?1% or m.name like %?1% or m.company like %?1% or m.registration_number like %?1%"

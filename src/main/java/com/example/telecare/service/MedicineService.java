@@ -8,7 +8,7 @@ import java.util.List;
 public interface MedicineService {
     List<Medicine> getAllMedicine(int index,String searchText);
 
-    List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText);
+    List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText, int index);
 
     int getNumberOfMedicine(String searchText);
 }
