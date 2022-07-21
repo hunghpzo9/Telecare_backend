@@ -1,6 +1,5 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.MedicineDTO;
 import com.example.telecare.dto.MedicineNameDTO;
 import com.example.telecare.model.Medicine;
 import com.example.telecare.service.impl.MedicineServiceImpl;
@@ -28,8 +27,8 @@ public class MedicineController {
     }
 
     @GetMapping("/getAllNameDistinct")
-    public ResponseEntity<?> getAllNameDistinct(@RequestParam String searchText) {
-        List<MedicineNameDTO> medicines = medicineService.getAllMedicineNameDistinct(searchText);
+    public ResponseEntity<?> getAllNameDistinct(@RequestParam String searchText, @RequestParam int index) {
+        List<MedicineNameDTO> medicines = medicineService.getAllMedicineNameDistinct(searchText, index);
         if (medicines.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

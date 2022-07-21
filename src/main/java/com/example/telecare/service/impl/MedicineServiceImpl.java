@@ -22,8 +22,8 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText) {
-        return medicineRepository.getAllMedicineNameDistinct(searchText);
+    public List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText, int index) {
+        return medicineRepository.getAllMedicineNameDistinct(searchText, index);
     }
 
     @Override
