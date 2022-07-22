@@ -27,7 +27,7 @@ public class PrescriptionController {
         return prescriptionService.getPrescriptionDetailByAppointmentId(appointmentId);
     }
 
-    @PutMapping(value = "/addPrescription")
+    @PostMapping(value = "/addPrescription")
     public Prescription addPrescription(@RequestBody Prescription prescription) {
         return prescriptionService.addPrescription(prescription);
     }
