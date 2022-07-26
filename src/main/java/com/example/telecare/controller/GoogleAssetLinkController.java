@@ -15,7 +15,7 @@ public class GoogleAssetLinkController {
         return ResponseEntity.ok().body("[\n" +
 
                 "{\n" +
-                "    \"relation\": [\"delegate_permission/common.get_login_creds\"],\n" +
+                "    \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n" +
                 "    \"target\": {\n" +
                 "        \"namespace\": \"android_app\",\n" +
                 "        \"package_name\": \"com.example.healthcare_app\",\n" +
