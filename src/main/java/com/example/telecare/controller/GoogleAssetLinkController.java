@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
-@RequestMapping("/api/v1/.well-known/assetlinks.json")
+@RequestMapping("/.well-known/assetlinks.json")
 public class GoogleAssetLinkController {
     @GetMapping(value = "")
     public ResponseEntity<String> createProduct() {
