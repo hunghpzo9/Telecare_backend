@@ -204,7 +204,7 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", paymentDTO.getBankCode());
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", paymentDTO.getDescription());
+        vnp_Params.put("vnp_OrderInfo", VnpayConfig.vnp_OrderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_ReturnUrl", VnpayConfig.vnp_Returnurl);
@@ -217,9 +217,7 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
         cld.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(cld.getTime());
-        //Add Params of 2.1.0 Version
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-
         //Build data to hash and querystring
         List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
@@ -249,8 +247,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         String queryUrl = query.toString();
         String vnp_SecureHash = vnpayConfig.hmacSHA512(vnpayConfig.vnp_HashSecret, hashData.toString());
-        queryUrl += "&vnp_SecureHashType=HmacSHA512&vnp_SecureHash=" + vnp_SecureHash;
-
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = vnpayConfig.vnp_PayUrl + "?" + queryUrl;
         HashMap<String, String> json = new HashMap<>();
         json.put("code", "00");
