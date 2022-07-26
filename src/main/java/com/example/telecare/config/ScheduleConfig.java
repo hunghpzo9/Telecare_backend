@@ -74,7 +74,7 @@ public class ScheduleConfig {
         List<MedicalRecord> medicalRecords = medicalRecordRepository.getOverDueMedicalRecord(date);
         if (!medicalRecords.isEmpty()) {
             for (MedicalRecord medicalRecord : medicalRecords) {
-                medicalRecord.setIsEdited((byte) 1);
+                medicalRecord.setIsEdited((byte) Constants.IS_NOT_EDITED);
                 medicalRecordRepository.save(medicalRecord);
 
             }

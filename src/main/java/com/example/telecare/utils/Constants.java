@@ -17,6 +17,10 @@ public class Constants {
 
     public static final int IS_NOT_ACTIVE= 0;
 
+    public static final int IS_EDITED= 0;
+
+    public static final int IS_NOT_EDITED= 1;
+
     public static final String ROLE_PATIENT= "PATIENT";
 
     public static final String ROLE_DOCTOR= "DOCTOR";

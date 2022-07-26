@@ -76,10 +76,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/address/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers(HttpMethod.GET,"/api/v1/payment/returnIpn").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/v1/payment/returnPayment").permitAll()
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)
-
+                .antMatchers("/api/v1/.well-known/assetlinks.json").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
