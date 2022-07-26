@@ -1,5 +1,7 @@
 package com.example.telecare.controller;
-
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/.well-known/assetlinks.json")
 public class GoogleAssetLinkController {
-    @GetMapping(value = "")
+    @GetMapping(value = "",produces = "application/json")
     public ResponseEntity<String> createProduct() {
-        return ResponseEntity.ok().body("[\n" +
+        final HttpHeaders httpHeaders= new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<String>("[\n" +
 
                 "{\n" +
                 "    \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n" +
@@ -22,6 +26,7 @@ public class GoogleAssetLinkController {
                 "        ]\n" +
                 "    }\n" +
                 "}\n" +
-                "]");
+                "]", httpHeaders, HttpStatus.OK);
+
     }
 }
