@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.healthcare_app",
+      "sha256_cert_fingerprints": [
+        "D8:58:4A:96:B8:5D:E2:DA:F2:21:25:72:19:7F:35:59:5F:52:EE:5B:96:8B:A9:D3:96:91:00:C5:13:F0:0F:CA"
+      ]
+    }
+  }
+]
