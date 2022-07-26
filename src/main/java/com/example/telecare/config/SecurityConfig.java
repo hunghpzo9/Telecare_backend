@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
                         Constants.ROLE_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)
-                .antMatchers("/api/v1/.well-known/assetlinks.json").permitAll()
+                .antMatchers("/.well-known/assetlinks.json").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
