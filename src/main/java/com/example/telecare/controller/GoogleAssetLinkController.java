@@ -1,7 +1,5 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.FeedbackDTOInf;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
