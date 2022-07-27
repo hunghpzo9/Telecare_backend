@@ -25,7 +25,7 @@ public class VnpayConfig {
     PaymentRepository paymentRepository;
 
     public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static final String vnp_Returnurl = "https://telecare-doxr4lwcja-as.a.run.app/api/v1/payment/returnPayment/";
+    public static final String vnp_Returnurl = "https://telecare-doxr4lwcja-as.a.run.app/api/v1/payment/returnPayment";
     public static final String vnp_TmnCode = "HEZES5XN";
     public static final String vnp_HashSecret = "JGAWVSUVYAQETSOFRBNLWUHDHZTUUVYU";
     public static final String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
