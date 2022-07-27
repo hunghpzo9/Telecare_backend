@@ -23,6 +23,11 @@ public class PaymentController {
     @Autowired
     PaymentServiceImpl paymentService;
 
+    @GetMapping(value = "/detail")
+    public void paymentDetail(){
+
+    }
+
     @GetMapping(value = "/returnIpn")
     public void returnIpn(
             @RequestParam(value = "vnp_TmnCode", required = false) String vnp_TmnCode,

@@ -51,9 +51,11 @@ public class Constants {
 
     public static final String COLLECTION_NOTIFICATION_MESSAGE= "message";
 
-    public static final String NOTIFICATION_TEXT= "text";
+    //Payment
 
-    public static final String NOTIFICATION_TIME= "time";
+    public static final String PAYMENT_SUCCESS_MESSAGE= "Giao dich thanh cong";
+
+    public static final String PAYMENT_FAILED_MESSAGE= "Giao dich khong thanh cong";
 
 
 }

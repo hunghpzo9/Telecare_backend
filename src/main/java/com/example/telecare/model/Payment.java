@@ -41,6 +41,9 @@ public class Payment {
     @Basic
     @Column(name = "status")
     private Integer status;
+    @Basic
+    @Column(name = "amount")
+    private String amount;
 
     public int getId() {
         return id;
@@ -178,5 +181,13 @@ public class Payment {
         result = 31 * result + (installment != null ? installment.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

@@ -10,6 +10,7 @@ import com.example.telecare.model.Payment;
 import com.example.telecare.repository.AppointmentRepository;
 import com.example.telecare.repository.PaymentRepository;
 import com.example.telecare.service.PaymentService;
+import com.example.telecare.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,9 +72,9 @@ public class PaymentServiceImpl implements PaymentService {
         String signValue = vnpayConfig.hashAllFields(fields);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
-                return ResponseEntity.ok(new ResponseOkMessage("Giao dich thanh cong", new Date()));
+                return ResponseEntity.ok(new ResponseOkMessage(Constants.PAYMENT_SUCCESS_MESSAGE, new Date()));
             } else {
-                return ResponseEntity.ok(new ResponseOkMessage("Giao dich khong thanh cong", new Date()));
+                return ResponseEntity.ok(new ResponseOkMessage(Constants.PAYMENT_FAILED_MESSAGE, new Date()));
             }
 
         } else {
