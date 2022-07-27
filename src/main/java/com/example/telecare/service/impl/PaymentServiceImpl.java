@@ -132,7 +132,7 @@ public class PaymentServiceImpl implements PaymentService {
                 }
                 int amount = Integer.valueOf(vnp_Amount)/100;
                 if (checkOrderId) {
-                    if (!String.valueOf(amount).equals(payment.getAmmount())) {
+                    if (!String.valueOf(amount).equals(payment.getAmount())) {
                         checkAmount = false;
                     }
                     if (checkAmount) {
@@ -265,7 +265,7 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = new Payment();
         payment.setStatus(0);
         payment.setAppointmentId(paymentDTO.getAppointmentId());
-        payment.setAmmount(String.valueOf(paymentDTO.getAmount()));
+        payment.setAmount(String.valueOf(paymentDTO.getAmount()));
         payment.setBankcode(paymentDTO.getBankCode());
         payment.setDescription(paymentDTO.getDescription());
         payment.setTransactionDate(dateDatabase);
