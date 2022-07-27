@@ -9,4 +9,6 @@ public interface SpecialtyService {
     List<Specialty> findAllSpecialty();
 
     List<Specialty> findAllSpecialtyByDoctorId(int doctorId);
+
+    void removeSpecialty(int doctorId, int specialtyId);
 }

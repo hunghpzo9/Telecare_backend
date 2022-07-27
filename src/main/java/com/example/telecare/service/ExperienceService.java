@@ -9,4 +9,8 @@ public interface ExperienceService {
     List<DoctorExperienceDTO> findAllExperienceByDoctorId(int id);
 
     DoctorExperience addDoctorExperience(DoctorExperience doctorExperience);
+
+    void removeExperience(int experienceId);
+
+
 }
