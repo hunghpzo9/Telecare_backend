@@ -10,6 +10,7 @@ import com.example.telecare.model.Payment;
 import com.example.telecare.repository.AppointmentRepository;
 import com.example.telecare.repository.PaymentRepository;
 import com.example.telecare.service.PaymentService;
+import com.example.telecare.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,9 +72,9 @@ public class PaymentServiceImpl implements PaymentService {
         String signValue = vnpayConfig.hashAllFields(fields);
         if (signValue.equals(vnp_SecureHash)) {
             if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
-                return ResponseEntity.ok(new ResponseOkMessage("Giao dich thanh cong", new Date()));
+                return ResponseEntity.ok(new ResponseOkMessage(Constants.PAYMENT_SUCCESS_MESSAGE, new Date()));
             } else {
-                return ResponseEntity.ok(new ResponseOkMessage("Giao dich khong thanh cong", new Date()));
+                return ResponseEntity.ok(new ResponseOkMessage(Constants.PAYMENT_FAILED_MESSAGE, new Date()));
             }
 
         } else {
@@ -131,7 +132,7 @@ public class PaymentServiceImpl implements PaymentService {
                 }
                 int amount = Integer.valueOf(vnp_Amount)/100;
                 if (checkOrderId) {
-                    if (!String.valueOf(amount).equals(payment.getAmmount())) {
+                    if (!String.valueOf(amount).equals(payment.getAmount())) {
                         checkAmount = false;
                     }
                     if (checkAmount) {
@@ -217,9 +218,7 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
         cld.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(cld.getTime());
-        //Add Params of 2.1.0 Version
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-
         //Build data to hash and querystring
         List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
@@ -249,8 +248,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         String queryUrl = query.toString();
         String vnp_SecureHash = vnpayConfig.hmacSHA512(vnpayConfig.vnp_HashSecret, hashData.toString());
-        queryUrl += "&vnp_SecureHashType=HmacSHA512&vnp_SecureHash=" + vnp_SecureHash;
-
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = vnpayConfig.vnp_PayUrl + "?" + queryUrl;
         HashMap<String, String> json = new HashMap<>();
         json.put("code", "00");
@@ -258,13 +256,19 @@ public class PaymentServiceImpl implements PaymentService {
         json.put("data", paymentUrl);
 
         //save pending payment to database
+        TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTimeZone(tz);
+        SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateDatabase = databaseFormat.format(cal2.getTime());
+
         Payment payment = new Payment();
         payment.setStatus(0);
         payment.setAppointmentId(paymentDTO.getAppointmentId());
-        payment.setAmmount(String.valueOf(paymentDTO.getAmount()));
+        payment.setAmount(String.valueOf(paymentDTO.getAmount()));
         payment.setBankcode(paymentDTO.getBankCode());
         payment.setDescription(paymentDTO.getDescription());
-        payment.setTransactionDate(vnp_CreateDate);
+        payment.setTransactionDate(dateDatabase);
         payment.setTrace(vnp_TxnRef);
         payment.setInstallment("No");
         paymentRepository.save(payment);

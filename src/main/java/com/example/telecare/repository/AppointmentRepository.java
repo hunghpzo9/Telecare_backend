@@ -1,6 +1,7 @@
 package com.example.telecare.repository;
 
 import com.example.telecare.dto.AppointmentDTOInf;
+import com.example.telecare.dto.AppointmentDTOInfForAdmin;
 import com.example.telecare.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -82,7 +83,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "    u.id AS patientId,\n" +
             "    a.doctor_id AS doctorId,\n" +
             "    u.image_url AS patientImageUrl,\n" +
-            "    a.relative_id as relativeId,\n" +
             "    u.full_name AS patientName,\n" +
             "    u.phone AS patientPhone,\n" +
             "    spec.name AS doctorSpecialty,\n" +
@@ -130,7 +130,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                       left outer join telecare.user u on a.doctor_id = u.id\n" +
             "                        left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "                        left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "                        where a.patient_id = ?1 and a.doctor_id = ?2 and (ad.status_id = 2 or ad.status_id = 3)\n" +
+            "                        where a.patient_id = ?1 and a.doctor_id = ?2 and ad.status_id = 2\n" +
             "                        and time = ?3 and s.start_at <= ?4 and s.end_at >= ?4 \n" +
             "                        group by s.end_at,s.start_at,ad.time\n" +
             "                        order by ad.time",
@@ -150,7 +150,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        left outer join telecare.user u on a.doctor_id = u.id\n" +
             "                        left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "                        left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "                        where aps.id in (1,2) and ((ad.time = ?1 \n" +
+            "                        where aps.id in (1,2) and ((ad.time < ?1 \n" +
             "                        and s.end_at <= ?2) or ad.time < ?1 )\n" +
             "                        group by s.end_at,s.start_at,ad.time\n" +
             "                                    ",
@@ -174,4 +174,26 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                    ",
             nativeQuery = true)
     List<AppointmentDTOInf> findDoneAppointment(int patientId,int paymentStatusId);
+    @Query(value = "select  up.full_name patientName,up.id patientId,up.phone patientPhone,ud.full_name doctorName,ud.id doctorId,p.trace prescriptionTrace,p.url prescriptionUrl,mr.trace medicalRecordTrace,mr.url medicalRecordUrl,ad.time\n" +
+            "from appointment as a \n" +
+            "left join user as up on a.patient_id=up.id\n" +
+            "left join prescription as p on a.id = p.appointment_id\n" +
+            "left join user as ud on a.doctor_id=ud.id\n" +
+            "left join medical_record as mr on a.id=mr.appointment_id\n" +
+            "left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "where up.full_name like %?2% or ud.full_name like %?2% or up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% \n" +
+            "limit ?1,10", nativeQuery = true)
+    List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
+
+
+    @Query(value = "select  count(*)\n" +
+            "from appointment as a \n" +
+            "left join user as up on a.patient_id=up.id\n" +
+            "left join prescription as p on a.id = p.appointment_id\n" +
+            "left join user as ud on a.doctor_id=ud.id\n" +
+            "left join medical_record as mr on a.id=mr.appointment_id\n" +
+            "left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "where up.full_name like %?1% or ud.full_name like %?1% or up.phone like %?1% or p.trace like %?1% or mr.trace like %?1% or ad.time like %?1% "
+            ,nativeQuery = true)
+    int getNumberOfAppointmentForAdmin(String search);
 }

@@ -17,6 +17,10 @@ public class Constants {
 
     public static final int IS_NOT_ACTIVE= 0;
 
+    public static final int IS_EDITED= 0;
+
+    public static final int IS_NOT_EDITED= 1;
+
     public static final String ROLE_PATIENT= "PATIENT";
 
     public static final String ROLE_DOCTOR= "DOCTOR";
@@ -47,9 +51,11 @@ public class Constants {
 
     public static final String COLLECTION_NOTIFICATION_MESSAGE= "message";
 
-    public static final String NOTIFICATION_TEXT= "text";
+    //Payment
 
-    public static final String NOTIFICATION_TIME= "time";
+    public static final String PAYMENT_SUCCESS_MESSAGE= "Giao dich thanh cong";
+
+    public static final String PAYMENT_FAILED_MESSAGE= "Giao dich khong thanh cong";
 
 
 }

@@ -1,9 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.CancelDTOInf;
-import com.example.telecare.dto.DoctorDTOInf;
-import com.example.telecare.dto.PatientDTOInf;
+import com.example.telecare.dto.*;
 import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.enums.PaymentStatus;
 import com.example.telecare.exception.BadRequestException;
@@ -109,7 +106,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
-                public String getAmount() {
+                public Integer getAmount() {
                     return null;
                 }
 
@@ -263,7 +260,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
-                public String getAmount() {
+                public Integer getAmount() {
                     return null;
                 }
 
@@ -612,6 +609,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search) {
+        return appointmentRepository.getAllAppointmentForAdmin(index,search);
+    }
+
+    @Override
+    public int getNumberOfAppointmentForAdmin(String search) {
+        return appointmentRepository.getNumberOfAppointmentForAdmin(search);
+    }
+
+    @Override
     public List<AppointmentDTOInf> findDoneAppointment(int patientId, int paymentStatusId) {
         List<AppointmentDTOInf> appointmentList = appointmentRepository.findDoneAppointment(patientId, paymentStatusId);
         List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
@@ -637,7 +644,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDescription() {
-                    return null;
+                    return finalAppointmentDTO.getDescription();
                 }
 
                 @Override
@@ -671,8 +678,8 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
-                public String getAmount() {
-                    return null;
+                public Integer getAmount() {
+                    return finalAppointmentDTO.getAmount();
                 }
 
                 @Override
@@ -816,7 +823,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public String getAmount() {
+            public Integer getAmount() {
                 return appointmentDTO.getAmount();
             }
 
