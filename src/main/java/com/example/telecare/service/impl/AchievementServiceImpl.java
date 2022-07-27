@@ -23,4 +23,9 @@ public class AchievementServiceImpl implements AchievementService {
         return achievementRepository.save(achievement);
     }
 
+    @Override
+    public void removeAchievement(int achievementId) {
+        achievementRepository.deleteById(achievementId);
+    }
+
 }

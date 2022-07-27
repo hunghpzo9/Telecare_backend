@@ -125,5 +125,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             ,nativeQuery = true)
     List<Doctor> getAllExpireDoctor(String time);
 
+    @Query(value = "SELECT Count(*) from doctor_specialty where doctor_id = ?1 ",
+            nativeQuery = true)
+    Integer countSpecialtyOfDoctor(int doctorId);
 
 }

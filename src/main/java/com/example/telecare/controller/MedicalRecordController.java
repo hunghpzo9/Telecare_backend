@@ -27,7 +27,7 @@ public class MedicalRecordController {
         return medicalRecordService.getMedicalRecordDetailByAppointmentId(appointmentId);
     }
 
-    @PutMapping(value = "/addMedicalRecord")
+    @PostMapping(value = "/addMedicalRecord")
     public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int yearCode) {
         MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord, yearCode);
         return addMedicalRecord;

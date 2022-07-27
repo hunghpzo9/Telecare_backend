@@ -10,4 +10,5 @@ public interface AchievementService {
 
     DoctorAchievement addDoctorAchievement(DoctorAchievement achievement);
 
+    void removeAchievement(int achievementId);
 }

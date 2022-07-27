@@ -23,4 +23,9 @@ public class ExperienceServiceImpl implements ExperienceService {
     public DoctorExperience addDoctorExperience(DoctorExperience doctorExperience) {
         return experienceRepository.save(doctorExperience);
     }
+
+    @Override
+    public void removeExperience(int experienceId) {
+        experienceRepository.deleteById(experienceId);
+    }
 }
