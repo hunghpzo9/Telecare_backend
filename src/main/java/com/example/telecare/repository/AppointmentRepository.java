@@ -170,7 +170,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                    left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "                                    left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
             "                                    left outer join telecare.payment payment on payment.appointment_id = a.id\n" +
-            "                                    where ad.status_id = 3 and a.patient_id = 1 and a.payment_status_id = 2\n" +
+            "                                    where ad.status_id = 3 and a.patient_id = ?1 and a.payment_status_id = ?2\n" +
             "                                    group by s.end_at,s.start_at,ad.time\n" +
             "                                    order by payment.transaction_date " +
             "                                    ",
