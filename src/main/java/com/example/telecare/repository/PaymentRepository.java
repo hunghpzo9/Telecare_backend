@@ -10,7 +10,9 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
             ,nativeQuery = true)
     Payment findPaymentByTrace(String trace);
 
-    @Query(value = "SELECT * FROM telecare.payment where appointment_id = ?1 and status = 1"
+    @Query(value = "SELECT * FROM telecare.payment where appointment_id = ?1 and status = ?2"
             ,nativeQuery = true)
-    Payment findPaymentDetailByAppointmentId(int id);
+    Payment findPaymentDetailByAppointmentId(int id,int status);
+
+
 }

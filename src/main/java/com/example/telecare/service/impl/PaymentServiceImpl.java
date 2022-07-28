@@ -276,4 +276,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         return ResponseEntity.ok(json);
     }
+
+    @Override
+    public Payment findSuccessPaymentDetailByAppointmentId(int id) {
+        return paymentRepository.findPaymentDetailByAppointmentId(id,PaymentStatusSuccess);
+    }
 }

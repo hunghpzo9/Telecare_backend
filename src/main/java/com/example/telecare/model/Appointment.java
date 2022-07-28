@@ -49,9 +49,6 @@ public class Appointment {
     @Basic
     @Column(name = "is_share_medical_record")
     private Byte isShareMedicalRecord;
-    @Basic
-    @Column(name = "is_share_prescription")
-    private Byte isSharePrescription;
 
 
     @Override

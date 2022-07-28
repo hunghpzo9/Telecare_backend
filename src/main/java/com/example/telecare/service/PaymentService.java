@@ -1,6 +1,7 @@
 package com.example.telecare.service;
 
 import com.example.telecare.dto.PaymentDTO;
+import com.example.telecare.model.Payment;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,5 +43,7 @@ public interface PaymentService {
 
      ResponseEntity<?> createPayment(@RequestBody PaymentDTO paymentDTO,
                                            HttpServletRequest req) throws UnsupportedEncodingException;
+
+     Payment findSuccessPaymentDetailByAppointmentId(int id);
 
 }
