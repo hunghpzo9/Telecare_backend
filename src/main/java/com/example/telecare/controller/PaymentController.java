@@ -3,6 +3,7 @@ package com.example.telecare.controller;
 import com.example.telecare.config.VnpayConfig;
 import com.example.telecare.dto.PaymentDTO;
 import com.example.telecare.dto.ResponseOkMessage;
+import com.example.telecare.model.Payment;
 import com.example.telecare.service.impl.PaymentServiceImpl;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,6 @@ import java.util.*;
 public class PaymentController {
     @Autowired
     PaymentServiceImpl paymentService;
-
-    @GetMapping(value = "/detail")
-    public void paymentDetail(){
-
-    }
 
     @GetMapping(value = "/returnIpn")
     public void returnIpn(
@@ -98,6 +94,10 @@ public class PaymentController {
     public ResponseEntity<?> createPayment(@RequestBody PaymentDTO paymentDTO,
                                            HttpServletRequest req) throws UnsupportedEncodingException {
         return paymentService.createPayment(paymentDTO, req);
-
+    }
+    @GetMapping(value = "/detail")
+    public ResponseEntity<?> paymentDetail(@RequestParam(value = "appointment_id") int appointment_id)  {
+        Payment payment =  paymentService.findSuccessPaymentDetailByAppointmentId(appointment_id);
+        return  ResponseEntity.ok(payment);
     }
 }

@@ -387,7 +387,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         newAppointment.setScheduleId(appointment.getScheduleId());
         newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
         newAppointment.setIsShareMedicalRecord(appointment.getIsShareMedicalRecord());
-        newAppointment.setIsSharePrescription(appointment.getIsSharePrescription());
 
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
