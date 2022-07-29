@@ -3,7 +3,9 @@ package com.example.telecare.config;
 
 import com.example.telecare.repository.PaymentRepository;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.Mac;
@@ -16,76 +18,27 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 
-@AllArgsConstructor
-
 @Configuration
+@ConfigurationProperties(prefix = "vnpay")
+@Data
 public class VnpayConfig {
     @Autowired
 
     PaymentRepository paymentRepository;
 
-    public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static final String vnp_Returnurl = "https://telecare-doxr4lwcja-as.a.run.app/api/v1/payment/returnPayment";
-    public static final String vnp_TmnCode = "HEZES5XN";
-    public static final String vnp_HashSecret = "JGAWVSUVYAQETSOFRBNLWUHDHZTUUVYU";
-    public static final String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
-    public static final String vnp_IpnUrl = "https://telecare-doxr4lwcja-as.a.run.app/api/v1/payment/returnIpn";
+    public  String vnpPayUrl;
+    public  String vnpReturnUrl ;
+    public  String vnpTmnCode ;
+    public  String vnpHashSecret ;
+    public  String vnpApiUrl ;
+    public  String vnpIpnUrl;
 
-    public static final String vnp_Version = "2.1.0";
-    public static final String vnp_Command = "pay";
-    public static final String vnp_OrderInfo = "offer";
-    public static final String orderType = "270001";
-    public static final String vnp_CurrCode = "VND";
-    public static final String vnp_BankCode = "NCB";
-
-    public  String md5(String message) {
-        String digest = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] hash = md.digest(message.getBytes("UTF-8"));
-            // converting byte array to Hexadecimal String
-            StringBuilder sb = new StringBuilder(2 * hash.length);
-            for (byte b : hash) {
-                sb.append(String.format("%02x", b & 0xff));
-            }
-            digest = sb.toString();
-        } catch (UnsupportedEncodingException ex) {
-            digest = "";
-            // Logger.getLogger(StringReplace.class.getName()).log(Level.SEVERE,
-            // null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            // Logger.getLogger(StringReplace.class.getName()).log(Level.SEVERE,
-            // null, ex);
-            digest = "";
-        }
-        return digest;
-    }
-
-    public  String Sha256(String message) {
-        String digest = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(message.getBytes("UTF-8"));
-
-            // converting byte array to Hexadecimal String
-            StringBuilder sb = new StringBuilder(2 * hash.length);
-            for (byte b : hash) {
-                sb.append(String.format("%02x", b & 0xff));
-            }
-
-            digest = sb.toString();
-
-        } catch (UnsupportedEncodingException ex) {
-            digest = "";
-            // Logger.getLogger(StringReplace.class.getName()).log(Level.SEVERE,
-            // null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            // Logger.getLogger(StringReplace.class.getName()).log(Level.SEVERE,
-            // null, ex);
-            digest = "";
-        }
-        return digest;
-    }
+    public  String vnpVersion ;
+    public  String vnpCommand;
+    public  String vnpOrderInfo ;
+    public  String orderType;
+    public  String vnpCurrCode ;
+    public  String vnpBankCode ;
 
     public  String hmacSHA512(final String key, final String data) {
         try {
@@ -131,7 +84,7 @@ public class VnpayConfig {
                 sb.append("&");
             }
         }
-        return hmacSHA512(vnp_HashSecret, sb.toString());
+        return hmacSHA512(vnpHashSecret, sb.toString());
     }
 
     public static String getIpAddress(HttpServletRequest request) {
