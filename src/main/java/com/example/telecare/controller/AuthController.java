@@ -64,8 +64,10 @@ public class AuthController {
         return authService.checkPhoneExisted(phone);
     }
 
-    @PutMapping("/changePassword/{id}/{password}/{newPassword}")
-    public ResponseEntity<?> changeOldPassword(@PathVariable String id, @PathVariable String password, @PathVariable String newPassword) {
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changeOldPassword(@RequestParam("id") String id,
+                                               @RequestParam("password") String password,
+                                               @RequestParam("newPassword") String newPassword) {
         return authService.changeOldPassword(id, password, newPassword);
     }
 
