@@ -35,8 +35,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     @Query(value = "SELECT a.id , u.id as doctorId ,p.patient_id as patientId" +
             ",a.relative_id as relativeId ,u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
-            "            ad.description ,s.start_at as startAt,s.end_at as endAt" +
-            ",ad.time,aps.name as status,aps.id as statusId,ad.amount\n" +
+            "            a.is_share_medical_record as isShare,ad.description ,s.start_at as startAt,s.end_at as endAt" +
+            "           ,ad.time,aps.name as status,aps.id as statusId,ad.amount\n" +
             "            FROM telecare.appointment a\n" +
             "            left outer join telecare.patient p on a.patient_id = p.patient_id\n" +
             "            left outer join telecare.doctor_specialty ds on ds.doctor_id = a.doctor_id\n" +
@@ -172,7 +172,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                    left outer join telecare.payment payment on payment.appointment_id = a.id\n" +
             "                                    where ad.status_id = 3 and a.patient_id = ?1 and a.payment_status_id = ?2\n" +
             "                                    group by s.end_at,s.start_at,ad.time\n" +
-            "                                    order by payment.transaction_date " +
+            "                                    order by payment.transaction_date desc" +
             "                                    ",
             nativeQuery = true)
     List<AppointmentDTOInf> findDoneAppointment(int patientId,int paymentStatusId);
@@ -183,7 +183,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left join user as ud on a.doctor_id=ud.id\n" +
             "left join medical_record as mr on a.id=mr.appointment_id\n" +
             "left join appointment_details as ad on a.id=ad.appointment_id\n" +
-            "where up.full_name like %?2% or ud.full_name like %?2% or up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% \n" +
+            "where up.full_name like %?2% or ud.full_name like %?2% or " +
+            "up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% \n" +
             "limit ?1,10", nativeQuery = true)
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 

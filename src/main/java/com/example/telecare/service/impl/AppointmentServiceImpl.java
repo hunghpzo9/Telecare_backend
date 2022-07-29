@@ -111,6 +111,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public Byte getIsShare() {
+                    return null;
+                }
+
+                @Override
                 public String getPatientName() {
                     return patient.getFullName();
                 }
@@ -261,6 +266,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Integer getAmount() {
+                    return null;
+                }
+
+                @Override
+                public Byte getIsShare() {
                     return null;
                 }
 
@@ -682,6 +692,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public Byte getIsShare() {
+                    return null;
+                }
+
+                @Override
                 public String getPatientName() {
                     return patient.getFullName();
                 }
@@ -824,6 +839,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             @Override
             public Integer getAmount() {
                 return appointmentDTO.getAmount();
+            }
+
+            @Override
+            public Byte getIsShare() {
+                return appointmentDTO.getIsShare();
             }
 
             @Override
