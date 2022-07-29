@@ -114,7 +114,7 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<?> changeOldPassword(String id, String oldPassword, String newPassword) {
         User user = userRepository.findUserById(id);
         if (!oldPassword.equals(decodePassword(user))) {
-            throw new ForbiddenException("Mật khẩu ban đầu không đúng");
+            throw new BadRequestException("Mật khẩu ban đầu không đúng");
         } else {
             encodePassword(user, newPassword);
             userRepository.save(user);
