@@ -183,7 +183,7 @@ public class PaymentServiceImpl implements PaymentService {
     public ResponseEntity<?> createPayment(PaymentDTO paymentDTO, HttpServletRequest req) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
-        String orderType = VnpayConfig.orderType;
+        String orderType = vnpayConfig.orderType;
         Payment existedPayment;
         String vnp_TxnRef;
         do{
@@ -194,7 +194,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 
         String vnp_IpAddr = VnpayConfig.getIpAddress(req);
-        String vnp_TmnCode = VnpayConfig.vnp_TmnCode;
+        String vnp_TmnCode = vnpayConfig.vnpTmnCode;
 
         int amount = paymentDTO.getAmount() * 100;
         Map vnp_Params = new HashMap<>();
@@ -205,10 +205,10 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_CurrCode", "VND");
         vnp_Params.put("vnp_BankCode", paymentDTO.getBankCode());
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", VnpayConfig.vnp_OrderInfo);
+        vnp_Params.put("vnp_OrderInfo", vnpayConfig.vnpOrderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl", VnpayConfig.vnp_Returnurl);
+        vnp_Params.put("vnp_ReturnUrl", vnpayConfig.vnpReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
         Calendar cld = Calendar.getInstance();
@@ -250,9 +250,9 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         String queryUrl = query.toString();
-        String vnp_SecureHash = vnpayConfig.hmacSHA512(vnpayConfig.vnp_HashSecret, hashData.toString());
+        String vnp_SecureHash = vnpayConfig.hmacSHA512(vnpayConfig.vnpHashSecret, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        String paymentUrl = vnpayConfig.vnp_PayUrl + "?" + queryUrl;
+        String paymentUrl = vnpayConfig.vnpPayUrl + "?" + queryUrl;
         HashMap<String, String> json = new HashMap<>();
         json.put("code", "00");
         json.put("message", "success");
