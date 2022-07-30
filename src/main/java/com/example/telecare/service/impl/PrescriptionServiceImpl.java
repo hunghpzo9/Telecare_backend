@@ -1,8 +1,7 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.MedicinePrescriptionDTO;
-import com.example.telecare.dto.PrescriptionDTOInf;
-import com.example.telecare.dto.PrescriptionDetailDTO;
+import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
+import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Prescription;
 import com.example.telecare.repository.MedicineRepository;
@@ -11,7 +10,6 @@ import com.example.telecare.service.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

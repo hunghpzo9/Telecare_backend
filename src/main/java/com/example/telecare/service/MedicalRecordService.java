@@ -1,7 +1,7 @@
 package com.example.telecare.service;
 
-import com.example.telecare.dto.MedicalRecordDTOInf;
-import com.example.telecare.dto.MedicalRecordDetailDTO;
+import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
+import com.example.telecare.dto.interfaces.MedicalRecordDetailDTO;
 import com.example.telecare.model.MedicalRecord;
 
 import java.util.List;

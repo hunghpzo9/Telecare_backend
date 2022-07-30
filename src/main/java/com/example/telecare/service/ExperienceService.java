@@ -1,6 +1,6 @@
 package com.example.telecare.service;
 
-import com.example.telecare.dto.DoctorExperienceDTO;
+import com.example.telecare.dto.interfaces.DoctorExperienceDTO;
 import com.example.telecare.model.DoctorExperience;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.DoctorExperienceDTO;
+import com.example.telecare.dto.interfaces.DoctorExperienceDTO;
 import com.example.telecare.model.DoctorExperience;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

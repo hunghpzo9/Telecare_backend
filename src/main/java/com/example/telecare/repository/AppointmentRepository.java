@@ -1,7 +1,7 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.AppointmentDTOInfForAdmin;
+import com.example.telecare.dto.interfaces.AppointmentDTOInf;
+import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
 import com.example.telecare.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

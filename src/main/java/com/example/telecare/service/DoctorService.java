@@ -1,10 +1,7 @@
 package com.example.telecare.service;
 
-import com.example.telecare.dto.DoctorDTO;
-import com.example.telecare.dto.DoctorDTOInf;
+import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.DoctorUpdateDTO;
-import com.example.telecare.model.Doctor;
-import com.example.telecare.model.DoctorAchievement;
 
 import java.util.List;
 

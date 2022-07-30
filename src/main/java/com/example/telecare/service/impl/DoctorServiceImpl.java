@@ -2,6 +2,9 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.*;
 
+import com.example.telecare.dto.interfaces.DoctorAchievementDTO;
+import com.example.telecare.dto.interfaces.DoctorDTOInf;
+import com.example.telecare.dto.interfaces.DoctorExperienceDTO;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.exception.ResourceNotFoundException;

@@ -1,6 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.AdminDTOInf;
+import com.example.telecare.dto.interfaces.AdminDTOInf;
 import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.exception.BadRequestException;

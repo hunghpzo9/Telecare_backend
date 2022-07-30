@@ -1,6 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.*;
+import com.example.telecare.dto.interfaces.*;
 import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.enums.PaymentStatus;
 import com.example.telecare.exception.BadRequestException;
@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -43,6 +44,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     NotificationServiceImpl notificationService;
     @Autowired
     ScheduleRepository scheduleRepository;
+    @Autowired
+    MedicalRecordRepository medicalRecordRepository;
 
 
     @Override
@@ -371,7 +374,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void createNewAppointment(Appointment appointment, String description, String time) {
+    public void createNewAppointment(Appointment appointment, String description, String time, List<Integer> medicalRecordId) {
 
 
         DoctorDTOInf doctor = doctorService.findDoctorById(appointment.getDoctorId());
@@ -413,10 +416,21 @@ public class AppointmentServiceImpl implements AppointmentService {
             e.printStackTrace();
         }
 
+        if (appointment.getIsShareMedicalRecord() == Constants.IS_SHARE_MED) {
+            List<MedicalRecord> medicalRecordList = new ArrayList<>();
+            medicalRecordId.forEach(e -> {
+                MedicalRecord medicalRecord = medicalRecordRepository.findById(e).
+                        orElseThrow(() -> new ResourceNotFoundException("Not found medicalRecord"));
+                medicalRecordList.add(medicalRecord);
+            });
+            newAppointment.setMedicalRecords(medicalRecordList);
+        }
+
         //save to database
         appointmentDetails.setAppointment(newAppointment);
         appointmentRepository.save(newAppointment);
         appointmentDetailRepository.save(appointmentDetails);
+
 
         //send notification
         try {
@@ -589,7 +603,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void writeRefuseFillReason(int id,String reason) {
+    public void writeRefuseFillReason(int id, String reason) {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
         appointmentDs.setRefuseFillReason(reason);
         appointmentDetailRepository.save(appointmentDs);
@@ -619,7 +633,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search) {
-        return appointmentRepository.getAllAppointmentForAdmin(index,search);
+        return appointmentRepository.getAllAppointmentForAdmin(index, search);
     }
 
     @Override

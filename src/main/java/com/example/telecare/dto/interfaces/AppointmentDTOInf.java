@@ -1,4 +1,4 @@
-package com.example.telecare.dto;
+package com.example.telecare.dto.interfaces;
 
 import java.util.Date;
 import java.sql.Time;
