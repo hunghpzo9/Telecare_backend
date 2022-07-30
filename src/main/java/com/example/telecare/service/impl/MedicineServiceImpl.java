@@ -1,8 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.MedicineDTO;
-import com.example.telecare.dto.MedicineNameDTO;
-import com.example.telecare.dto.MedicinePrescriptionDTO;
+import com.example.telecare.dto.interfaces.MedicineNameDTO;
 import com.example.telecare.model.Medicine;
 import com.example.telecare.repository.MedicineRepository;
 import com.example.telecare.service.MedicineService;

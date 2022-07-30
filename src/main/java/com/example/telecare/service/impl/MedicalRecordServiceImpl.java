@@ -1,9 +1,8 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.MedicalRecordDTOInf;
-import com.example.telecare.dto.MedicalRecordDetailDTO;
+import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
+import com.example.telecare.dto.interfaces.MedicalRecordDetailDTO;
 import com.example.telecare.model.MedicalRecord;
-import com.example.telecare.model.Prescription;
 import com.example.telecare.repository.MedicalRecordRepository;
 import com.example.telecare.service.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;

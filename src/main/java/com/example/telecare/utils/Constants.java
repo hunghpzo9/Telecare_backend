@@ -43,6 +43,10 @@ public class Constants {
 
     public static final int IS_CIRCULATE= 0;
 
+    public static final int IS_SHARE_MED= 0;
+
+    public static final int IS_NOT_SHARE_MED= 1;
+
     public static final int APPOINTMENT_LIST_PRICE = 38700;
 
     //Firebase

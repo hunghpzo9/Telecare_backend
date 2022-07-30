@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/agora")
 
-public class Agora {
+public class AgoraController {
 
     @PostMapping(value = "/rtc")
     public Object getRTCToken(@RequestBody AgoraRepository resource) throws JSONException {

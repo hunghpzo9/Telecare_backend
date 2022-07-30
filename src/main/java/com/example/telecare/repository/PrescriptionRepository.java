@@ -1,9 +1,8 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.PrescriptionDTOInf;
-import com.example.telecare.dto.PrescriptionDetailDTO;
+import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
+import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
 import com.example.telecare.model.Prescription;
-import com.example.telecare.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,6 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.DoctorAchievementDTO;
+import com.example.telecare.dto.interfaces.DoctorAchievementDTO;
 import com.example.telecare.model.DoctorAchievement;
 import com.example.telecare.repository.AchievementRepository;
 import com.example.telecare.service.AchievementService;

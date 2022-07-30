@@ -1,9 +1,8 @@
 package com.example.telecare.controller;
-import com.example.telecare.dto.FeedbackDTOInf;
+import com.example.telecare.dto.interfaces.FeedbackDTOInf;
 import com.example.telecare.model.Feedback;
 import com.example.telecare.service.impl.FeedbackServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

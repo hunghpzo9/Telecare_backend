@@ -49,7 +49,9 @@ public class Appointment {
     @Basic
     @Column(name = "is_share_medical_record")
     private Byte isShareMedicalRecord;
-
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "medical_record_share", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "medical_record_id"))
+    public List<MedicalRecord> medicalRecords = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,6 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.ReportDTOInf;
+import com.example.telecare.dto.interfaces.ReportDTOInf;
 
 import com.example.telecare.model.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
