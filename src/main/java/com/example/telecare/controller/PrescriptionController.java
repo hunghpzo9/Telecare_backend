@@ -22,6 +22,12 @@ public class PrescriptionController {
         return prescriptionService.listAllPrescriptionByPatientId(patientId, page);
     }
 
+    @GetMapping(value = "/getSharedPrescriptionByAppointment")
+    public List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(
+            @RequestParam int appointmentId,@RequestParam int page) {
+        return prescriptionService.getSharedPrescriptionByAppointment(appointmentId,page);
+    }
+
     @GetMapping(value = "/getPrescriptionDetail")
     public PrescriptionDetailDTO getPrescriptionDetail(@RequestParam int appointmentId) {
         return prescriptionService.getPrescriptionDetailByAppointmentId(appointmentId);

@@ -13,4 +13,5 @@ public interface PrescriptionService {
 
     Prescription addPrescription(Prescription prescription);
 
+    List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(int id, int page);
 }
