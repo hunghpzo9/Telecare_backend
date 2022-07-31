@@ -1,5 +1,6 @@
 package com.example.telecare.service.impl;
 
+import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
 import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
 import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
 import com.example.telecare.exception.NotFoundException;
@@ -49,6 +50,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 
         return prescriptionRepository.save(prescription);
+    }
+
+    @Override
+    public List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(int id, int page) {
+        return prescriptionRepository.getSharedPrescriptionByAppointment(id,page);
     }
 
     private PrescriptionDetailDTO setReturnPrescriptionDetail(PrescriptionDetailDTO prescriptionDetailDTO) {

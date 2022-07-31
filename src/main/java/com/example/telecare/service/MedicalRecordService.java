@@ -16,4 +16,6 @@ public interface MedicalRecordService {
     MedicalRecord addMedicalRecord(MedicalRecord medicalRecord, int yearCode);
 
     void updateMedicalRecord(MedicalRecord medicalRecord, int id);
+
+    List<MedicalRecordDTOInf> getSharedMedicalRecordByAppointment(int id, int page);
 }

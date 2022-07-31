@@ -69,6 +69,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         medicalRecordRepository.save(medicalRecord);
     }
 
+    @Override
+    public List<MedicalRecordDTOInf> getSharedMedicalRecordByAppointment(int id, int page) {
+        return medicalRecordRepository.getSharedMedicalRecordByAppointment(id,page);
+    }
+
     protected String generateMedicalRecordNumber(int yearCode) {
         String root = "1234567890";
         StringBuilder salt = new StringBuilder();
