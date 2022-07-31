@@ -10,7 +10,6 @@ public interface MedicalRecordDTOInf {
     String getReason();
     String getMainDisease();
     String getUrl();
-    Integer getRelativeId();
 }
 
 
