@@ -18,7 +18,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -642,8 +641,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTOInf> findDoneAppointment(int patientId, int paymentStatusId) {
-        List<AppointmentDTOInf> appointmentList = appointmentRepository.findDoneAppointment(patientId, paymentStatusId);
+    public List<AppointmentDTOInf> findDoneAppointment(int userId, int paymentStatusId,boolean isPatient) {
+        List<AppointmentDTOInf> appointmentList = appointmentRepository.findDoneAppointment(userId, paymentStatusId, isPatient);
         List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
         for (AppointmentDTOInf appointmentDTO : appointmentList) {
 

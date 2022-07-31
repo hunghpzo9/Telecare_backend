@@ -93,9 +93,11 @@ public class AppointmentController {
     }
 
     @GetMapping(value = "/getListDoneAppointment")
-    public List<AppointmentDTOInf> getListDoneAppointment(@RequestParam("patientId") int patientId,
-                                                          @RequestParam("paymentStatusId") int paymentStatusId) {
-        return appointmentService.findDoneAppointment(patientId, paymentStatusId);
+    public List<AppointmentDTOInf> getListDoneAppointment(@RequestParam("userId") int userId,
+                                                          @RequestParam("paymentStatusId") int paymentStatusId,
+                                                          @RequestParam("isPatient") boolean isPatient
+    ) {
+        return appointmentService.findDoneAppointment(userId, paymentStatusId, isPatient);
     }
 
 
