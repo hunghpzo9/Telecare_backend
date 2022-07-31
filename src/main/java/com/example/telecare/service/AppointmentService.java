@@ -42,5 +42,5 @@ public interface AppointmentService {
 
     int getNumberOfAppointmentForAdmin(String search);
 
-    List<AppointmentDTOInf> findDoneAppointment(int patientId,int paymentStatusId);
+    List<AppointmentDTOInf> findDoneAppointment(int userId,int paymentStatusId,boolean isPatient);
 }
