@@ -28,6 +28,25 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
     List<MedicalRecordDTOInf> getMedicalRecordByPatientId(int id, int page);
 
     @Query(value = "SELECT \n" +
+            "                md.id,\n" +
+            "                md.medical_record_name AS medicalRecordName,\n" +
+            "                u.full_name AS doctorName,\n" +
+            "                md.created_at AS createdAt,\n" +
+            "                md.reason, md.url,\n" +
+            "                md.main_disease AS mainDisease,\n" +
+            "                a.relative_id\n" +
+            "            FROM\n" +
+            "                telecare.medical_record md\n" +
+            "                    LEFT OUTER JOIN\n" +
+            "                telecare.appointment a ON md.appointment_id = a.id\n" +
+            "                    LEFT OUTER JOIN\n" +
+            "                telecare.user u ON a.doctor_id = u.id\n" +
+            "            WHERE\n" +
+            "                a.patient_id = ?1 and if (?3,a.relative_id = ?4,a.relative_id IS NULL)\n" +
+            "            LIMIT 5 OFFSET ?2", nativeQuery = true)
+    List<MedicalRecordDTOInf> getShareMedicalRecord(int id, int page,boolean isRelative,int relativeId);
+
+    @Query(value = "SELECT \n" +
             "    id,\n" +
             "    medical_record_name AS medicalRecordName,\n" +
             "    reason,\n" +

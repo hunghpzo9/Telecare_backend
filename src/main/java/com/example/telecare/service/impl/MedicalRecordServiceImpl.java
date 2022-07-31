@@ -24,6 +24,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
+    public List<MedicalRecordDTOInf> getShareMedicalRecord(int id, int page, boolean isRelative,int relativeId) {
+        return medicalRecordRepository.getShareMedicalRecord(id,page,isRelative,relativeId);
+    }
+
+    @Override
     public MedicalRecordDetailDTO getMedicalRecordDetailByAppointmentId(int id) {
         return medicalRecordRepository.getMedicalRecordDetailsByAppointmentId(id);
     }
