@@ -27,6 +27,14 @@ public class MedicalRecordController {
         return medicalRecordService.getMedicalRecordDetailByAppointmentId(appointmentId);
     }
 
+    @GetMapping(value = "/getShareMedicalRecord")
+    public List<MedicalRecordDTOInf> getShareMedicalRecordList(@RequestParam int patientId,
+                                                               @RequestParam int page,
+                                                               @RequestParam boolean isRelative,
+                                                               @RequestParam int relativeId) {
+        return medicalRecordService.getShareMedicalRecord(patientId, page, isRelative, relativeId);
+    }
+
     @PostMapping(value = "/addMedicalRecord")
     public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int yearCode) {
         MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord, yearCode);

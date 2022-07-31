@@ -9,6 +9,8 @@ import java.util.List;
 public interface MedicalRecordService {
     List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(int id, int page);
 
+    List<MedicalRecordDTOInf> getShareMedicalRecord(int id, int page,boolean isRelative,int relativeId);
+
     MedicalRecordDetailDTO getMedicalRecordDetailByAppointmentId(int id);
 
     MedicalRecord addMedicalRecord(MedicalRecord medicalRecord, int yearCode);
