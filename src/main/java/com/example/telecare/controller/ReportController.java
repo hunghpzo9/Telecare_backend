@@ -1,6 +1,6 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.ReportDTOInf;
+import com.example.telecare.dto.interfaces.ReportDTOInf;
 import com.example.telecare.model.Report;
 import com.example.telecare.service.impl.ReportServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

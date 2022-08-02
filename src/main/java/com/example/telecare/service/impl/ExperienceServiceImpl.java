@@ -1,6 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.DoctorExperienceDTO;
+import com.example.telecare.dto.interfaces.DoctorExperienceDTO;
 import com.example.telecare.model.DoctorExperience;
 import com.example.telecare.repository.ExperienceRepository;
 import com.example.telecare.service.ExperienceService;

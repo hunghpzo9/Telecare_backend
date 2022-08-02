@@ -1,9 +1,8 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.MedicalRecordDTOInf;
-import com.example.telecare.dto.MedicalRecordDetailDTO;
+import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
+import com.example.telecare.dto.interfaces.MedicalRecordDetailDTO;
 import com.example.telecare.model.MedicalRecord;
-import com.example.telecare.model.Prescription;
 import com.example.telecare.repository.MedicalRecordRepository;
 import com.example.telecare.service.MedicalRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     public List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(int id, int page) {
         return medicalRecordRepository.getMedicalRecordByPatientId(id, page);
 
+    }
+
+    @Override
+    public List<MedicalRecordDTOInf> getShareMedicalRecord(int id, int page, boolean isRelative,int relativeId) {
+        return medicalRecordRepository.getShareMedicalRecord(id,page,isRelative,relativeId);
     }
 
     @Override
@@ -63,6 +67,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         medicalRecord.setSecondAmount(medicalRecordDetails.getSecondAmount());
 
         medicalRecordRepository.save(medicalRecord);
+    }
+
+    @Override
+    public List<MedicalRecordDTOInf> getSharedMedicalRecordByAppointment(int id, int page) {
+        return medicalRecordRepository.getSharedMedicalRecordByAppointment(id,page);
     }
 
     protected String generateMedicalRecordNumber(int yearCode) {

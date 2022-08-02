@@ -1,8 +1,7 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.AdminDTOInf;
+import com.example.telecare.dto.interfaces.AdminDTOInf;
 import com.example.telecare.dto.ResponseOkMessage;
-import com.example.telecare.model.User;
 import com.example.telecare.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)

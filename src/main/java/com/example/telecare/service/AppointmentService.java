@@ -1,8 +1,8 @@
 package com.example.telecare.service;
 
-import com.example.telecare.dto.AppointmentDTOInf;
-import com.example.telecare.dto.AppointmentDTOInfForAdmin;
-import com.example.telecare.dto.CancelDTOInf;
+import com.example.telecare.dto.interfaces.AppointmentDTOInf;
+import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
+import com.example.telecare.dto.interfaces.CancelDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.AppointmentDetails;
 import com.example.telecare.model.CancelAppointment;
@@ -16,7 +16,7 @@ public interface AppointmentService {
 
     AppointmentDTOInf findAppointmentById(int id);
 
-    void createNewAppointment(Appointment appointment, String description, String time);
+    void createNewAppointment(Appointment appointment, String description, String time,List<Integer> medicalRecordId);
 
     List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
 
@@ -37,9 +37,10 @@ public interface AppointmentService {
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
 
     List<AppointmentDTOInf> findAppointmentOverdue();
+
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 
     int getNumberOfAppointmentForAdmin(String search);
 
-    List<AppointmentDTOInf> findDoneAppointment(int patientId,int paymentStatusId);
+    List<AppointmentDTOInf> findDoneAppointment(int userId,int paymentStatusId,boolean isPatient);
 }

@@ -1,7 +1,7 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.PrescriptionDTOInf;
-import com.example.telecare.dto.PrescriptionDetailDTO;
+import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
+import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
 import com.example.telecare.model.Prescription;
 import com.example.telecare.service.impl.PrescriptionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,12 @@ public class PrescriptionController {
     @GetMapping(value = "getAll")
     public List<PrescriptionDTOInf> findPrescriptionByPatientId(@RequestParam int patientId, @RequestParam int page) {
         return prescriptionService.listAllPrescriptionByPatientId(patientId, page);
+    }
+
+    @GetMapping(value = "/getSharedPrescriptionByAppointment")
+    public List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(
+            @RequestParam int appointmentId,@RequestParam int page) {
+        return prescriptionService.getSharedPrescriptionByAppointment(appointmentId,page);
     }
 
     @GetMapping(value = "/getPrescriptionDetail")

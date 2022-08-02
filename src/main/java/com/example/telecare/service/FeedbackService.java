@@ -1,8 +1,7 @@
 package com.example.telecare.service;
 
-import com.example.telecare.dto.FeedbackDTOInf;
+import com.example.telecare.dto.interfaces.FeedbackDTOInf;
 import com.example.telecare.model.Feedback;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

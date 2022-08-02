@@ -1,6 +1,6 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.MedicineNameDTO;
+import com.example.telecare.dto.interfaces.MedicineNameDTO;
 import com.example.telecare.model.Medicine;
 import com.example.telecare.service.impl.MedicineServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

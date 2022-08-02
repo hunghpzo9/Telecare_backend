@@ -1,6 +1,9 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.*;
+import com.example.telecare.dto.interfaces.AppointmentDTOInf;
+import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
+import com.example.telecare.dto.interfaces.CancelDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.AppointmentDetails;
 import com.example.telecare.model.CancelAppointment;
@@ -49,9 +52,10 @@ public class AppointmentController {
     @PostMapping(value = "/book")
     public ResponseEntity<?> bookAppointment(@RequestBody Appointment appointment
             , @RequestParam("description") String description
-            , @RequestParam("time") String time) {
+            , @RequestParam("time") String time
+            , @RequestParam(value = "medicalRecordId", required = false) List<Integer> medicalRecordId) {
 
-        appointmentService.createNewAppointment(appointment, description, time);
+        appointmentService.createNewAppointment(appointment, description, time, medicalRecordId);
         return ResponseEntity.ok(appointment);
     }
 
@@ -89,9 +93,11 @@ public class AppointmentController {
     }
 
     @GetMapping(value = "/getListDoneAppointment")
-    public List<AppointmentDTOInf> getListDoneAppointment(@RequestParam("patientId") int patientId,
-                                                          @RequestParam("paymentStatusId") int paymentStatusId) {
-        return appointmentService.findDoneAppointment(patientId,paymentStatusId);
+    public List<AppointmentDTOInf> getListDoneAppointment(@RequestParam("userId") int userId,
+                                                          @RequestParam("paymentStatusId") int paymentStatusId,
+                                                          @RequestParam("isPatient") boolean isPatient
+    ) {
+        return appointmentService.findDoneAppointment(userId, paymentStatusId, isPatient);
     }
 
 
@@ -106,6 +112,7 @@ public class AppointmentController {
         appointmentService.confirmAppointment(appointmentDetails, id);
         return ResponseEntity.ok(appointmentDetails);
     }
+
     @PutMapping(value = "/refuseReason")
     public ResponseEntity<?> confirmAppointment(@RequestParam("id") int id, @RequestParam("reason") String reason) {
         appointmentService.writeRefuseFillReason(id, reason);
@@ -117,9 +124,10 @@ public class AppointmentController {
         appointmentService.endAppointment(id);
         return ResponseEntity.ok(new ResponseOkMessage("Kết thúc phiên khám thành công", new Date()));
     }
+
     @GetMapping(value = "/getAll")
     public ResponseEntity<List<AppointmentDTOInfForAdmin>> getAllAppointmentForAdmin(@RequestParam int index, @RequestParam String searchText) {
-        return new ResponseEntity<>(appointmentService.getAllAppointmentForAdmin(index,searchText), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.getAllAppointmentForAdmin(index, searchText), HttpStatus.OK);
     }
 
     @GetMapping("/numberOfAppointment")

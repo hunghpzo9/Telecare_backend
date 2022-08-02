@@ -1,6 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.FeedbackDTOInf;
+import com.example.telecare.dto.interfaces.FeedbackDTOInf;
 import com.example.telecare.enums.FeedbackStatus;
 import com.example.telecare.model.Feedback;
 import com.example.telecare.repository.FeedbackRepository;

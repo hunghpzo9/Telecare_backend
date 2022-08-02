@@ -1,7 +1,7 @@
 package com.example.telecare.service;
 
-import com.example.telecare.dto.PrescriptionDTOInf;
-import com.example.telecare.dto.PrescriptionDetailDTO;
+import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
+import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
 import com.example.telecare.model.Prescription;
 
 import java.util.List;
@@ -13,4 +13,5 @@ public interface PrescriptionService {
 
     Prescription addPrescription(Prescription prescription);
 
+    List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(int id, int page);
 }

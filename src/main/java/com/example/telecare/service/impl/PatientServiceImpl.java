@@ -1,8 +1,8 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.PatientDTO;
-import com.example.telecare.dto.PatientDTOInf;
-import com.example.telecare.dto.PatientDTOAdminInf;
+import com.example.telecare.dto.interfaces.PatientDTOInf;
+import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Address;

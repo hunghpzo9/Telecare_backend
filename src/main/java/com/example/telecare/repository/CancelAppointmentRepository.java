@@ -1,6 +1,6 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.CancelDTOInf;
+import com.example.telecare.dto.interfaces.CancelDTOInf;
 import com.example.telecare.model.CancelAppointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,8 +1,8 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.PatientDTO;
-import com.example.telecare.dto.PatientDTOInf;
-import com.example.telecare.dto.PatientDTOAdminInf;
+import com.example.telecare.dto.interfaces.PatientDTOInf;
+import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
 import com.example.telecare.service.impl.AddressServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;

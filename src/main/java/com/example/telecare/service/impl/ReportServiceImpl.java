@@ -1,6 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.ReportDTOInf;
+import com.example.telecare.dto.interfaces.ReportDTOInf;
 import com.example.telecare.model.Report;
 import com.example.telecare.repository.ReportRepository;
 import com.example.telecare.service.ReportService;

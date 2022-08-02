@@ -1,7 +1,8 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.dto.MedicalRecordDTOInf;
-import com.example.telecare.dto.MedicalRecordDetailDTO;
+import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
+import com.example.telecare.dto.interfaces.MedicalRecordDetailDTO;
+import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
 import com.example.telecare.model.MedicalRecord;
 import com.example.telecare.service.impl.MedicalRecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,20 @@ public class MedicalRecordController {
     @GetMapping(value = "/getMedicalRecordDetail")
     public MedicalRecordDetailDTO medicalRecordDTOInfList(@RequestParam int appointmentId) {
         return medicalRecordService.getMedicalRecordDetailByAppointmentId(appointmentId);
+    }
+
+    @GetMapping(value = "/getShareMedicalRecord")
+    public List<MedicalRecordDTOInf> getShareMedicalRecordList(@RequestParam int patientId,
+                                                               @RequestParam int page,
+                                                               @RequestParam boolean isRelative,
+                                                               @RequestParam int relativeId) {
+        return medicalRecordService.getShareMedicalRecord(patientId, page, isRelative, relativeId);
+    }
+
+    @GetMapping(value = "/getSharedMedicalRecordByAppointment")
+    public List<MedicalRecordDTOInf> getSharedPrescriptionByAppointment(
+            @RequestParam int appointmentId,@RequestParam int page) {
+        return medicalRecordService.getSharedMedicalRecordByAppointment(appointmentId,page);
     }
 
     @PostMapping(value = "/addMedicalRecord")

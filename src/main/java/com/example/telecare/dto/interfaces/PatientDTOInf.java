@@ -1,4 +1,5 @@
-package com.example.telecare.dto;
+package com.example.telecare.dto.interfaces;
+import com.example.telecare.dto.PatientDTO;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;

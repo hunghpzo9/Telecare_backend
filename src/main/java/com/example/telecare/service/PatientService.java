@@ -1,8 +1,8 @@
 package com.example.telecare.service;
 
 import com.example.telecare.dto.PatientDTO;
-import com.example.telecare.dto.PatientDTOInf;
-import com.example.telecare.dto.PatientDTOAdminInf;
+import com.example.telecare.dto.interfaces.PatientDTOInf;
+import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
 
 import java.util.List;
 

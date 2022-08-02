@@ -1,6 +1,6 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.dto.FeedbackDTOInf;
+import com.example.telecare.dto.interfaces.FeedbackDTOInf;
 import com.example.telecare.model.Feedback;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
