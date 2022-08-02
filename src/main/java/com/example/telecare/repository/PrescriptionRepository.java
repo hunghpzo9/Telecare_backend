@@ -6,9 +6,11 @@ import com.example.telecare.model.Prescription;
 import com.example.telecare.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface PrescriptionRepository extends JpaRepository<Prescription, Integer> {
 
     @Query(value = "SELECT \n" +
