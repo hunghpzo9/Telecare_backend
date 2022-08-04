@@ -35,7 +35,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     @Query(value = "SELECT a.id , u.id as doctorId ,p.patient_id as patientId\n" +
             "            ,a.relative_id as relativeId ,u.full_name as doctorName, spec.name as doctorSpecialty,\n" +
-            "                        a.is_share_medical_record as isShare,ad.description ,s.start_at as startAt,s.end_at as endA\n" +
+            "                        a.is_share_medical_record as isShare,ad.description ,s.start_at as startAt,s.end_at as endAt\n" +
             "                       ,ad.time,aps.name as status,aps.id as statusId,ad.amount\n" +
             "                       ,mr.url as medicalRecordUrl, pre.url as prescriptionUrl\n" +
             "                        FROM telecare.appointment a\n" +
