@@ -27,23 +27,31 @@ import java.util.concurrent.ExecutionException;
 public class TelecareApplication {
 	@Autowired
 	private TwilioConfig twilioConfig;
+	@Autowired
+	private FirebaseConfig firebaseConfig;
 	@PostConstruct
 	private void initTwilio(){
 		System.out.println("Init twilio");
 		Twilio.init(twilioConfig.getAccountSid(),twilioConfig.getAuthToken());
 	}
+	@PostConstruct
+	private void initFirebase(){
+		System.out.println("Init firebase");
+		firebaseConfig.initialization();
+	}
+
 
 	public static void main(String[] args) {
-		try {
-			String path = "/serviceAccountKey.json";
-			InputStream in = TelecareApplication.class.getResourceAsStream(path);
-			FirebaseOptions options = new FirebaseOptions.Builder()
-					.setCredentials(GoogleCredentials.fromStream(in))
-					.build();
-			FirebaseApp.initializeApp(options);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			String path = "/serviceAccountKey.json";
+//			InputStream in = TelecareApplication.class.getResourceAsStream(path);
+//			FirebaseOptions options = new FirebaseOptions.Builder()
+//					.setCredentials(GoogleCredentials.fromStream(in))
+//					.build();
+//			FirebaseApp.initializeApp(options);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		SpringApplication.run(TelecareApplication.class, args);
 	}
 
