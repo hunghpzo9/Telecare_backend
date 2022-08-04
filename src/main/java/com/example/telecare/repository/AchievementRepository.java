@@ -4,9 +4,11 @@ import com.example.telecare.dto.interfaces.DoctorAchievementDTO;
 import com.example.telecare.model.DoctorAchievement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface AchievementRepository extends JpaRepository<DoctorAchievement,Integer> {
     @Query(value = "SELECT da.id,da.achievement FROM telecare.doctor_achievement da left outer join telecare.doctor ds \n" +
             "            on da.doctor_id = ds.doctor_id where ds.doctor_id = ?1",nativeQuery = true)

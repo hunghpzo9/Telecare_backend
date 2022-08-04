@@ -4,9 +4,11 @@ import com.example.telecare.dto.interfaces.MedicineNameDTO;
 import com.example.telecare.model.Medicine;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
     @Query(value = "SELECT * FROM telecare.medicine as m" +
             "            where m.number_of_receipts like %?2% or m.year_of_receipts like %?2% or m.name like %?2% or m.company like %?2% or m.registration_number like %?2%" +
