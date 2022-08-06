@@ -125,7 +125,6 @@ class RelativeControllerTest {
     @Test
     public void getAllRelativeApiTestNullCase() throws Exception {
 
-
         Mockito.when(relativeRepository.findRelativesByPatientId(3)).thenReturn(null);
         Mockito.when(relativeService.findAllRelativeByPatientId(3)).thenReturn(null);
 
