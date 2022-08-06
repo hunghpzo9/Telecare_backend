@@ -23,7 +23,7 @@ public class UserController {
     public ResponseEntity<?> updateStatus(@RequestParam Byte isActive, @RequestParam int id,@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam Date expireDate,@RequestParam String reason) throws ParseException {
 
         userService.updateStatus(isActive,id,expireDate,reason);
-        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
+        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật trạng thái thành công", new Date()));
 
     }
     @PutMapping(value = "/updateStatusForPatient")
