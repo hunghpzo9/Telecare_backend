@@ -1,17 +1,18 @@
 package com.example.telecare.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Relative {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -52,7 +53,6 @@ public class Relative {
     @Basic
     @Column(name = "ethnic_id")
     private Integer ethnicId;
-
 
 
     @Override

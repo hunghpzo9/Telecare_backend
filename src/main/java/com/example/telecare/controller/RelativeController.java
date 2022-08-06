@@ -1,6 +1,7 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.model.Relative;
+import com.example.telecare.repository.RelativeRepository;
 import com.example.telecare.service.impl.RelativeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,26 +18,29 @@ public class RelativeController {
     @Autowired
     RelativeServiceImpl relativeService;
 
+    @Autowired
+    RelativeRepository relativeRepository;
+
     @GetMapping(value = "/patientId={id}")
     public List<Relative> getAllRelative(@PathVariable int id) {
         return relativeService.findAllRelativeByPatientId(id);
     }
 
     @GetMapping(value = "/{id}")
-    public Relative getRelativeById(@PathVariable int id){
+    public Relative getRelativeById(@PathVariable int id) {
         return relativeService.findRelativeById(id);
     }
 
     @PostMapping("/addNew")
-    public Relative addRelative(@RequestBody Relative relative){
-        Relative addNewRelative =  relativeService.addRelative(relative);
-        return  addNewRelative;
+    public Relative addRelative(@RequestBody Relative relative) {
+        Relative addNewRelative = relativeService.addRelative(relative);
+        return addNewRelative;
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Relative> updateRelative(@RequestBody Relative relative, @PathVariable int id) {
-         relativeService.updateRelativeById(relative,id);
-         return ResponseEntity.ok(relative);
+        relativeService.updateRelativeById(relative, id);
+        return ResponseEntity.ok(relative);
     }
 
 }

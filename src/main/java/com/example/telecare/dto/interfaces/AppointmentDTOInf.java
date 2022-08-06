@@ -32,4 +32,7 @@ public interface AppointmentDTOInf {
     String getDoctorPhone();
     String getDoctorEmail();
     String getDoctorJobPlace();
+
+    String getMedicalRecordUrl();
+    String getPrescriptionUrl();
 }

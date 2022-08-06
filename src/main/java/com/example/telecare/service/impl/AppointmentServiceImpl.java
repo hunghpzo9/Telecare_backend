@@ -45,6 +45,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     ScheduleRepository scheduleRepository;
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
+    @Autowired
+    PrescriptionRepository prescriptionRepository;
 
 
     @Override
@@ -189,6 +191,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDoctorJobPlace() {
+                    return null;
+                }
+
+                @Override
+                public String getMedicalRecordUrl() {
+                    return null;
+                }
+
+                @Override
+                public String getPrescriptionUrl() {
                     return null;
                 }
             };
@@ -355,6 +367,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDoctorJobPlace() {
+                    return null;
+                }
+
+                @Override
+                public String getMedicalRecordUrl() {
+                    return null;
+                }
+
+                @Override
+                public String getPrescriptionUrl() {
                     return null;
                 }
             };
@@ -544,6 +566,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         //send notification
         Appointment appointment = appointmentRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+        appointmentRepository.save(appointment);
 
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd")
@@ -575,6 +598,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         //send notification
         Appointment appointment = appointmentRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+        appointmentRepository.save(appointment);
 
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDs.getTime().toString());
@@ -641,7 +665,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTOInf> findDoneAppointment(int userId, int paymentStatusId,boolean isPatient) {
+    public List<AppointmentDTOInf> findDoneAppointment(int userId, int paymentStatusId, boolean isPatient) {
         List<AppointmentDTOInf> appointmentList = appointmentRepository.findDoneAppointment(userId, paymentStatusId, isPatient);
         List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
         for (AppointmentDTOInf appointmentDTO : appointmentList) {
@@ -781,6 +805,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getDoctorJobPlace() {
+                    return null;
+                }
+
+                @Override
+                public String getMedicalRecordUrl() {
+                    return null;
+                }
+
+                @Override
+                public String getPrescriptionUrl() {
                     return null;
                 }
             };
@@ -951,6 +985,16 @@ public class AppointmentServiceImpl implements AppointmentService {
             @Override
             public String getDoctorJobPlace() {
                 return doctor.getJobPlace();
+            }
+
+            @Override
+            public String getMedicalRecordUrl() {
+                return appointmentDTO.getMedicalRecordUrl();
+            }
+
+            @Override
+            public String getPrescriptionUrl() {
+                return appointmentDTO.getPrescriptionUrl();
             }
         };
         return returnAppointment;
