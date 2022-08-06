@@ -22,7 +22,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .document(String.valueOf(uid))
                 .collection(Constants.COLLECTION_NOTIFICATION_MESSAGE);
 
-        NotificationDTO notificationDTO = new NotificationDTO(message, new Date());
+        NotificationDTO notificationDTO = new NotificationDTO(message, new Date(),false);
         collectionReference.document().set(notificationDTO);
 
     }

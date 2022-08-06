@@ -22,8 +22,8 @@ public class Address {
     @Column(name = "city_id")
     private String cityId;
     @Basic
-    @Column(name = "districy_id")
-    private String districyId;
+    @Column(name = "district_id")
+    private String districtId;
     @Basic
     @Column(name = "ward_id")
     private String wardId;
@@ -50,7 +50,6 @@ public class Address {
 
         if (id != address.id) return false;
         if (cityId != null ? !cityId.equals(address.cityId) : address.cityId != null) return false;
-        if (districyId != null ? !districyId.equals(address.districyId) : address.districyId != null) return false;
         if (wardId != null ? !wardId.equals(address.wardId) : address.wardId != null) return false;
         if (streetName != null ? !streetName.equals(address.streetName) : address.streetName != null) return false;
 
@@ -61,7 +60,6 @@ public class Address {
     public int hashCode() {
         int result = id;
         result = 31 * result + (cityId != null ? cityId.hashCode() : 0);
-        result = 31 * result + (districyId != null ? districyId.hashCode() : 0);
         result = 31 * result + (wardId != null ? wardId.hashCode() : 0);
         result = 31 * result + (streetName != null ? streetName.hashCode() : 0);
         return result;

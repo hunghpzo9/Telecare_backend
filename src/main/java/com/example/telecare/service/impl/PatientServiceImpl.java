@@ -61,7 +61,7 @@ public class PatientServiceImpl implements PatientService {
         }
 
         address.setCityId(patientDetail.getCityId());
-        address.setDistricyId(patientDetail.getDistrictId());
+        address.setDistrictId(patientDetail.getDistrictId());
         address.setWardId(patientDetail.getWardId());
         address.setStreetName(patientDetail.getStreetName());
 
