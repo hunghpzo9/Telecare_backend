@@ -13,4 +13,5 @@ public class NotificationDTO {
     private String message;
     private Date time;
     private boolean isRead;
+
 }

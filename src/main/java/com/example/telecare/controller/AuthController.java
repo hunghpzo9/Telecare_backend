@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    TwilioServiceImpl twilioService;
+    private TwilioServiceImpl twilioService;
 
     @Autowired
     private AuthServiceImpl authService;
