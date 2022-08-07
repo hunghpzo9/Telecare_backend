@@ -1,14 +1,18 @@
 package com.example.telecare.controller;
 
+import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.model.*;
 import com.example.telecare.repository.*;
 import com.example.telecare.security.PasswordHashService;
 import com.example.telecare.service.impl.AuthServiceImpl;
 import com.example.telecare.service.impl.TwilioServiceImpl;
 import com.example.telecare.service.impl.UserServiceImpl;
+import com.example.telecare.utils.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-class AuthControllerTest {
+public class AuthControllerTest {
+
     private MockMvc mockMvc;
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -110,11 +115,11 @@ class AuthControllerTest {
             new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-07-01 17:20:35"),new Patient(),new Doctor(),new Address(),"");
 
 
-    AuthControllerTest() throws ParseException {
+    public AuthControllerTest() throws ParseException {
     }
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
     }
@@ -124,13 +129,10 @@ class AuthControllerTest {
     }
 
     @Test
-    private void registerPatientSuccess() throws Exception {
+    public void registerPatientSuccess() throws Exception {
 
-        Mockito.when(userRepository.save(successPatient)).thenReturn(successPatient);
         Mockito.when(userService.registerPatient(successPatient)).thenReturn(successPatient);
-
         String content = objectWriter.writeValueAsString(successPatient);
-
         MockHttpServletRequestBuilder mockRequest =  MockMvcRequestBuilders
                 .post("/api/v1/auth/register/patient")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -145,6 +147,24 @@ class AuthControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
+    }
+
+    @Test
+    public void registerPatientDuplicatePhone() throws Exception {
+        Mockito.when(userService.registerPatient(duplicatePhonePatient)).thenReturn(duplicatePhonePatient);
+        String content = objectWriter.writeValueAsString(duplicatePhonePatient);
+        MockHttpServletRequestBuilder mockRequest =  MockMvcRequestBuilders
+                .post("/api/v1/auth/register/patient")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(content);
+
+        var x = mockMvc.perform(mockRequest)
+
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> Assert.assertEquals("resource not found", result.getResolvedException().getMessage()));
+
     }
 
 }
