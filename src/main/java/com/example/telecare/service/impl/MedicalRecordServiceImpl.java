@@ -30,7 +30,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 
     @Override
     public MedicalRecordDetailDTO getMedicalRecordDetailByAppointmentId(int id) {
-        return medicalRecordRepository.getMedicalRecordDetailsByAppointmentId(id);
+                return medicalRecordRepository.getMedicalRecordDetailsByAppointmentId(id);
     }
 
     @Override

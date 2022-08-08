@@ -92,6 +92,7 @@ class RelativeControllerTest {
     RelativeControllerTest() throws ParseException {
     }
 
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

@@ -3,6 +3,8 @@ package com.example.telecare.controller;
 import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
 import com.example.telecare.dto.interfaces.MedicalRecordDetailDTO;
 import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
+import com.example.telecare.exception.BadRequestException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.MedicalRecord;
 import com.example.telecare.service.impl.MedicalRecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,21 @@ public class MedicalRecordController {
 
     @GetMapping(value = "/getAll")
     public List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(@RequestParam int patientId, @RequestParam int page) {
-        return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
+        if (patientId < 1) {
+            throw new NotFoundException("Medical Record is not found");
+        } else {
+            return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
+        }
     }
 
     @GetMapping(value = "/getMedicalRecordDetail")
     public MedicalRecordDetailDTO medicalRecordDTOInfList(@RequestParam int appointmentId) {
-        return medicalRecordService.getMedicalRecordDetailByAppointmentId(appointmentId);
+        MedicalRecordDetailDTO detailDTO = medicalRecordService.getMedicalRecordDetailByAppointmentId(appointmentId);
+        if (appointmentId < 1 || detailDTO == null) {
+            throw new NotFoundException("Medical Record is not found");
+        } else {
+            return detailDTO;
+        }
     }
 
     @GetMapping(value = "/getShareMedicalRecord")
@@ -38,19 +49,27 @@ public class MedicalRecordController {
 
     @GetMapping(value = "/getSharedMedicalRecordByAppointment")
     public List<MedicalRecordDTOInf> getSharedPrescriptionByAppointment(
-            @RequestParam int appointmentId,@RequestParam int page) {
-        return medicalRecordService.getSharedMedicalRecordByAppointment(appointmentId,page);
+            @RequestParam int appointmentId, @RequestParam int page) {
+        return medicalRecordService.getSharedMedicalRecordByAppointment(appointmentId, page);
     }
 
     @PostMapping(value = "/addMedicalRecord")
     public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int yearCode) {
         MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord, yearCode);
-        return addMedicalRecord;
+        if (yearCode < 0) {
+            throw new BadRequestException("Incorrect year code");
+        } else {
+            return addMedicalRecord;
+        }
     }
 
     @PutMapping(value = "/updateMedicalRecord")
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int appointmentId) {
-        medicalRecordService.updateMedicalRecord(medicalRecord, appointmentId);
-        return ResponseEntity.ok(medicalRecord);
+        if(appointmentId < 1){
+            throw new NotFoundException("Medical Record not found");
+        }else{
+            medicalRecordService.updateMedicalRecord(medicalRecord, appointmentId);
+            return ResponseEntity.ok(medicalRecord);
+        }
     }
 }

@@ -1,8 +1,15 @@
 package com.example.telecare.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Specialty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
