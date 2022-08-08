@@ -12,4 +12,6 @@ import java.util.Date;
 public class NotificationDTO {
     private String message;
     private Date time;
+    private boolean isRead;
+
 }

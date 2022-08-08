@@ -25,9 +25,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -121,7 +125,6 @@ class RelativeControllerTest {
     }
     @Test
     public void getAllRelativeApiTestNullCase() throws Exception {
-        List<Relative> relativeList = new ArrayList<>(Arrays.asList(relative1, relative2));
 
         Mockito.when(relativeRepository.findRelativesByPatientId(3)).thenReturn(null);
         Mockito.when(relativeService.findAllRelativeByPatientId(3)).thenReturn(null);
