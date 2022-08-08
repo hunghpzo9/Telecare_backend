@@ -2,6 +2,7 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
 import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Prescription;
 import com.example.telecare.service.impl.PrescriptionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,17 @@ public class PrescriptionController {
 
     @GetMapping(value = "getAll")
     public List<PrescriptionDTOInf> findPrescriptionByPatientId(@RequestParam int patientId, @RequestParam int page) {
-        return prescriptionService.listAllPrescriptionByPatientId(patientId, page);
+        if (patientId < 1) {
+            throw new NotFoundException("Prescription Not found");
+        } else {
+            return prescriptionService.listAllPrescriptionByPatientId(patientId, page);
+        }
     }
 
     @GetMapping(value = "/getSharedPrescriptionByAppointment")
     public List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(
-            @RequestParam int appointmentId,@RequestParam int page) {
-        return prescriptionService.getSharedPrescriptionByAppointment(appointmentId,page);
+            @RequestParam int appointmentId, @RequestParam int page) {
+        return prescriptionService.getSharedPrescriptionByAppointment(appointmentId, page);
     }
 
 
