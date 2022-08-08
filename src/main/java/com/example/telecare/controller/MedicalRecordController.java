@@ -19,7 +19,7 @@ public class MedicalRecordController {
     MedicalRecordServiceImpl medicalRecordService;
 
     @GetMapping(value = "/getAll")
-    public List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(@RequestParam int patientId, @RequestParam int page) {
+        public List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(@RequestParam int patientId, @RequestParam int page) {
         return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
     }
 

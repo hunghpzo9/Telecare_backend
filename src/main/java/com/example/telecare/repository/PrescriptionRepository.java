@@ -40,23 +40,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Inte
             "LIMIT 5 OFFSET ?2", nativeQuery = true)
     List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(int id, int page);
 
-    @Query(value = "SELECT \n" +
-            "    id,\n" +
-            "    diagnosis AS prescriptionDiagnosis,\n" +
-            "    note,\n" +
-            "    guardian,\n" +
-            "    url\n" +
-            "FROM\n" +
-            "    telecare.prescription\n" +
-            "WHERE\n" +
-            "    appointment_id = ?1", nativeQuery = true)
-    PrescriptionDetailDTO getPrescriptionDetailByAppointmentId(int id);
-
     @Query(value = "SELECT * FROM telecare.prescription WHERE trace = ?1",
             nativeQuery = true)
     Prescription checkDuplicateTrace(String trace);
 
-    @Query(value = "SELECT * FROM telecare.prescription WHERE appointment_id = ?1",
-            nativeQuery = true)
-    Prescription findPrescriptionByAppointmentId(int id);
 }

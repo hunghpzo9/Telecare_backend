@@ -29,15 +29,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return prescriptionRepository.getAllPrescription(id, page);
     }
 
-    @Override
-    public PrescriptionDetailDTO getPrescriptionDetailByAppointmentId(int appointmentId) {
-        PrescriptionDetailDTO prescriptionDetailDTO = prescriptionRepository.getPrescriptionDetailByAppointmentId(appointmentId);
-
-        if (prescriptionDetailDTO == null) {
-            throw new NotFoundException("Không tìm thấy cuộc hẹn");
-        }
-        return setReturnPrescriptionDetail(prescriptionDetailDTO);
-    }
 
     @Override
     public Prescription addPrescription(Prescription prescription) {
@@ -57,37 +48,6 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return prescriptionRepository.getSharedPrescriptionByAppointment(id,page);
     }
 
-    private PrescriptionDetailDTO setReturnPrescriptionDetail(PrescriptionDetailDTO prescriptionDetailDTO) {
-        PrescriptionDetailDTO returnPrescriptionDetailDTO = new PrescriptionDetailDTO() {
-            @Override
-            public Integer getId() {
-                return prescriptionDetailDTO.getId();
-            }
-
-            @Override
-            public String getPrescriptionDiagnosis() {
-                return prescriptionDetailDTO.getPrescriptionDiagnosis();
-            }
-
-            @Override
-            public String getNote() {
-                return prescriptionDetailDTO.getNote();
-            }
-
-            @Override
-            public String getGuardian() {
-                return prescriptionDetailDTO.getGuardian();
-            }
-
-            @Override
-            public String getUrl() {
-                return prescriptionDetailDTO.getUrl();
-            }
-
-        };
-        return returnPrescriptionDetailDTO;
-
-    }
 
     protected String generatePrescriptionNumber() {
         String root = "abcdefghijklmnopqrstuvwxyz1234567890";

@@ -3,10 +3,8 @@ package com.example.telecare.controller;
 import com.example.telecare.model.Relative;
 import com.example.telecare.repository.RelativeRepository;
 import com.example.telecare.service.impl.RelativeServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.google.type.DateTime;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.OngoingStubbing;
-import org.springframework.data.web.JsonPath;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -29,7 +25,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.hamcrest.Matchers.*;
@@ -92,6 +87,7 @@ class RelativeControllerTest {
 
     RelativeControllerTest() throws ParseException {
     }
+
 
     @BeforeEach
     void setUp() {
@@ -162,7 +158,6 @@ class RelativeControllerTest {
 
     @Test
     public void getRelativeByIdApiTestNullCase() throws Exception {
-        Relative relative = relative1;
         Mockito.when(relativeRepository.findRelativesByID(0)).thenReturn(null);
         Mockito.when(relativeService.findRelativeById(0)).thenReturn(null);
 

@@ -1,7 +1,6 @@
 package com.example.telecare.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,6 +10,9 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "medical_record", schema = "telecare", catalog = "")
 public class MedicalRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -28,10 +28,6 @@ public class PrescriptionController {
         return prescriptionService.getSharedPrescriptionByAppointment(appointmentId,page);
     }
 
-    @GetMapping(value = "/getPrescriptionDetail")
-    public PrescriptionDetailDTO getPrescriptionDetail(@RequestParam int appointmentId) {
-        return prescriptionService.getPrescriptionDetailByAppointmentId(appointmentId);
-    }
 
     @PostMapping(value = "/addPrescription")
     public Prescription addPrescription(@RequestBody Prescription prescription) {
