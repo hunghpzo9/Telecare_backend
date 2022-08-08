@@ -1,6 +1,6 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Ethnic;
 import com.example.telecare.repository.EthnicRepository;
 import com.example.telecare.service.EthnicService;
@@ -21,6 +21,6 @@ public class EthnicServiceImpl implements EthnicService {
     @Override
     public Ethnic findEthnicById(int id) {
         return ethnicRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Not found ethnic"));
+                -> new NotFoundException("Not found ethnic"));
     }
 }

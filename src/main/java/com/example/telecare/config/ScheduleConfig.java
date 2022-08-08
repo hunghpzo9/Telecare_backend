@@ -1,7 +1,7 @@
 package com.example.telecare.config;
 
 import com.example.telecare.dto.interfaces.AppointmentDTOInf;
-import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.*;
 import com.example.telecare.repository.DoctorRepository;
 import com.example.telecare.repository.MedicalRecordRepository;
@@ -88,7 +88,7 @@ public class ScheduleConfig {
         if (!expireDoctor.isEmpty()) {
             for (Doctor doctor : expireDoctor) {
                 User user = userRepository.findById(doctor.getDoctorId()).orElseThrow(()
-                        -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+                        -> new NotFoundException("Không tìm thấy người dùng"));
                 user.setIsActive((byte) Constants.IS_BAN);
                 user.setReason("Bác sĩ đã quá hạn chứng chỉ");
                 userRepository.save(user);

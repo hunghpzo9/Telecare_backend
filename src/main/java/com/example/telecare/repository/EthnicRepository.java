@@ -3,7 +3,9 @@ package com.example.telecare.repository;
 import com.example.telecare.model.Ethnic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface EthnicRepository extends JpaRepository<Ethnic,Integer> {
     @Query(value = "SELECT u.id,u.full_name,d.job_place,d.position,s.name FROM telecare.doctor d \n" +
             "left outer join telecare.user u on d.doctor_id = u.id\n" +

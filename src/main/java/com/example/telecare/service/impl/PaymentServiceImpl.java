@@ -4,7 +4,7 @@ import com.example.telecare.config.VnpayConfig;
 import com.example.telecare.dto.PaymentDTO;
 import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.enums.PaymentStatus;
-import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.Payment;
 import com.example.telecare.repository.AppointmentRepository;
@@ -145,7 +145,7 @@ public class PaymentServiceImpl implements PaymentService {
                             payment.setTransactionNo(vnp_TransactionNo);
                             if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
                                 Appointment appointment = appointmentRepository.findById(payment.getAppointmentId())
-                                        .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+                                        .orElseThrow(() -> new NotFoundException("Not found schedule"));
                                 appointment.setPaymentStatusId(PaymentStatus.PAID.status);
                                 payment.setStatus(PaymentStatusSuccess);
                                 appointmentRepository.save(appointment);

@@ -160,7 +160,6 @@ class RelativeControllerTest {
 
     @Test
     public void getRelativeByIdApiTestNullCase() throws Exception {
-        Relative relative = relative1;
         Mockito.when(relativeRepository.findRelativesByID(0)).thenReturn(null);
         Mockito.when(relativeService.findRelativeById(0)).thenReturn(null);
 

@@ -1,6 +1,5 @@
 package com.example.telecare.service.impl;
 
-import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
 import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
 import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
 import com.example.telecare.exception.NotFoundException;

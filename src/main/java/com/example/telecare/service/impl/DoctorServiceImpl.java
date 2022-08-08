@@ -7,7 +7,6 @@ import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.DoctorExperienceDTO;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
-import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.Doctor;
 
 
@@ -259,10 +258,10 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void updateDoctor(DoctorUpdateDTO doctorDetail, int id) {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Not found doctor"));
+                -> new NotFoundException("Not found doctor"));
 
         User user = userRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Not found user"));
+                -> new NotFoundException("Not found user"));
 
 
         user.setFullName(doctorDetail.getFullName());
@@ -291,7 +290,7 @@ public class DoctorServiceImpl implements DoctorService {
     public void addDoctorSpecialty(int doctorId, int specialtyId) {
 
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()
-                -> new ResourceNotFoundException("Not found doctor"));
+                -> new NotFoundException("Not found doctor"));
 
         doctor.addSpecialty(specialtyRepository.findSpecialtyById(specialtyId));
 
