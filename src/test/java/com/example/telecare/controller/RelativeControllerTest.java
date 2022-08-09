@@ -92,6 +92,7 @@ class RelativeControllerTest {
     RelativeControllerTest() throws ParseException {
     }
 
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -124,7 +125,6 @@ class RelativeControllerTest {
     }
     @Test
     public void getAllRelativeApiTestNullCase() throws Exception {
-
 
         Mockito.when(relativeRepository.findRelativesByPatientId(3)).thenReturn(null);
         Mockito.when(relativeService.findAllRelativeByPatientId(3)).thenReturn(null);
@@ -161,7 +161,6 @@ class RelativeControllerTest {
 
     @Test
     public void getRelativeByIdApiTestNullCase() throws Exception {
-        Relative relative = relative1;
         Mockito.when(relativeRepository.findRelativesByID(0)).thenReturn(null);
         Mockito.when(relativeService.findRelativeById(0)).thenReturn(null);
 

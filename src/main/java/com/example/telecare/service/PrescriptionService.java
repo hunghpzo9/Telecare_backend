@@ -9,8 +9,6 @@ import java.util.List;
 public interface PrescriptionService {
     List<PrescriptionDTOInf> listAllPrescriptionByPatientId(int id, int page);
 
-    PrescriptionDetailDTO getPrescriptionDetailByAppointmentId(int id);
-
     Prescription addPrescription(Prescription prescription);
 
     List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(int id, int page);

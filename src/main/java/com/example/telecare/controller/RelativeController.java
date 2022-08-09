@@ -1,5 +1,6 @@
 package com.example.telecare.controller;
 
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Relative;
 import com.example.telecare.repository.RelativeRepository;
 import com.example.telecare.service.impl.RelativeServiceImpl;
@@ -23,12 +24,20 @@ public class RelativeController {
 
     @GetMapping(value = "/patientId={id}")
     public List<Relative> getAllRelative(@PathVariable int id) {
-        return relativeService.findAllRelativeByPatientId(id);
+        if (id < 1) {
+            throw new NotFoundException("Relative Not found");
+        } else {
+            return relativeService.findAllRelativeByPatientId(id);
+        }
     }
 
     @GetMapping(value = "/{id}")
     public Relative getRelativeById(@PathVariable int id) {
-        return relativeService.findRelativeById(id);
+        if (id < 1) {
+            throw new NotFoundException("Relative Not found");
+        } else {
+            return relativeService.findRelativeById(id);
+        }
     }
 
     @PostMapping("/addNew")

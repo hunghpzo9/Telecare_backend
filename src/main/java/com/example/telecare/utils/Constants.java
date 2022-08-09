@@ -25,7 +25,9 @@ public class Constants {
 
     public static final String ROLE_DOCTOR= "DOCTOR";
 
-    public static final String ROLE_ADMIN= "ADMIN";
+    public static final String ROLE_SYSTEM_ADMIN = "SYSTEM ADMIN";
+
+    public static final String ROLE_BUSINESS_ADMIN= "BUSINESS ADMIN";
 
     public static final int HIDDEN_FEEDBACK= 0;
 

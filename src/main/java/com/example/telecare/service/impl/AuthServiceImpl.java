@@ -45,15 +45,15 @@ public class AuthServiceImpl implements AuthService {
     UserRepository userRepository;
 
     @Override
-    public ResponseEntity<?> login(AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> login(AuthenticationRequest authenticationRequest){
         AuthenticationResponse authenticationResponse = getUser(authenticationRequest);
         return ResponseEntity.ok(authenticationResponse);
     }
 
     @Override
-    public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest){
         AuthenticationResponse authenticationResponse = getUser(authenticationRequest);
-        if (!authenticationResponse.getRole().equals(Constants.ROLE_ADMIN)) {
+        if (!authenticationResponse.getRole().equals(Constants.ROLE_SYSTEM_ADMIN)) {
             throw new ForbiddenException("Bạn không có quyền vào trang này");
         }
         return ResponseEntity.ok(authenticationResponse);
@@ -62,6 +62,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> forgotPassword(String phone, String newPassword) {
         User user = userRepository.findUserByPhone(phone);
+        if (user == null) {
+            throw new BadRequestException("Số điện thoại không tồn tại");
+        }
         encodePassword(user, newPassword);
         userRepository.save(user);
         return ResponseEntity.ok(new ResponseOkMessage("Mật khẩu đã được thay đổi", new Date()));

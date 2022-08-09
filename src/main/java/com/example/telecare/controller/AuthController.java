@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
 
     @Autowired
-    TwilioServiceImpl twilioService;
+    private TwilioServiceImpl twilioService;
 
     @Autowired
     private AuthServiceImpl authService;
@@ -34,8 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/register/admin")
-    public User registerUserAdmin(@RequestBody User user) {
-        User registeredAdmin = userService.registerAdmin(user);
+    public User registerUserAdmin(@RequestBody User user,@RequestParam String role) {
+        User registeredAdmin = userService.registerAdmin(user,role);
         return registeredAdmin;
     }
 

@@ -4,7 +4,7 @@ import com.example.telecare.dto.interfaces.AdminDTOInf;
 import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.*;
 import com.example.telecare.repository.*;
 import com.example.telecare.security.PasswordHashService;
@@ -21,9 +21,6 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    TwilioServiceImpl twilioService;
-
     @Autowired
     AddressRepository addressRepository;
 
@@ -114,7 +111,7 @@ public class UserServiceImpl implements UserService {
             doctor.setSignature(doctorDTO.getSignature());
 
             Specialty specialty = specialtyRepository.findById(doctorDTO.getSpecialtyId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found patient"));
+                    .orElseThrow(() -> new NotFoundException("Not found patient"));
             doctor.addSpecialty(specialty);
             doctorRepository.save(doctor);
 
@@ -122,7 +119,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerAdmin(User user) {
+    public User registerAdmin(User user,String role) {
         User duplicateUserByPhone = userRepository.findUserByPhone(user.getPhone());
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByPhone != null) {
@@ -139,7 +136,11 @@ public class UserServiceImpl implements UserService {
 
             encodePassword(user);
             logger.info("Save user to database");
-            Role roleAdmin = roleRepository.findByName(Constants.ROLE_ADMIN);
+
+            Role roleAdmin = roleRepository.findByName(role);
+            if(roleAdmin == null){
+                throw new BadRequestException("Role không hợp lệ");
+            }
             user.addRole(roleAdmin);
 
             return userRepository.save(user);
@@ -147,29 +148,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateStatus(Byte isActive, int id,Date expireDate,String reason) {
+    public void updateStatus(Byte isActive, int id, Date expireDate, String reason) {
 
-            Doctor doctor = doctorRepository.findById(id).orElseThrow(()
-                    -> new ResourceNotFoundException("Không tìm thấy bác sĩ"));
-            doctor.setExpireDateCertificate(expireDate);
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Không tìm thấy bác sĩ"));
+        doctor.setExpireDateCertificate(expireDate);
 
-            doctorRepository.save(doctor);
+        doctorRepository.save(doctor);
 
-        User user = userRepository.findById(id) .orElseThrow(()
-                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Không tìm thấy người dùng"));
         Byte currentStatus = user.getIsActive();
         user.setIsActive(isActive);
-        if(isActive==Constants.IS_BAN){
+        if (isActive == Constants.IS_BAN) {
             user.setReason(reason);
-        }else if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN){
+        } else if (isActive == Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN) {
             user.setReason(null);
         }
 
         userRepository.save(user);
 
-        if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_NOT_ACTIVE){
+        if (isActive == Constants.IS_ACTIVE && currentStatus == Constants.IS_NOT_ACTIVE) {
             TwilioRequestDTO twilioRequestDTO = new TwilioRequestDTO();
-            String phone = "+84"+user.getPhone().substring(1);
+            String phone = "+84" + user.getPhone().substring(1);
             logger.info(phone);
             twilioRequestDTO.setPhoneNumber(phone);
             //twilioService.sendSmsToDoctor(twilioRequestDTO,Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi);
@@ -179,13 +180,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateStatusForPatient(Byte isActive, int id, String reason) {
-        User user = userRepository.findById(id) .orElseThrow(()
-                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Không tìm thấy người dùng"));
         Byte currentStatus = user.getIsActive();
         user.setIsActive(isActive);
-        if(isActive==Constants.IS_BAN){
+        if (isActive == Constants.IS_BAN) {
             user.setReason(reason);
-        }else if(isActive==Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN){
+        } else if (isActive == Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN) {
             user.setReason(null);
         }
 
@@ -195,7 +196,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(int id) {
         User user = userRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+                -> new NotFoundException("Không tìm thấy người dùng"));
         return user;
     }
 

@@ -10,7 +10,7 @@ public interface UserService {
 
     User registerPatient(User user);
     void registerDoctor(DoctorDTO doctorSignupDTO);
-    User registerAdmin(User user);
+    User registerAdmin(User user,String role);
     void updateStatus(Byte isActive, int id, Date expireDate,String reason);
     void updateStatusForPatient(Byte isActive, int id,String reason);
     User findUserById(int id);
