@@ -65,7 +65,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Integer getDoctorId() {
-                    return null;
+                    return finalAppointmentDTO.getDoctorId();
                 }
 
                 @Override
@@ -239,7 +239,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Integer getDoctorId() {
-                    return null;
+                    return finalAppointmentDTO.getDoctorId();
                 }
 
                 @Override
