@@ -12,7 +12,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     @Query(value = "SELECT a.id \n" +
             "            , u.image_url as doctorImageUrl ,\n" +
             "            u.full_name as doctorName, u.phone as doctorPhone," +
-            "            a.patient_id as patientId, spec.name as doctorSpecialty,\n" +
+            "            a.patient_id as patientId, spec.name as doctorSpecialty,a.relative_id as relativeId,\n" +
             "            s.start_at as startAt,s.end_at as endAt,a.doctor_id as doctorId \n" +
             "            ,DATE_FORMAT (ad.time,'%d-%m-%Y') as time ,aps.name as status,aps.id as statusId\n" +
             "            FROM telecare.appointment a\n" +
@@ -91,7 +91,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "    u.full_name AS patientName,\n" +
             "    u.phone AS patientPhone,\n" +
             "    spec.name AS doctorSpecialty,\n" +
-            "    ad.description,\n" +
+            "    ad.description,a.relative_id as relativeId,\n" +
             "    s.start_at AS startAt,\n" +
             "    s.end_at AS endAt,\n" +
             "    DATE_FORMAT(ad.time, '%d-%m-%Y') AS time,\n" +
