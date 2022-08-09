@@ -15,6 +15,7 @@ public interface AppointmentDTOInf {
     Integer getRelativeId();
     Integer getAmount();
     Byte getIsShare();
+    String getCancelReason();
 
     String getPatientName();
     String getPatientImageUrl();
