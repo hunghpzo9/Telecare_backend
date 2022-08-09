@@ -1,8 +1,15 @@
 package com.example.telecare.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "doctor_experience", schema = "telecare", catalog = "")
 public class DoctorExperience {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

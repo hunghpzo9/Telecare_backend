@@ -1,8 +1,15 @@
 package com.example.telecare.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "doctor_specialty", schema = "telecare", catalog = "")
 @IdClass(DoctorSpecialtyPK.class)
 public class DoctorSpecialty {

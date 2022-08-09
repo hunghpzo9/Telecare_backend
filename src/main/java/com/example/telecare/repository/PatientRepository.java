@@ -15,7 +15,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "e.id as ethnicId, u.is_active as isActive ,u.reason," +
             "p.blood_type as bloodType,p.height as height,p.weight as weight,p.job as job," +
             "p.job_place as jobPlace,p.insurance,\n" +
-            "a.id as addressId ,a.city_id as cityId,a.districy_id as districtId,a.ward_id as wardId\n" +
+            "a.id as addressId ,a.city_id as cityId,a.district_id as districtId,a.ward_id as wardId\n" +
             "FROM user u left outer join patient p ON u.id = p.patient_id \n" +
             "left outer join address a on a.id = u.address_id\n" +
             "left outer join ethnic e on p.ethnic_id = e. id\n" +
@@ -33,7 +33,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "            left outer join address a on a.id = u.address_id\n" +
             "            left outer join ethnic e on p.ethnic_id = e. id\n" +
             "            left outer join city c on a.city_id=c.id\n" +
-            "            left outer join district d on a.districy_id=d.id\n" +
+            "            left outer join district d on a.district_id=d.id\n" +
             "            left outer join ward w on a.ward_id=w.id\n"+
             "            WHERE u.id = ?1"
             ,nativeQuery = true)
@@ -49,7 +49,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "            left outer join address a on a.id = u.address_id\n" +
             "            left outer join ethnic e on p.ethnic_id = e. id\n" +
             "            left outer join city c on a.city_id=c.id\n" +
-            "            left outer join district d on a.districy_id=d.id\n" +
+            "            left outer join district d on a.district_id=d.id\n" +
             "            left outer join ward w on a.ward_id=w.id\n" +
             "            where u.full_name like %?2% or u.phone like %?2% or p.job_place like %?2% or p.job like %?2%\n" +
             "            limit ?1,10",
@@ -61,7 +61,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "            left outer join address a on a.id = u.address_id\n" +
             "            left outer join ethnic e on p.ethnic_id = e. id\n" +
             "            left outer join city c on a.city_id=c.id\n" +
-            "            left outer join district d on a.districy_id=d.id\n" +
+            "            left outer join district d on a.district_id=d.id\n" +
             "            left outer join ward w on a.ward_id=w.id\n" +
             "           where u.full_name like %?1% or u.phone like %?1% or p.job_place like %?1% or p.job like %?1%"
             ,nativeQuery = true)

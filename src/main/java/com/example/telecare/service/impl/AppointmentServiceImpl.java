@@ -5,7 +5,6 @@ import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.enums.PaymentStatus;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
-import com.example.telecare.exception.ResourceNotFoundException;
 import com.example.telecare.model.*;
 import com.example.telecare.repository.*;
 import com.example.telecare.service.AppointmentService;
@@ -441,7 +440,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             List<MedicalRecord> medicalRecordList = new ArrayList<>();
             medicalRecordId.forEach(e -> {
                 MedicalRecord medicalRecord = medicalRecordRepository.findById(e).
-                        orElseThrow(() -> new ResourceNotFoundException("Not found medicalRecord"));
+                        orElseThrow(() -> new NotFoundException("Not found medicalRecord"));
                 medicalRecordList.add(medicalRecord);
             });
             newAppointment.setMedicalRecords(medicalRecordList);
@@ -461,7 +460,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             //get schedule
             Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+                    .orElseThrow(() -> new NotFoundException("Not found schedule"));
             String startAt = schedule.getStartAt().toString();
             startAt = startAt.substring(0, startAt.length() - 3);
             String endAt = schedule.getEndAt().toString();
@@ -507,9 +506,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 
         AppointmentDetails appointmentDetails = appointmentDetailRepository.findById(cancelAppointment.getAppointmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+                .orElseThrow(() -> new NotFoundException("Not found appointment"));
         Appointment appointment = appointmentRepository.findById(cancelAppointment.getAppointmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+                .orElseThrow(() -> new NotFoundException("Not found appointment"));
 
         if (appointmentDetails != null) {
             appointmentDetails.setStatusId(AppointmentStatus.CANCEL.status);
@@ -526,7 +525,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         String date = formatter.format(cld.getTime());
         if (appointmentRepository.countCancelAppointmentInOneWeek(userId, date) >= 3) {
             User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+                    .orElseThrow(() -> new NotFoundException("Không tìm thấy người dùng"));
             user.setIsActive((byte) Constants.IS_BAN);
             user.setReason("Huỷ quá 3 lần trong 1 tuần");
             userRepository.save(user);
@@ -535,7 +534,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDetails.getTime().toString());
             Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+                    .orElseThrow(() -> new NotFoundException("Not found schedule"));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String startAt = schedule.getStartAt().toString();
             startAt = startAt.substring(0, startAt.length() - 3);
@@ -565,14 +564,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         //send notification
         Appointment appointment = appointmentRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+                orElseThrow(() -> new NotFoundException("Not found appointment"));
         appointmentRepository.save(appointment);
 
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd")
                     .parse(appointmentDs.getTime().toString());
             Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+                    .orElseThrow(() -> new NotFoundException("Not found schedule"));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String startAt = schedule.getStartAt().toString();
             startAt = startAt.substring(0, startAt.length() - 3);
@@ -597,13 +596,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         //send notification
         Appointment appointment = appointmentRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Not found appointment"));
+                orElseThrow(() -> new NotFoundException("Not found appointment"));
         appointmentRepository.save(appointment);
 
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentDs.getTime().toString());
             Schedule schedule = scheduleRepository.findById(appointment.getScheduleId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found schedule"));
+                    .orElseThrow(() -> new NotFoundException("Not found schedule"));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             String startAt = schedule.getStartAt().toString();
             startAt = startAt.substring(0, startAt.length() - 3);

@@ -34,19 +34,4 @@ public class PatientController {
         patientService.updatePatient(patientDetail,id);
         return ResponseEntity.ok(patientDetail);
     }
-    @GetMapping(value = "")
-    public PatientDTOAdminInf findPatientForAdmin(@RequestParam int id) {
-        return  patientService.findPatientByIdForAdmin(id);
-    }
-    @GetMapping(value = "/getAll")
-    public ResponseEntity<List<PatientDTOAdminInf>> getAllDoctor(@RequestParam int index, @RequestParam String searchText) {
-        return new ResponseEntity<>(patientService.getAllPatient(index,searchText), HttpStatus.OK);
-    }
-    @GetMapping("/numberOfPatient")
-    public ResponseEntity<Integer> getNumberOfDoctor(@RequestParam String searchText) {
-        int medicines = patientService.getNumberOfPatient(searchText);
-        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
-
-    }
-
 }
