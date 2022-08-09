@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerAdmin(User user) {
+    public User registerAdmin(User user,String role) {
         User duplicateUserByPhone = userRepository.findUserByPhone(user.getPhone());
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByPhone != null) {
@@ -136,7 +136,11 @@ public class UserServiceImpl implements UserService {
 
             encodePassword(user);
             logger.info("Save user to database");
-            Role roleAdmin = roleRepository.findByName(Constants.ROLE_ADMIN);
+
+            Role roleAdmin = roleRepository.findByName(role);
+            if(roleAdmin == null){
+                throw new BadRequestException("Role không hợp lệ");
+            }
             user.addRole(roleAdmin);
 
             return userRepository.save(user);

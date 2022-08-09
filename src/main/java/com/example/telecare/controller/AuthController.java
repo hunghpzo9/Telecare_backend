@@ -34,8 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/register/admin")
-    public User registerUserAdmin(@RequestBody User user) {
-        User registeredAdmin = userService.registerAdmin(user);
+    public User registerUserAdmin(@RequestBody User user,@RequestParam String role) {
+        User registeredAdmin = userService.registerAdmin(user,role);
         return registeredAdmin;
     }
 

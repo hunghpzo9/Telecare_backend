@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest){
         AuthenticationResponse authenticationResponse = getUser(authenticationRequest);
-        if (!authenticationResponse.getRole().equals(Constants.ROLE_ADMIN)) {
+        if (!authenticationResponse.getRole().equals(Constants.ROLE_SYSTEM_ADMIN)) {
             throw new ForbiddenException("Bạn không có quyền vào trang này");
         }
         return ResponseEntity.ok(authenticationResponse);
