@@ -1,8 +1,12 @@
 package com.example.telecare.controller;
 
+import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.interfaces.PatientDTOInf;
 import com.example.telecare.exception.NotFoundException;
+import com.example.telecare.model.Patient;
+import com.example.telecare.repository.AddressRepository;
 import com.example.telecare.repository.PatientRepository;
+import com.example.telecare.repository.UserRepository;
 import com.example.telecare.security.PasswordHashService;
 import com.example.telecare.service.impl.PatientServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -42,6 +47,11 @@ class PatientControllerTest {
 
     @Mock
     private PatientServiceImpl patientService;
+
+    @Mock
+    UserRepository userRepository;
+    @Mock
+    AddressRepository addressRepository;
 
 
     @InjectMocks
@@ -178,6 +188,20 @@ class PatientControllerTest {
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
+    }
+
+    @Test
+    public void updatePatientSuccess(){
+        PatientDTO updatePatient = PatientDTO
+                .builder()
+                .id(1)
+                .bloodType("O")
+                .ethnicId(3)
+                .fullName("Nguyen Hung").build();
+
+        Mockito.when(patientRepository.findById(1)).thenReturn(null);
+        Mockito.when(userRepository.findById(1)).thenReturn(null);
+        Mockito.when(addressRepository.findById(1)).thenReturn(null);
     }
 
     @Test

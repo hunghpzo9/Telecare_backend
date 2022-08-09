@@ -52,7 +52,7 @@ class EthnicControllerTest {
     }
 
     @Test
-    public void getAllEthnic() throws Exception {
+    public void getAllEthnic() {
 
         List<Ethnic> ethnicList = ethnicRepository.findAll();
         Assertions.assertThat(ethnicList.size()).isEqualTo(54);
