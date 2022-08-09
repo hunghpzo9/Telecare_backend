@@ -40,7 +40,7 @@ public class MedicalRecordController {
     }
 
     @GetMapping(value = "/getShareMedicalRecord")
-    public List<MedicalRecordDTOInf> getShareMedicalRecordList(@RequestParam int patientId,
+    public List<MedicalRecordDTOInf> getShareMedicalRecordByPatient(@RequestParam int patientId,
                                                                @RequestParam int page,
                                                                @RequestParam boolean isRelative,
                                                                @RequestParam int relativeId) {
@@ -48,7 +48,7 @@ public class MedicalRecordController {
     }
 
     @GetMapping(value = "/getSharedMedicalRecordByAppointment")
-    public List<MedicalRecordDTOInf> getSharedPrescriptionByAppointment(
+    public List<MedicalRecordDTOInf> getSharedMedicalRecordByAppointment(
             @RequestParam int appointmentId, @RequestParam int page) {
         return medicalRecordService.getSharedMedicalRecordByAppointment(appointmentId, page);
     }
