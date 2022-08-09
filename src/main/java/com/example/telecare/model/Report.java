@@ -34,7 +34,44 @@ public class Report {
     @Basic
     @Column(name = "appointment_id")
     private Integer appointmentId;
+    @Basic
+    @Column(name = "user_id")
+    private Integer userId;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(int reasonId) {
+        this.reasonId = reasonId;
+    }
+
+
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -66,7 +103,19 @@ public class Report {
         return appointmentId;
     }
 
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
     public void setAppointmentId(Integer appointmentId) {
         this.appointmentId = appointmentId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

@@ -53,7 +53,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> loginForAdmin(AuthenticationRequest authenticationRequest){
         AuthenticationResponse authenticationResponse = getUser(authenticationRequest);
-        if (!authenticationResponse.getRole().equals(Constants.ROLE_SYSTEM_ADMIN)) {
+        if (!authenticationResponse.getRole().equals(Constants.ROLE_SYSTEM_ADMIN) &&
+                !authenticationResponse.getRole().equals(Constants.ROLE_BUSINESS_ADMIN)) {
             throw new ForbiddenException("Bạn không có quyền vào trang này");
         }
         return ResponseEntity.ok(authenticationResponse);
@@ -83,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findUserByPhone(authenticationRequest.getPhone());
         Role user_role = user.getRoles().stream().reduce((first, second) -> first).orElse(null);
         return new AuthenticationResponse(access_token, refresh_token,
-                user.getId(), user_role.getName(), user.getIsActive(), user.getReason());
+                user.getId(), user_role.getName(), user.getIsActive(), user.toString());
     }
 
     @Override
