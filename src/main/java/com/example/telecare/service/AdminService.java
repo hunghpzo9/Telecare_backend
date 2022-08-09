@@ -3,6 +3,7 @@ package com.example.telecare.service;
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.interfaces.*;
 import com.example.telecare.model.Medicine;
+import com.example.telecare.model.Payment;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
@@ -25,4 +26,6 @@ public interface AdminService {
     ResponseEntity<?> changeOldPassword(String id, String oldPassword,String newPassword);
     void sendNotification(int uid,String message);
     public List<PatientDTOAdminInf> getAllPatient(int index, String search);
+    List<Payment> getAllPayment(int index, String searchText);
+    int getNumberOfPayment(String searchText);
 }
