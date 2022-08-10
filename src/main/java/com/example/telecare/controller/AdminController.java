@@ -61,13 +61,18 @@ public class AdminController {
     @GetMapping("/appointment/numberOfAppointment")
     public ResponseEntity<Integer> getNumberOfAppointment(@RequestParam String searchText) {
         int noa = adminService.getNumberOfAppointmentForAdmin(searchText);
-        return new ResponseEntity<Integer>(noa, HttpStatus.OK);
+        return new ResponseEntity(noa, HttpStatus.OK);
+
+    }
+    @GetMapping("/appointment/detail/{id}")
+    public ResponseEntity<AppointmentDTOInfForAdmin> getNumberOfPayment(@PathVariable int id) {
+        return new ResponseEntity(adminService.getAppointmentDetailForAdmin(id), HttpStatus.OK);
 
     }
     @GetMapping("/patient/numberOfPatient")
     public ResponseEntity<Integer> getNumberOfPatient(@RequestParam String searchText) {
         int medicines = adminService.getNumberOfPatient(searchText);
-        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
+        return new ResponseEntity(medicines, HttpStatus.OK);
 
     }
     @PostMapping("/auth/loginForAdmin")

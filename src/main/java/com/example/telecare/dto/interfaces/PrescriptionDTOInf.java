@@ -8,4 +8,5 @@ public interface PrescriptionDTOInf {
     String getDoctorName();
     Date getCreatedAt();
     String getUrl();
+    Integer getAppointmentId();
 }

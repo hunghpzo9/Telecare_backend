@@ -1,6 +1,11 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.AuthenticationRequest;
+import com.example.telecare.dto.interfaces.AdminDTOInf;
+import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
+import com.example.telecare.dto.interfaces.DoctorDTOInf;
+import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.dto.interfaces.*;
 import com.example.telecare.model.Medicine;
 
@@ -137,5 +142,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void updateStatusForReport(int reportId, int statusId) {
          reportService.updateStatus(reportId,statusId);
+    }
+
+    @Override
+    public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
+        return appointmentService.getAppointmentDetailForAdmin(appointmentId);
+
+
     }
 }

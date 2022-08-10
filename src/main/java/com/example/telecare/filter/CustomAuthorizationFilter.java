@@ -29,7 +29,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, ForbiddenException {
-       if(request.getServletPath().equals("/api/v1/auth/login" ) ||
+       if(request.getServletPath().equals("/api/v1/auth/login")||
                request.getServletPath().equals("/api/v1/admin/auth/loginForAdmin")){
            filterChain.doFilter(request,response);
        }else {

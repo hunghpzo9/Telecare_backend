@@ -82,6 +82,11 @@ class PrescriptionControllerTest {
         public String getUrl() {
             return "https://firebasestorage.googleapis.com/v0/b/telecare-chat-storing.appspot.com/o/prescriptions%2F1%2FPS_0906166559_27-07-2022%2005%3A32%3A28.pdf?alt=media&token=ae55958f-ebde-40c0-83f2-3d51af59b843";
         }
+
+        @Override
+        public Integer getAppointmentId() {
+            return null;
+        }
     };
 
     PrescriptionDTOInf pre2 = new PrescriptionDTOInf() {
@@ -113,6 +118,11 @@ class PrescriptionControllerTest {
         @Override
         public String getUrl() {
             return "https://firebasestorage.googleapis.com/v0/b/telecare-chat-storing.appspot.com/o/prescriptions%2F1%2FPS_0906166559_27-07-2022%2005%3A32%3A28.pdf?alt=media&token=ae55958f-ebde-40c0-83f2-3d51af59b843";
+        }
+
+        @Override
+        public Integer getAppointmentId() {
+            return null;
         }
     };
 
