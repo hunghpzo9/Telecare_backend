@@ -40,6 +40,8 @@ public interface AppointmentService {
 
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 
+    AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
+
     int getNumberOfAppointmentForAdmin(String search);
 
     List<AppointmentDTOInf> findDoneAppointment(int userId,int paymentStatusId,boolean isPatient);

@@ -92,6 +92,11 @@ class MedicalRecordControllerTest {
         public String getUrl() {
             return null;
         }
+
+        @Override
+        public Integer getAppointmentId() {
+            return null;
+        }
     };
 
     MedicalRecordDTOInf medi2 = new MedicalRecordDTOInf() {
@@ -131,6 +136,11 @@ class MedicalRecordControllerTest {
 
         @Override
         public String getUrl() {
+            return null;
+        }
+
+        @Override
+        public Integer getAppointmentId() {
             return null;
         }
     };

@@ -4,6 +4,7 @@ import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.dto.interfaces.*;
 import com.example.telecare.model.Medicine;
+import com.example.telecare.model.Payment;
 import com.example.telecare.service.impl.AdminServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -60,13 +61,18 @@ public class AdminController {
     @GetMapping("/appointment/numberOfAppointment")
     public ResponseEntity<Integer> getNumberOfAppointment(@RequestParam String searchText) {
         int noa = adminService.getNumberOfAppointmentForAdmin(searchText);
-        return new ResponseEntity<Integer>(noa, HttpStatus.OK);
+        return new ResponseEntity(noa, HttpStatus.OK);
+
+    }
+    @GetMapping("/appointment/detail/{id}")
+    public ResponseEntity<AppointmentDTOInfForAdmin> getNumberOfPayment(@PathVariable int id) {
+        return new ResponseEntity(adminService.getAppointmentDetailForAdmin(id), HttpStatus.OK);
 
     }
     @GetMapping("/patient/numberOfPatient")
     public ResponseEntity<Integer> getNumberOfPatient(@RequestParam String searchText) {
         int medicines = adminService.getNumberOfPatient(searchText);
-        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
+        return new ResponseEntity(medicines, HttpStatus.OK);
 
     }
     @PostMapping("/auth/loginForAdmin")
@@ -109,5 +115,17 @@ public class AdminController {
     public ResponseEntity<List<PatientDTOAdminInf>> getAllPatient(@RequestParam int index, @RequestParam String searchText) {
         return new ResponseEntity<>(adminService.getAllPatient(index,searchText), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/payment/getAll")
+    public ResponseEntity<List<Payment>> getAllPayment(@RequestParam int index, @RequestParam String searchText) {
+        return new ResponseEntity<>(adminService.getAllPayment(index,searchText), HttpStatus.OK);
+    }
+    @GetMapping("/payment/numberOfPayment")
+    public ResponseEntity<Integer> getNumberOfPayment(@RequestParam String searchText) {
+        int medicines = adminService.getNumberOfPayment(searchText);
+        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
+
+    }
+
 
 }

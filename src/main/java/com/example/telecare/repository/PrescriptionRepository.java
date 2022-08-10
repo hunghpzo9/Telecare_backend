@@ -40,6 +40,18 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Inte
             "LIMIT 5 OFFSET ?2", nativeQuery = true)
     List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(int id, int page);
 
+    @Query(value = "SELECT  pre.id, pre.diagnosis AS prescriptionDiagnosis, " +
+            "u.full_name AS doctorName, pre.created_at AS createdAt , pre.url" +
+            ",pre.appointment_id AS appointmentId\n" +
+            "FROM telecare.prescription pre\n" +
+            "LEFT OUTER JOIN appointment a on pre.appointment_id = a.id\n" +
+            "LEFT OUTER JOIN telecare.medical_record m ON m.appointment_id = pre.appointment_id\n" +
+            "LEFT OUTER JOIN telecare.user u ON a.doctor_id = u.id\n" +
+            "LEFT OUTER JOIN telecare.medical_record_share mds ON mds.medical_record_id = m.id\n" +
+            "where mds.appointment_id = ?1\n" +
+            "", nativeQuery = true)
+    List<PrescriptionDTOInf> getSharedPrescriptionByAppointmentAdmin(int id);
+
     @Query(value = "SELECT * FROM telecare.prescription WHERE trace = ?1",
             nativeQuery = true)
     Prescription checkDuplicateTrace(String trace);

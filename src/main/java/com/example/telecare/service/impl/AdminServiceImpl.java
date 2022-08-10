@@ -5,8 +5,10 @@ import com.example.telecare.dto.interfaces.AdminDTOInf;
 import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
 import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Medicine;
 
+import com.example.telecare.model.Payment;
 import com.example.telecare.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ public class AdminServiceImpl implements AdminService {
     UserServiceImpl userService;
     @Autowired
     NotificationServiceImpl notificationService;
+    @Autowired
+    PaymentServiceImpl paymentService;
 
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
@@ -109,5 +113,22 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<PatientDTOAdminInf> getAllPatient(int index, String search) {
         return patientService.getAllPatient(index,search);
+    }
+
+    @Override
+    public List<Payment> getAllPayment(int index, String searchText) {
+        return paymentService.getAllPayment(index, searchText);
+    }
+
+    @Override
+    public int getNumberOfPayment(String searchText) {
+        return paymentService.getNumberOfPayment(searchText);
+    }
+
+    @Override
+    public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
+        return appointmentService.getAppointmentDetailForAdmin(appointmentId);
+
+
     }
 }
