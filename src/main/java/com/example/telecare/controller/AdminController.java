@@ -117,10 +117,29 @@ public class AdminController {
     }
     @GetMapping("/payment/numberOfPayment")
     public ResponseEntity<Integer> getNumberOfPayment(@RequestParam String searchText) {
-        int medicines = adminService.getNumberOfPayment(searchText);
-        return new ResponseEntity<Integer>(medicines, HttpStatus.OK);
+        int nop = adminService.getNumberOfPayment(searchText);
+        return new ResponseEntity<Integer>(nop, HttpStatus.OK);
 
     }
+    @GetMapping(value = "/report/getAll")
+    public ResponseEntity<List<ReportDTOInfForAdmin>> getAllReport(@RequestParam int index,@RequestParam String searchText) {
+        return new ResponseEntity<>(adminService.getListReportForAdmin(index,searchText), HttpStatus.OK);
+    }
+    @GetMapping("/report/numberOfReport")
+    public ResponseEntity<Integer> getNumberOfReport(@RequestParam String searchText) {
+        int nor = adminService.getNumberOfReportForAdmin(searchText);
+        return new ResponseEntity<Integer>(nor, HttpStatus.OK);
+
+    }
+    @PutMapping(value = "/report/updateStatus")
+    public ResponseEntity<?> updateStatusForReport(@RequestParam int reportId,@RequestParam int statusId) throws ParseException {
+
+        adminService.updateStatusForReport(reportId,statusId);
+        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
+
+    }
+
+
 
 
 }

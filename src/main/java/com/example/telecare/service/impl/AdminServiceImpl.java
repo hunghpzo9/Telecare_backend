@@ -1,10 +1,7 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.AuthenticationRequest;
-import com.example.telecare.dto.interfaces.AdminDTOInf;
-import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
-import com.example.telecare.dto.interfaces.DoctorDTOInf;
-import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
+import com.example.telecare.dto.interfaces.*;
 import com.example.telecare.model.Medicine;
 
 import com.example.telecare.model.Payment;
@@ -34,6 +31,9 @@ public class AdminServiceImpl implements AdminService {
     NotificationServiceImpl notificationService;
     @Autowired
     PaymentServiceImpl paymentService;
+    @Autowired
+    ReportServiceImpl reportService;
+
 
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
@@ -122,5 +122,20 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int getNumberOfPayment(String searchText) {
         return paymentService.getNumberOfPayment(searchText);
+    }
+
+    @Override
+    public List<ReportDTOInfForAdmin> getListReportForAdmin(int index,String search) {
+        return reportService.getListReportForAdmin(index,search);
+    }
+
+    @Override
+    public int getNumberOfReportForAdmin(String search) {
+        return reportService.getNumberOfReportForAdmin(search);
+    }
+
+    @Override
+    public void updateStatusForReport(int reportId, int statusId) {
+         reportService.updateStatus(reportId,statusId);
     }
 }
