@@ -28,4 +28,5 @@ public interface AdminService {
     public List<PatientDTOAdminInf> getAllPatient(int index, String search);
     List<Payment> getAllPayment(int index, String searchText);
     int getNumberOfPayment(String searchText);
+    AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
 }

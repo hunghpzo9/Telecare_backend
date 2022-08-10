@@ -669,6 +669,103 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
+        AppointmentDTOInfForAdmin appointment =  appointmentRepository.getAppointmentDetailForAdmin(appointmentId);
+        if(appointment == null ){
+            throw  new NotFoundException("Không tìm thấy cuộc hẹn");
+        }
+        AppointmentDTOInfForAdmin returnAppointment = new AppointmentDTOInfForAdmin() {
+            @Override
+            public Integer getId() {
+                return appointment.getId();
+            }
+
+            @Override
+            public Integer getPatientId() {
+                return appointment.getPatientId();
+            }
+
+            @Override
+            public String getPatientName() {
+                return appointment.getPatientName();
+            }
+
+            @Override
+            public String getPatientPhone() {
+                return appointment.getPatientPhone();
+            }
+
+            @Override
+            public String getDoctorName() {
+                return appointment.getDoctorName();
+            }
+
+            @Override
+            public Integer getDoctorId() {
+                return appointment.getDoctorId();
+            }
+
+            @Override
+            public String getPrescriptionTrace() {
+                return null;
+            }
+
+            @Override
+            public String getPrescriptionUrl() {
+                return null;
+            }
+
+            @Override
+            public String getMedicalRecordTrace() {
+                return null;
+            }
+
+            @Override
+            public String getMedicalRecordUrl() {
+                return null;
+            }
+
+            @Override
+            public Date getTime() {
+                return appointment.getTime();
+            }
+
+            @Override
+            public Time getStartAt() {
+                return appointment.getStartAt();
+            }
+
+            @Override
+            public Time getEndAt() {
+                return appointment.getEndAt();
+            }
+
+            @Override
+            public String getPaymentStatus() {
+                return appointment.getPaymentStatus();
+            }
+
+            @Override
+            public String getRelativeName() {
+                return appointment.getRelativeName();
+            }
+
+            @Override
+            public List<MedicalRecordDTOInf> getListSharedMedicalRecord() {
+
+                return medicalRecordRepository.getSharedMedicalRecordByAppointmentAdmin(appointmentId);
+            }
+
+            @Override
+            public List<PrescriptionDTOInf> getListSharedPrescription() {
+                return prescriptionRepository.getSharedPrescriptionByAppointmentAdmin(appointmentId);
+            }
+        };
+
+        return returnAppointment;
+    }
+
+    @Override
     public int getNumberOfAppointmentForAdmin(String search) {
         return appointmentRepository.getNumberOfAppointmentForAdmin(search);
     }

@@ -5,6 +5,7 @@ import com.example.telecare.dto.interfaces.AdminDTOInf;
 import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
 import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Medicine;
 
 import com.example.telecare.model.Payment;
@@ -122,5 +123,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int getNumberOfPayment(String searchText) {
         return paymentService.getNumberOfPayment(searchText);
+    }
+
+    @Override
+    public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
+        return appointmentService.getAppointmentDetailForAdmin(appointmentId);
+
+
     }
 }

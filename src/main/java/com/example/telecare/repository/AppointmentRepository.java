@@ -181,7 +181,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             nativeQuery = true)
     List<AppointmentDTOInf> findDoneAppointment(int userId, int paymentStatusId, boolean isPatient);
 
-    @Query(value = "select  up.full_name patientName,up.id patientId,up.phone patientPhone,ud.full_name doctorName,ud.id doctorId,p.trace prescriptionTrace,p.url prescriptionUrl,mr.trace medicalRecordTrace,mr.url medicalRecordUrl,ad.time\n" +
+    @Query(value = "select a.id , up.full_name patientName,up.id patientId,up.phone patientPhone," +
+            "ud.full_name doctorName,ud.id doctorId,p.trace prescriptionTrace," +
+            "p.url prescriptionUrl,mr.trace medicalRecordTrace,mr.url medicalRecordUrl,ad.time\n" +
             "from appointment as a \n" +
             "left join user as up on a.patient_id=up.id\n" +
             "left join prescription as p on a.id = p.appointment_id\n" +
@@ -192,6 +194,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% \n" +
             "limit ?1,10", nativeQuery = true)
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
+
+    @Query(value = "select a.id , up.full_name patientName,up.id patientId,up.phone patientPhone,\n" +
+            "            ud.full_name doctorName,ud.id doctorId,ad.time\n" +
+            "            ,s.start_at startAt, s.end_at endAt,\n" +
+            "            ps.status paymentStatus, re.full_name relativeName\n" +
+            "            from appointment as a \n" +
+            "            left join user as up on a.patient_id=up.id\n" +
+            "            left join user as ud on a.doctor_id=ud.id\n" +
+            "            left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "            left join schedule s on s.id = a.schedule_id\n" +
+            "            left join payment_status ps on ps.id = a.payment_status_id\n" +
+            "            left join relative re on re.id = a.relative_id\n" +
+            "            where a.id = ?1", nativeQuery = true)
+    AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
 
 
     @Query(value = "select  count(*)\n" +
