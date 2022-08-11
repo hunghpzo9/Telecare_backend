@@ -197,12 +197,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     @Query(value = "select a.id , up.full_name patientName,up.id patientId,up.phone patientPhone,\n" +
             "            ud.full_name doctorName,ud.id doctorId,ad.time\n" +
-            "            ,s.start_at startAt, s.end_at endAt,\n" +
+            "            ,s.start_at startAt, s.end_at endAt,aps.name appointmentStatus,\n" +
+            "            p.trace prescriptionTrace, p.url prescriptionUrl,\n" +
+            "            mr.trace medicalRecordTrace,mr.url medicalRecordUrl,\n" +
             "            ps.status paymentStatus, re.full_name relativeName\n" +
             "            from appointment as a \n" +
             "            left join user as up on a.patient_id=up.id\n" +
             "            left join user as ud on a.doctor_id=ud.id\n" +
+            "            left join prescription as p on a.id = p.appointment_id\n" +
+            "            left join medical_record as mr on a.id=mr.appointment_id\n" +
             "            left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "            left join appointment_status as aps on ad.status_id=aps.id\n" +
             "            left join schedule s on s.id = a.schedule_id\n" +
             "            left join payment_status ps on ps.id = a.payment_status_id\n" +
             "            left join relative re on re.id = a.relative_id\n" +
@@ -220,4 +225,30 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "where up.full_name like %?1% or ud.full_name like %?1% or up.phone like %?1% or p.trace like %?1% or mr.trace like %?1% or ad.time like %?1% "
             ,nativeQuery = true)
     int getNumberOfAppointmentForAdmin(String search);
+
+    @Query(value = "select a.id , up.full_name patientName,up.id patientId,\n" +
+            "                        ud.full_name doctorName,ud.id doctorId,ad.time\n" +
+            "                        ,s.start_at startAt, s.end_at endAt,aps.name appointmentStatus\n" +
+            "                        from appointment as a \n" +
+            "                        left join user as up on a.patient_id=up.id\n" +
+            "                        left join user as ud on a.doctor_id=ud.id\n" +
+            "                        left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "                        left join appointment_status as aps on ad.status_id=aps.id\n" +
+            "                        left join schedule s on s.id = a.schedule_id\n" +
+            "                        where  up.full_name like %?2% or ud.full_name like %?2% or ad.time like %?2% or aps.name like %?2%\n" +
+            "                        order by ad.time desc\n" +
+            "                        limit ?1,10", nativeQuery = true)
+    List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
+
+    @Query(value = "select count(*) from appointment as a \n" +
+            "                        left join user as up on a.patient_id=up.id\n" +
+            "                        left join user as ud on a.doctor_id=ud.id\n" +
+            "                        left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "                        left join appointment_status as aps on ad.status_id=aps.id\n" +
+            "                        left join schedule s on s.id = a.schedule_id\n" +
+            "                        where  up.full_name like %?1% or ud.full_name like %?1% or ad.time like %?1% or aps.name like %?1%"
+            ,nativeQuery = true)
+    int getNumberOfAppointmentDetailsForAdmin(String search);
+
+
 }

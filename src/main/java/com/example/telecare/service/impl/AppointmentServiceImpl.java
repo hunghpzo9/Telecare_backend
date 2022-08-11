@@ -707,27 +707,32 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getPrescriptionTrace() {
-                return null;
+                return appointment.getPrescriptionTrace();
             }
 
             @Override
             public String getPrescriptionUrl() {
-                return null;
+                return appointment.getPrescriptionUrl();
             }
 
             @Override
             public String getMedicalRecordTrace() {
-                return null;
+                return appointment.getMedicalRecordTrace();
             }
 
             @Override
             public String getMedicalRecordUrl() {
-                return null;
+                return appointment.getMedicalRecordUrl();
             }
 
             @Override
             public Date getTime() {
                 return appointment.getTime();
+            }
+
+            @Override
+            public String getAppointmentStatus() {
+                return appointment.getAppointmentStatus();
             }
 
             @Override
@@ -932,6 +937,16 @@ public class AppointmentServiceImpl implements AppointmentService {
             returnAppointmentList.add(appointmentDTO);
         }
         return returnAppointmentList;
+    }
+
+    @Override
+    public List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search) {
+        return appointmentRepository.getAllAppointmentDetailsForAdmin(index, search);
+    }
+
+    @Override
+    public int getNumberOfAppointmentDetailsForAdmin(String search) {
+        return appointmentRepository.getNumberOfAppointmentDetailsForAdmin(search);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {

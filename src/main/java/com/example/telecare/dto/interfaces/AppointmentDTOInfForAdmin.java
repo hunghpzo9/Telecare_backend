@@ -19,7 +19,7 @@ public interface AppointmentDTOInfForAdmin {
     String getMedicalRecordTrace();
     String getMedicalRecordUrl();
     Date getTime();
-
+    String getAppointmentStatus();
     Time getStartAt();
     Time getEndAt();
     String getPaymentStatus();

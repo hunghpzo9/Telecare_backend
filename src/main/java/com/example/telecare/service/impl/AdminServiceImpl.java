@@ -21,6 +21,7 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
+
     MedicineServiceImpl medicineService;
     @Autowired
     DoctorServiceImpl doctorService;
@@ -38,8 +39,8 @@ public class AdminServiceImpl implements AdminService {
     PaymentServiceImpl paymentService;
     @Autowired
     ReportServiceImpl reportService;
-@Autowired
-FeedbackServiceImpl feedbackService;
+    @Autowired
+    FeedbackServiceImpl feedbackService;
 
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
@@ -150,6 +151,16 @@ FeedbackServiceImpl feedbackService;
         return appointmentService.getAppointmentDetailForAdmin(appointmentId);
 
 
+    }
+
+    @Override
+    public List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search) {
+        return appointmentService.getAllAppointmentDetailsForAdmin(index, search);
+    }
+
+    @Override
+    public int getNumberOfAppointmentDetailsForAdmin(String search) {
+        return appointmentService.getNumberOfAppointmentDetailsForAdmin(search);
     }
 
     @Override
