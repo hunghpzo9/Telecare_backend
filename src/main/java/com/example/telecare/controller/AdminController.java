@@ -155,8 +155,6 @@ public class AdminController {
 
     }
 
-
-
     @GetMapping(value = "/feedback/appointmentId={id}")
     public Feedback getFeedbackByAppointmentId(@PathVariable int id) {
         return adminService.findFeedBackByAppointmentId(id);
