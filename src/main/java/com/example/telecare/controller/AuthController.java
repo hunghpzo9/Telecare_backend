@@ -46,11 +46,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
         return authService.login(authenticationRequest);
     }
     @PostMapping("/loginForAdmin")
-    public ResponseEntity<?> loginForAdmin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> loginForAdmin(@RequestBody AuthenticationRequest authenticationRequest) {
         return authService.loginForAdmin(authenticationRequest);
     }
 

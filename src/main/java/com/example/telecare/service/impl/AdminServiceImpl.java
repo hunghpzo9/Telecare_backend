@@ -6,6 +6,8 @@ import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
 import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
 import com.example.telecare.exception.NotFoundException;
+import com.example.telecare.dto.interfaces.*;
+import com.example.telecare.model.Feedback;
 import com.example.telecare.model.Medicine;
 
 import com.example.telecare.model.Payment;
@@ -19,7 +21,6 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
-
     MedicineServiceImpl medicineService;
     @Autowired
     DoctorServiceImpl doctorService;
@@ -35,6 +36,10 @@ public class AdminServiceImpl implements AdminService {
     NotificationServiceImpl notificationService;
     @Autowired
     PaymentServiceImpl paymentService;
+    @Autowired
+    ReportServiceImpl reportService;
+@Autowired
+FeedbackServiceImpl feedbackService;
 
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
@@ -126,9 +131,29 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public List<ReportDTOInfForAdmin> getListReportForAdmin(int index,String search) {
+        return reportService.getListReportForAdmin(index,search);
+    }
+
+    @Override
+    public int getNumberOfReportForAdmin(String search) {
+        return reportService.getNumberOfReportForAdmin(search);
+    }
+
+    @Override
+    public void updateStatusForReport(int reportId, int statusId) {
+         reportService.updateStatus(reportId,statusId);
+    }
+
+    @Override
     public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
         return appointmentService.getAppointmentDetailForAdmin(appointmentId);
 
 
+    }
+
+    @Override
+    public Feedback findFeedBackByAppointmentId(int aid) {
+        return feedbackService.findFeedBackByAppointmentId(aid);
     }
 }
