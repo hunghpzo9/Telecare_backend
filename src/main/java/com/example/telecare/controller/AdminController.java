@@ -138,7 +138,7 @@ public class AdminController {
 
     }
     @PutMapping(value = "/report/updateStatus")
-    public ResponseEntity<?> updateStatusForReport(@RequestParam int reportId,@RequestParam int statusId) throws ParseException {
+    public ResponseEntity<?> updateStatusForReport(@RequestParam int reportId,@RequestParam int statusId)  {
 
         adminService.updateStatusForReport(reportId,statusId);
         return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
