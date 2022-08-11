@@ -7,6 +7,7 @@ import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.dto.interfaces.*;
+import com.example.telecare.model.Feedback;
 import com.example.telecare.model.Medicine;
 
 import com.example.telecare.model.Payment;
@@ -38,7 +39,8 @@ public class AdminServiceImpl implements AdminService {
     PaymentServiceImpl paymentService;
     @Autowired
     ReportServiceImpl reportService;
-
+    @Autowired
+    FeedbackServiceImpl feedbackService;
 
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
