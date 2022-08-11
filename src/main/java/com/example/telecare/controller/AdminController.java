@@ -65,7 +65,7 @@ public class AdminController {
 
     }
     @GetMapping("/appointment/detail/{id}")
-    public ResponseEntity<AppointmentDTOInfForAdmin> getNumberOfPayment(@PathVariable int id) {
+    public ResponseEntity<AppointmentDTOInfForAdmin> getAppointmentDetails(@PathVariable int id) {
         return new ResponseEntity(adminService.getAppointmentDetailForAdmin(id), HttpStatus.OK);
 
     }
@@ -141,6 +141,16 @@ public class AdminController {
 
         adminService.updateStatusForReport(reportId,statusId);
         return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
+
+    }
+    @GetMapping(value = "/appointmentDetails/getAll")
+    public ResponseEntity<List<AppointmentDTOInfForAdmin>> getAllAppointmentDetailsForAdmin(@RequestParam int index, @RequestParam String searchText) {
+        return new ResponseEntity<>(adminService.getAllAppointmentDetailsForAdmin(index, searchText), HttpStatus.OK);
+    }
+    @GetMapping("/appointmentDetails/numberOfAppointment")
+    public ResponseEntity<Integer> getNumberOfAppointmentDetails(@RequestParam String searchText) {
+        int noa = adminService.getNumberOfAppointmentDetailsForAdmin(searchText);
+        return new ResponseEntity(noa, HttpStatus.OK);
 
     }
 

@@ -150,4 +150,14 @@ public class AdminServiceImpl implements AdminService {
 
 
     }
+
+    @Override
+    public List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search) {
+        return appointmentService.getAllAppointmentDetailsForAdmin(index, search);
+    }
+
+    @Override
+    public int getNumberOfAppointmentDetailsForAdmin(String search) {
+        return appointmentService.getNumberOfAppointmentDetailsForAdmin(search);
+    }
 }

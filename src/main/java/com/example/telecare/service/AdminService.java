@@ -32,4 +32,6 @@ public interface AdminService {
     int getNumberOfReportForAdmin(String search);
     void updateStatusForReport(int reportId, int statusId);
     AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
+    List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
+    int getNumberOfAppointmentDetailsForAdmin(String search);
 }
