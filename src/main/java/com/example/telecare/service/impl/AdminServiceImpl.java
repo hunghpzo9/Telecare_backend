@@ -160,4 +160,9 @@ public class AdminServiceImpl implements AdminService {
     public int getNumberOfAppointmentDetailsForAdmin(String search) {
         return appointmentService.getNumberOfAppointmentDetailsForAdmin(search);
     }
+
+    @Override
+    public Feedback findFeedBackByAppointmentId(int aid) {
+        return feedbackService.findFeedBackByAppointmentId(aid);
+    }
 }

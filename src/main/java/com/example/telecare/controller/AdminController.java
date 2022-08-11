@@ -65,7 +65,7 @@ public class AdminController {
 
     }
     @GetMapping("/appointment/detail/{id}")
-    public ResponseEntity<AppointmentDTOInfForAdmin> getAppointmentDetails(@PathVariable int id) {
+    public ResponseEntity<AppointmentDTOInfForAdmin> getNumberOfPayment(@PathVariable int id) {
         return new ResponseEntity(adminService.getAppointmentDetailForAdmin(id), HttpStatus.OK);
 
     }
@@ -156,5 +156,9 @@ public class AdminController {
 
 
 
+    @GetMapping(value = "/feedback/appointmentId={id}")
+    public Feedback getFeedbackByAppointmentId(@PathVariable int id) {
+        return adminService.findFeedBackByAppointmentId(id);
+    }
 
 }
