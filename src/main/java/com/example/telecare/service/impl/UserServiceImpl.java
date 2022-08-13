@@ -76,10 +76,10 @@ public class UserServiceImpl implements UserService {
         User duplicateUserByEmail = userRepository.findUserByEmail(doctorDTO.getEmail());
         if (duplicateUserByPhone != null) {
             logger.error("{} is existed", duplicateUserByPhone.getPhone());
-            throw new BadRequestException("Số điện thoại đã tồn tại");
+            throw new BadRequestException("Số điện thoại đã tồn tại. ");
         } else if (duplicateUserByEmail != null) {
             logger.error("{} is existed", duplicateUserByEmail.getEmail());
-            throw new BadRequestException("Email đã tồn tại");
+            throw new BadRequestException("Email đã tồn tại. ");
         } else {
 //add address
             Address address = new Address();

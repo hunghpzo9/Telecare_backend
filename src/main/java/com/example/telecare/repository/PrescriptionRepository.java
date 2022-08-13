@@ -56,4 +56,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Inte
             nativeQuery = true)
     Prescription checkDuplicateTrace(String trace);
 
+    @Query(value = "SELECT * FROM telecare.prescription WHERE appointment_id = ?1",
+            nativeQuery = true)
+    Prescription getPrescriptionDetailByAppointment(int appointmentId);
+
 }
