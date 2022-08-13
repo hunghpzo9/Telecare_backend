@@ -47,6 +47,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return prescriptionRepository.getSharedPrescriptionByAppointment(id,page);
     }
 
+    @Override
+    public Prescription getPrescriptionDetailByAppointment(int appointmentId) {
+        return prescriptionRepository.getPrescriptionDetailByAppointment(appointmentId);
+    }
+
+
 
     protected String generatePrescriptionNumber() {
         String root = "abcdefghijklmnopqrstuvwxyz1234567890";
