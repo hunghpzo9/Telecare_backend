@@ -119,6 +119,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public Byte getIsAdd() {
+                    return null;
+                }
+
+                @Override
                 public String getCancelReason() {
                     return null;
                 }
@@ -289,6 +294,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Byte getIsShare() {
+                    return null;
+                }
+
+                @Override
+                public Byte getIsAdd() {
                     return null;
                 }
 
@@ -854,6 +864,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public Byte getIsAdd() {
+                    return null;
+                }
+
+                @Override
                 public String getCancelReason() {
                     return null;
                 }
@@ -1026,6 +1041,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             @Override
             public Byte getIsShare() {
                 return appointmentDTO.getIsShare();
+            }
+
+            @Override
+            public Byte getIsAdd() {
+                return appointmentDTO.getIsAdd();
             }
 
             @Override
