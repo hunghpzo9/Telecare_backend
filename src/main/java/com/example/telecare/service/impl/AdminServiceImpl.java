@@ -11,13 +11,17 @@ import com.example.telecare.model.Feedback;
 import com.example.telecare.model.Medicine;
 
 import com.example.telecare.model.Payment;
+import com.example.telecare.model.User;
+import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.AdminService;
+import com.example.telecare.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
@@ -41,10 +45,11 @@ public class AdminServiceImpl implements AdminService {
     ReportServiceImpl reportService;
     @Autowired
     FeedbackServiceImpl feedbackService;
-
+    @Autowired
+    UserRepository userRepository;
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
-        return medicineService.getAllMedicine(index,searchText);
+        return medicineService.getAllMedicine(index, searchText);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<DoctorDTOInf> getAllDoctor(int index, String search) {
-        return doctorService.getAllDoctor(index,search);
+        return doctorService.getAllDoctor(index, search);
     }
 
     @Override
@@ -74,7 +79,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search) {
-        return appointmentService.getAllAppointmentForAdmin(index,search);
+        return appointmentService.getAllAppointmentForAdmin(index, search);
     }
 
     @Override
@@ -94,7 +99,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void updateStatus(Byte isActive, int id, Date expireDate, String reason) {
-    userService.updateStatus(isActive,id,expireDate,reason);
+        userService.updateStatus(isActive, id, expireDate, reason);
     }
 
     @Override
@@ -116,9 +121,10 @@ public class AdminServiceImpl implements AdminService {
     public void sendNotification(int uid, String message) {
         notificationService.sendNotification(uid, message);
     }
+
     @Override
     public List<PatientDTOAdminInf> getAllPatient(int index, String search) {
-        return patientService.getAllPatient(index,search);
+        return patientService.getAllPatient(index, search);
     }
 
     @Override
@@ -132,8 +138,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<ReportDTOInfForAdmin> getListReportForAdmin(int index,String search) {
-        return reportService.getListReportForAdmin(index,search);
+    public List<ReportDTOInfForAdmin> getListReportForAdmin(int index, String search) {
+        return reportService.getListReportForAdmin(index, search);
     }
 
     @Override
@@ -143,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void updateStatusForReport(int reportId, int statusId) {
-         reportService.updateStatus(reportId,statusId);
+        reportService.updateStatus(reportId, statusId);
     }
 
     @Override
@@ -166,5 +172,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Feedback findFeedBackByAppointmentId(int aid) {
         return feedbackService.findFeedBackByAppointmentId(aid);
+    }
+
+    @Override
+    public void sendNotificationToAllUser(String role, int money, String reason) {
+        List<User> allUser = userRepository.findAll();
+        switch (role) {
+
+            case Constants.ROLE_SYSTEM_ADMIN:
+
+            case Constants.ROLE_BUSINESS_ADMIN:
+        }
     }
 }

@@ -36,4 +36,5 @@ public interface AdminService {
     List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
     int getNumberOfAppointmentDetailsForAdmin(String search);
     Feedback findFeedBackByAppointmentId(int aid);
+    void sendNotificationToAllUser(String role, int money,String reason);
 }
