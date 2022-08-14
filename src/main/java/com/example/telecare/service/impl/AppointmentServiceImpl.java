@@ -473,7 +473,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDetailRepository.save(appointmentDetails);
 
 
-        //send notification
+//        send notification
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(time);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");

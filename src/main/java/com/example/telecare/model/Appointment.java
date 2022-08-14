@@ -41,10 +41,10 @@ public class Appointment {
     private Date createdAt;
     @Basic
     @Column(name = "updated_at")
-        @UpdateTimestamp
+    @UpdateTimestamp
     private Date updatedAt;
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "appointment")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "appointment")
     private AppointmentDetails appointmentDetails;
     @Basic
     @Column(name = "payment_status_id")
@@ -56,73 +56,7 @@ public class Appointment {
     @Column(name = "is_add_medical_record")
     private byte isAddMedicalRecord;
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public int getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public Integer getRelativeId() {
-        return relativeId;
-    }
-
-    public void setRelativeId(Integer relativeId) {
-        this.relativeId = relativeId;
-    }
-
-
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public int getPaymentStatusId() {
-        return paymentStatusId;
-    }
-
-    public void setPaymentStatusId(int paymentStatusId) {
-        this.paymentStatusId = paymentStatusId;
-    }
-
-    public byte getIsShareMedicalRecord() {
-        return isShareMedicalRecord;
-    }
-
-    public void setIsShareMedicalRecord(byte isShareMedicalRecord) {
-        this.isShareMedicalRecord = isShareMedicalRecord;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -148,11 +82,4 @@ public class Appointment {
         return result;
     }
 
-    public byte getIsAddMedicalRecord() {
-        return isAddMedicalRecord;
-    }
-
-    public void setIsAddMedicalRecord(byte isAddMedicalRecord) {
-        this.isAddMedicalRecord = isAddMedicalRecord;
-    }
 }
