@@ -2,10 +2,10 @@ package com.example.telecare.dto.interfaces;
 
 public interface ReportDTOInfForAdmin {
     Integer getId();
-    String getPatientName();
-    Integer getPatientId();
-    String getDoctorName();
-    Integer getDoctorId();
+    String getReportPerson();
+    Integer getUserId();
+
+
     Integer getAppointmentId();
     String getDescription();
     String getReason();

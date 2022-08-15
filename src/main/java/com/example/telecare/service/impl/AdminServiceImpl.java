@@ -184,12 +184,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void updateFeedbackStatusForAdmin(int id, Byte status) {
+        feedbackService.updateFeedbackStatusForAdmin(id, status);
+    }
+
+    @Override
     public void sendNotificationToAllUser(String role, int money, String reason) {
         switch (role) {
-            case Constants.ROLE_SYSTEM_ADMIN:
-                sendNotificationToAllUser(reason);
+            case Constants.ROLE_SYSTEM_ADMIN:{
+                sendNotificationToAllUser("Thông báo từ hệ thống: "+reason);
                 break;
-            case Constants.ROLE_BUSINESS_ADMIN:
+            }
+
+            case Constants.ROLE_BUSINESS_ADMIN:{
                 //change status
                 ListedPrice oldPrice = listedPriceRepository.getInUseListedPrice();
                 oldPrice.setIsUse((byte) 1);
@@ -197,13 +204,25 @@ public class AdminServiceImpl implements AdminService {
 
                 //set for new price
                 ListedPrice newPrice = new ListedPrice();
-                newPrice.setReason(reason);
+                newPrice.setReason("Thông báo từ hệ thống: "+reason);
                 newPrice.setValue(money);
                 newPrice.setIsUse((byte) 0);
                 listedPriceRepository.save(newPrice);
-                sendNotificationToAllUser(reason);
+                sendNotificationToAllUser("Thông báo từ hệ thống: "+reason);
                 break;
+            }
+
         }
+    }
+
+    @Override
+    public List<ListedPrice> getAllListedPriceForAdmin(int index, String search) {
+        return listedPriceRepository.getAllListedPriceForAdmin(index, search);
+    }
+
+    @Override
+    public int getNumberOfListedPrice(String search) {
+        return listedPriceRepository.getNumberOfListedPrice(search);
     }
 
 

@@ -237,7 +237,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        left join appointment_status as aps on ad.status_id=aps.id\n" +
             "                        left join schedule s on s.id = a.schedule_id\n" +
             "                        where  up.full_name like %?2% or ud.full_name like %?2% or ad.time like %?2% or aps.name like %?2%\n" +
-            "                        order by ad.time desc\n" +
+            "                        order by a.created_at desc\n" +
             "                        limit ?1,10", nativeQuery = true)
     List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
 

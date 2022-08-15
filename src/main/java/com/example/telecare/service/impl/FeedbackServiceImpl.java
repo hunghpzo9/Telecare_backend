@@ -2,6 +2,7 @@ package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.interfaces.FeedbackDTOInf;
 import com.example.telecare.enums.FeedbackStatus;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Feedback;
 import com.example.telecare.repository.FeedbackRepository;
 import com.example.telecare.service.FeedbackService;
@@ -43,5 +44,13 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public Feedback findFeedBackByAppointmentId(int aid) {
         return feedbackRepository.findFeedbackByAppointmentId(aid);
+    }
+
+    @Override
+    public void updateFeedbackStatusForAdmin(int id, Byte status) {
+        Feedback feedback = feedbackRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Không tìm thấy phản hồi"));
+        feedback.setIsHidden(status);
+        feedbackRepository.save(feedback);
     }
 }

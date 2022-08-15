@@ -3,6 +3,7 @@ package com.example.telecare.service;
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.interfaces.*;
 import com.example.telecare.model.Feedback;
+import com.example.telecare.model.ListedPrice;
 import com.example.telecare.model.Medicine;
 import com.example.telecare.model.Payment;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,8 @@ public interface AdminService {
     List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
     int getNumberOfAppointmentDetailsForAdmin(String search);
     Feedback findFeedBackByAppointmentId(int aid);
+    void updateFeedbackStatusForAdmin(int id,Byte status);
     void sendNotificationToAllUser(String role, int money,String reason) throws ExecutionException, InterruptedException;
+    List<ListedPrice> getAllListedPriceForAdmin(int index, String search);
+    int getNumberOfListedPrice(String search);
 }
