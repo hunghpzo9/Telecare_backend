@@ -1,5 +1,6 @@
 package com.example.telecare.controller;
 
+import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Relative;
 import com.example.telecare.repository.RelativeRepository;
@@ -24,32 +25,28 @@ public class RelativeController {
 
     @GetMapping(value = "/patientId={id}")
     public List<Relative> getAllRelative(@PathVariable int id) {
-        if (id < 1) {
-            throw new NotFoundException("Relative Not found");
-        } else {
             return relativeService.findAllRelativeByPatientId(id);
-        }
     }
 
     @GetMapping(value = "/{id}")
     public Relative getRelativeById(@PathVariable int id) {
-        if (id < 1) {
-            throw new NotFoundException("Relative Not found");
-        } else {
             return relativeService.findRelativeById(id);
-        }
     }
 
     @PostMapping("/addNew")
     public Relative addRelative(@RequestBody Relative relative) {
-        Relative addNewRelative = relativeService.addRelative(relative);
-        return addNewRelative;
+            Relative addNewRelative = relativeService.addRelative(relative);
+            return addNewRelative;
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Relative> updateRelative(@RequestBody Relative relative, @PathVariable int id) {
-        relativeService.updateRelativeById(relative, id);
-        return ResponseEntity.ok(relative);
+        if (id < 1) {
+            throw new NotFoundException("Relative not found! RelativeID is incorrect");
+        } else {
+            relativeService.updateRelativeById(relative, id);
+            return ResponseEntity.ok(relative);
+        }
     }
 
 }

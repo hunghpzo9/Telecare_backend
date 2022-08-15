@@ -35,12 +35,14 @@ public class AppointmentController {
     EthnicServiceImpl ethnicService;
 
     @GetMapping(value = "/patientId={id}")
-    public List<AppointmentDTOInf> getAppointmentByPatientId(@PathVariable int id, @RequestParam("statusId") List<Integer> statusId) {
+    public List<AppointmentDTOInf> getAppointmentByPatientId(@PathVariable int id
+            , @RequestParam("statusId") List<Integer> statusId) {
         return appointmentService.findAppointmentByPatient(id, statusId);
     }
 
     @GetMapping(value = "/doctorId={id}")
-    public List<AppointmentDTOInf> getAppointmentByDoctor(@PathVariable int id, @RequestParam("statusId") List<Integer> statusId) {
+    public List<AppointmentDTOInf> getAppointmentByDoctor(@PathVariable int id
+            , @RequestParam("statusId") List<Integer> statusId) {
         return appointmentService.findAppointmentByDoctor(id, statusId);
     }
 
@@ -139,8 +141,12 @@ public class AppointmentController {
     @GetMapping("/numberOfAppointment")
     public ResponseEntity<Integer> getNumberOfAppointment(@RequestParam String searchText) {
         int noa = appointmentService.getNumberOfAppointmentForAdmin(searchText);
-        return new ResponseEntity<Integer>(noa, HttpStatus.OK);
+        return new ResponseEntity(noa, HttpStatus.OK);
+    }
 
+    @GetMapping(value = "/getInUsePrice")
+    public ResponseEntity<?> getInUsePrice() {
+        return new ResponseEntity<>(appointmentService.getInUseListedPrice(), HttpStatus.OK);
     }
 
 }
