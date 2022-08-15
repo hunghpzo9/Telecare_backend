@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface AdminService {
     List<Medicine> getAllMedicine(int index, String searchText);
@@ -36,5 +37,5 @@ public interface AdminService {
     List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
     int getNumberOfAppointmentDetailsForAdmin(String search);
     Feedback findFeedBackByAppointmentId(int aid);
-    void sendNotificationToAllUser(String role, int money,String reason);
+    void sendNotificationToAllUser(String role, int money,String reason) throws ExecutionException, InterruptedException;
 }

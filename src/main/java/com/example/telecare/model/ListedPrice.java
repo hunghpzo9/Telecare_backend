@@ -1,10 +1,17 @@
 package com.example.telecare.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "listed_price", schema = "telecare", catalog = "")
+@Getter
+@Setter
 public class ListedPrice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -14,9 +21,11 @@ public class ListedPrice {
     @Column(name = "value")
     private int value;
     @Basic
+    @CreationTimestamp
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Basic
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
     @Basic

@@ -1,5 +1,6 @@
 package com.example.telecare;
 
+import com.example.telecare.config.AsyncConfig;
 import com.example.telecare.config.FirebaseConfig;
 import com.example.telecare.config.TwilioConfig;
 import com.google.api.core.ApiFuture;
@@ -16,6 +17,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import javax.annotation.PostConstruct;
 import java.io.InputStream;
@@ -39,6 +42,7 @@ public class TelecareApplication {
 		System.out.println("Init firebase");
 		firebaseConfig.initialization();
 	}
+
 
 
 	public static void main(String[] args) {
