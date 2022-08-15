@@ -1,7 +1,7 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
-import com.example.telecare.dto.interfaces.PrescriptionDetailDTO;
+import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Prescription;
 import com.example.telecare.repository.MedicineRepository;
@@ -25,26 +25,41 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     public List<PrescriptionDTOInf> listAllPrescriptionByPatientId(int id, int page) {
-        return prescriptionRepository.getAllPrescription(id, page);
+        if (page < 0) {
+            throw new NotFoundException("Prescription not found! Index can not less than 0");
+        }
+        if (id < 1) {
+            throw new NotFoundException("Prescription not found! Patient ID is incorrect");
+        }
+        try {
+            return prescriptionRepository.getAllPrescription(id, page);
+        } catch (Exception e) {
+            throw new NotFoundException("Prescription not found! Patient id does not exist");
+        }
     }
 
 
     @Override
     public Prescription addPrescription(Prescription prescription) {
-        Prescription checkDuplicateTrace = prescriptionRepository.checkDuplicateTrace(prescription.getTrace());
+        if (prescription.getAppointmentId() < 1) {
+            throw new BadRequestException("Add fail! AppointmentID is in correct");
+        }
+        try {
+            Prescription checkDuplicateTrace = prescriptionRepository.checkDuplicateTrace(prescription.getTrace());
+            do {
+                prescription.setTrace(generatePrescriptionNumber());
+                System.out.println(prescription.getTrace());
+            } while (checkDuplicateTrace != null);
 
-        do {
-            prescription.setTrace(generatePrescriptionNumber());
-            System.out.println(prescription.getTrace());
-        } while (checkDuplicateTrace != null);
-
-
-        return prescriptionRepository.save(prescription);
+            return prescriptionRepository.save(prescription);
+        } catch (Exception e) {
+            throw new NotFoundException("Add fail! Make sure your data is correct");
+        }
     }
 
     @Override
     public List<PrescriptionDTOInf> getSharedPrescriptionByAppointment(int id, int page) {
-        return prescriptionRepository.getSharedPrescriptionByAppointment(id,page);
+        return prescriptionRepository.getSharedPrescriptionByAppointment(id, page);
     }
 
     @Override

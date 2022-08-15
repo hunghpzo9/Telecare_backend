@@ -44,8 +44,11 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorDTOInf findDoctorById(int uid) {
         DoctorDTOInf doctorDTOInf = doctorRepository.findDoctorById(uid);
+        if (uid < 1) {
+            throw new NotFoundException("Doctor not found! DoctorID is incorrect");
+        }
         if (doctorDTOInf == null) {
-            throw new NotFoundException("Không tìm thấy bác sĩ");
+            throw new NotFoundException("Doctor not found");
         }
         return setReturnDoctor(doctorDTOInf);
     }
@@ -186,6 +189,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTOInf> listAllDoctor(String search, int page) {
+        if (page < 0) {
+            throw new NotFoundException("Page can not less than 0");
+        }
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = formatter.format(cld.getTime());
@@ -203,6 +209,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page) {
+        if (page < 0) {
+            throw new NotFoundException("Page can not less than 0");
+        }
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = formatter.format(cld.getTime());
@@ -219,6 +228,12 @@ public class DoctorServiceImpl implements DoctorService {
     }
     @Override
     public List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page, int patientId) {
+        if (page < 0) {
+            throw new NotFoundException("Page can not less than 0");
+        }
+        if (patientId < 1) {
+            throw new NotFoundException("Patient not found! PatientID is incorrect");
+        }
         List<DoctorDTOInf> doctorPage = doctorRepository.listAllFavoriteDoctorById(search,page,patientId);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
@@ -231,6 +246,12 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Boolean isFavoriteDoctor(int patientId, int doctorId) {
+        if (patientId < 1) {
+            throw new NotFoundException("Patient not found! PatientID is incorrect");
+        }
+        if (doctorId < 1) {
+            throw new NotFoundException("Doctor not found! DoctorID is incorrect");
+        }
         if(doctorRepository.countFavoriteDoctor(patientId,doctorId) > 0){
             return true;
         }
@@ -239,6 +260,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void removeFavoriteDoctor(int patientId, int doctorId) {
+
         Patient patient = patientRepository.findById(patientId).orElseThrow();
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow();
         patient.getFavoriteDoctor().remove(doctor);
@@ -299,6 +321,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTOInf> getAllDoctor(int index,String search) {
+        if (index < 0) {
+            throw new NotFoundException("Index can not less than 0");
+        }
         List<DoctorDTOInf> doctorPage = doctorRepository.getAllDoctor(index,search);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {

@@ -1,6 +1,7 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.interfaces.MedicineNameDTO;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Medicine;
 import com.example.telecare.service.impl.MedicineServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class MedicineController {
         List<MedicineNameDTO> medicines = medicineService.getAllMedicineNameDistinct(searchText, index);
         if (medicines.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        if (index < 0) {
+            throw new NotFoundException("Medicine not found! Index can not less than 0");
         }
         return new ResponseEntity(medicines, HttpStatus.OK);
     }
