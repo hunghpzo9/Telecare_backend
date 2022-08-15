@@ -976,6 +976,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.getNumberOfAppointmentDetailsForAdmin(search);
     }
 
+    @Override
+    public int getInUseListedPrice() {
+        return listedPriceRepository.getInUseListedPrice().getValue();
+    }
+
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());

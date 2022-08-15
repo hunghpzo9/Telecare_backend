@@ -188,6 +188,7 @@ public class AdminServiceImpl implements AdminService {
         switch (role) {
             case Constants.ROLE_SYSTEM_ADMIN:
                 sendNotificationToAllUser(reason);
+                break;
             case Constants.ROLE_BUSINESS_ADMIN:
                 //change status
                 ListedPrice oldPrice = listedPriceRepository.getInUseListedPrice();
@@ -201,14 +202,15 @@ public class AdminServiceImpl implements AdminService {
                 newPrice.setIsUse((byte) 0);
                 listedPriceRepository.save(newPrice);
                 sendNotificationToAllUser(reason);
+                break;
         }
     }
 
-    @Async
-    public Future<List<User>> sendNotificationToAllUser(String message) {
+
+    public void sendNotificationToAllUser(String message) {
         List<User> allUser = userRepository.findAll();
         allUser.forEach(user -> sendNotification(user.getId(),message));
-        return CompletableFuture.completedFuture(allUser);
+
     }
 
 }

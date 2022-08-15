@@ -186,7 +186,7 @@ public class AdminController {
 
     @PostMapping(value = "/notification/sendAll")
     public ResponseEntity<?> sendNotificationToAllUser(@RequestParam String role,
-                                                       @RequestParam int money,
+                                                       @RequestParam int money ,
                                                        @RequestParam String message) {
         adminService.sendNotificationToAllUser(role, money, message);
         return ResponseEntity.ok(new ResponseOkMessage("Đã gửi thông báo thành công", new Date()));
