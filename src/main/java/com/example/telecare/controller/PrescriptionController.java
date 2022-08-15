@@ -20,11 +20,7 @@ public class PrescriptionController {
 
     @GetMapping(value = "getAll")
     public List<PrescriptionDTOInf> findPrescriptionByPatientId(@RequestParam int patientId, @RequestParam int page) {
-        if (patientId < 1) {
-            throw new NotFoundException("Prescription Not found");
-        } else {
             return prescriptionService.listAllPrescriptionByPatientId(patientId, page);
-        }
     }
 
     @GetMapping(value = "/getSharedPrescriptionByAppointment")

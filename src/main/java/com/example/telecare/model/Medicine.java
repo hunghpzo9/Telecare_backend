@@ -1,13 +1,15 @@
 package com.example.telecare.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Medicine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

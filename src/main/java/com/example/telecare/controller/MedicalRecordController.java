@@ -22,28 +22,21 @@ public class MedicalRecordController {
 
     @GetMapping(value = "/getAll")
     public List<MedicalRecordDTOInf> getAllMedicalRecordByPatientId(@RequestParam int patientId, @RequestParam int page) {
-        if (patientId < 1) {
-            throw new NotFoundException("Medical Record is not found");
-        } else {
-            return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
-        }
+        return medicalRecordService.getAllMedicalRecordByPatientId(patientId, page);
     }
 
     @GetMapping(value = "/getMedicalRecordDetail")
     public MedicalRecordDetailDTO medicalRecordDTOInfList(@RequestParam int appointmentId) {
         MedicalRecordDetailDTO detailDTO = medicalRecordService.getMedicalRecordDetailByAppointmentId(appointmentId);
-        if (appointmentId < 1 || detailDTO == null) {
-            throw new NotFoundException("Medical Record is not found");
-        } else {
-            return detailDTO;
-        }
+        return detailDTO;
+
     }
 
     @GetMapping(value = "/getShareMedicalRecord")
     public List<MedicalRecordDTOInf> getShareMedicalRecordByPatient(@RequestParam int patientId,
-                                                               @RequestParam int page,
-                                                               @RequestParam boolean isRelative,
-                                                               @RequestParam int relativeId) {
+                                                                    @RequestParam int page,
+                                                                    @RequestParam boolean isRelative,
+                                                                    @RequestParam int relativeId) {
         return medicalRecordService.getShareMedicalRecord(patientId, page, isRelative, relativeId);
     }
 
@@ -56,20 +49,13 @@ public class MedicalRecordController {
     @PostMapping(value = "/addMedicalRecord")
     public MedicalRecord addMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int yearCode) {
         MedicalRecord addMedicalRecord = medicalRecordService.addMedicalRecord(medicalRecord, yearCode);
-        if (yearCode < 0) {
-            throw new BadRequestException("Incorrect year code");
-        } else {
-            return addMedicalRecord;
-        }
+        return addMedicalRecord;
+
     }
 
     @PutMapping(value = "/updateMedicalRecord")
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord, @RequestParam int appointmentId) {
-        if(appointmentId < 1){
-            throw new NotFoundException("Medical Record not found");
-        }else{
-            medicalRecordService.updateMedicalRecord(medicalRecord, appointmentId);
-            return ResponseEntity.ok(medicalRecord);
-        }
+        medicalRecordService.updateMedicalRecord(medicalRecord, appointmentId);
+        return ResponseEntity.ok(medicalRecord);
     }
 }

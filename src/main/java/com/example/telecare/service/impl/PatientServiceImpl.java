@@ -25,24 +25,28 @@ public class PatientServiceImpl implements PatientService {
     UserRepository userRepository;
     @Autowired
     AddressRepository addressRepository;
+
     @Override
     public PatientDTOInf findPatientById(int uid) {
         PatientDTOInf patientDTOIn = patientRepository.findPatientById(uid);
-        if(patientDTOIn == null){
-            throw  new NotFoundException("Bệnh nhân không tồn tại");
+        if (uid < 1) {
+            throw new NotFoundException("Patient not found! PatientID is in correct");
+        }
+        if (patientDTOIn == null) {
+            throw new NotFoundException("Patient does not exist");
         }
         return patientDTOIn;
     }
 
     @Override
     public void updatePatient(PatientDTO patientDetail, int id) {
-        Patient patient = patientRepository.findById(id) .orElseThrow(()
+        Patient patient = patientRepository.findById(id).orElseThrow(()
                 -> new NotFoundException("Not found patient"));
 
-        User user = userRepository.findById(id) .orElseThrow(()
+        User user = userRepository.findById(id).orElseThrow(()
                 -> new NotFoundException("Not found user"));
 
-        Address address = addressRepository.findById(user.getAddress().getId()) .orElseThrow(()
+        Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow(()
                 -> new NotFoundException("Not found address"));
 
         patient.setBloodType(patientDetail.getBloodType());
@@ -80,7 +84,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<PatientDTOAdminInf> getAllPatient(int index, String search) {
-        return patientRepository.getAllPatient(index,search);
+        return patientRepository.getAllPatient(index, search);
     }
 
     @Override
