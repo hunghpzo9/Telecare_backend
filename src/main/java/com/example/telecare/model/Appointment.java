@@ -16,6 +16,9 @@ import java.util.List;
 @Setter
 @Entity
 public class Appointment {
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "medical_record_share", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "medical_record_id"))
+    public List<MedicalRecord> medicalRecords = new ArrayList<>();
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -38,10 +41,10 @@ public class Appointment {
     private Date createdAt;
     @Basic
     @Column(name = "updated_at")
-        @UpdateTimestamp
+    @UpdateTimestamp
     private Date updatedAt;
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "appointment")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "appointment")
     private AppointmentDetails appointmentDetails;
     @Basic
     @Column(name = "payment_status_id")
@@ -49,9 +52,11 @@ public class Appointment {
     @Basic
     @Column(name = "is_share_medical_record")
     private Byte isShareMedicalRecord;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "medical_record_share", joinColumns = @JoinColumn(name = "appointment_id"), inverseJoinColumns = @JoinColumn(name = "medical_record_id"))
-    public List<MedicalRecord> medicalRecords = new ArrayList<>();
+    @Basic
+    @Column(name = "is_add_medical_record")
+    private byte isAddMedicalRecord;
+
+
 
     @Override
     public boolean equals(Object o) {

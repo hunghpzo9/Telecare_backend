@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public interface PaymentService {
      ResponseEntity<?> returnPayment(String vnp_TmnCode,
@@ -45,5 +46,7 @@ public interface PaymentService {
                                            HttpServletRequest req) throws UnsupportedEncodingException;
 
      Payment findSuccessPaymentDetailByAppointmentId(int id);
+     List<Payment> getAllPayment(int index, String searchText);
+     int getNumberOfPayment(String searchText);
 
 }

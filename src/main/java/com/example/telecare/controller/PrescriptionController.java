@@ -35,4 +35,8 @@ public class PrescriptionController {
         return prescriptionService.addPrescription(prescription);
     }
 
+    @GetMapping(value = "/getPrescriptionDetail")
+    public Prescription getPrescriptionDetail(@RequestParam int appointmentId) {
+        return prescriptionService.getPrescriptionDetailByAppointment(appointmentId);
+    }
 }

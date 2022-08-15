@@ -124,6 +124,12 @@ public class AppointmentController {
         appointmentService.endAppointment(id);
         return ResponseEntity.ok(new ResponseOkMessage("Kết thúc phiên khám thành công", new Date()));
     }
+    @PutMapping(value = "/updateIsAddMedicalRecord")
+    public ResponseEntity<?> updateIsAddMedicalRecord(@RequestParam("id") int id,
+                                                      @RequestParam("isAdd") boolean isAdd) {
+        appointmentService.updateIsAddMedicalRecord(id,isAdd);
+        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật trạng thái thành công", new Date()));
+    }
 
     @GetMapping(value = "/getAll")
     public ResponseEntity<List<AppointmentDTOInfForAdmin>> getAllAppointmentForAdmin(@RequestParam int index, @RequestParam String searchText) {

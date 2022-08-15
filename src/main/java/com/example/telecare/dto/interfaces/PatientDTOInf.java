@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
 
-@JsonDeserialize(as = PatientDTO.class)
 public interface PatientDTOInf {
     Integer getId();
 

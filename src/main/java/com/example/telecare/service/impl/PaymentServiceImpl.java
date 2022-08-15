@@ -281,4 +281,14 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment findSuccessPaymentDetailByAppointmentId(int id) {
         return paymentRepository.findPaymentDetailByAppointmentId(id,PaymentStatusSuccess);
     }
+
+    @Override
+    public List<Payment> getAllPayment(int index, String searchText) {
+        return paymentRepository.getAllPayment(index, searchText);
+    }
+
+    @Override
+    public int getNumberOfPayment(String searchText) {
+        return paymentRepository.getNumberOfPayment(searchText);
+    }
 }

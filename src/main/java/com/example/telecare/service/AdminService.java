@@ -2,11 +2,14 @@ package com.example.telecare.service;
 
 import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.interfaces.*;
+import com.example.telecare.model.Feedback;
 import com.example.telecare.model.Medicine;
+import com.example.telecare.model.Payment;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface AdminService {
     List<Medicine> getAllMedicine(int index, String searchText);
@@ -25,4 +28,14 @@ public interface AdminService {
     ResponseEntity<?> changeOldPassword(String id, String oldPassword,String newPassword);
     void sendNotification(int uid,String message);
     public List<PatientDTOAdminInf> getAllPatient(int index, String search);
+    List<Payment> getAllPayment(int index, String searchText);
+    int getNumberOfPayment(String searchText);
+    List<ReportDTOInfForAdmin> getListReportForAdmin(int index,String search);
+    int getNumberOfReportForAdmin(String search);
+    void updateStatusForReport(int reportId, int statusId);
+    AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
+    List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
+    int getNumberOfAppointmentDetailsForAdmin(String search);
+    Feedback findFeedBackByAppointmentId(int aid);
+    void sendNotificationToAllUser(String role, int money,String reason) throws ExecutionException, InterruptedException;
 }

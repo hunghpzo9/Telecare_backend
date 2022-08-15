@@ -34,13 +34,21 @@ public interface AppointmentService {
 
     void writeRefuseFillReason(int id,String reason);
 
+    void updateIsAddMedicalRecord(int appointmentId,boolean isAdd);
+
     AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
 
     List<AppointmentDTOInf> findAppointmentOverdue();
 
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 
+    AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
+
     int getNumberOfAppointmentForAdmin(String search);
 
     List<AppointmentDTOInf> findDoneAppointment(int userId,int paymentStatusId,boolean isPatient);
+
+    List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
+
+    int getNumberOfAppointmentDetailsForAdmin(String search);
 }
