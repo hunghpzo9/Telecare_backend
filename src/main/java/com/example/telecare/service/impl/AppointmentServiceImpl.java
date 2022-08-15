@@ -46,6 +46,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     MedicalRecordRepository medicalRecordRepository;
     @Autowired
     PrescriptionRepository prescriptionRepository;
+    @Autowired
+    ListedPriceRepository listedPriceRepository;
+
 
 
     @Override
@@ -445,7 +448,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
         appointmentDetails.setDescription(description);
-        appointmentDetails.setAmount(Constants.APPOINTMENT_LIST_PRICE);
+        appointmentDetails.setAmount(listedPriceRepository.getInUseListedPrice().getValue());
 
         //format String time to date
         try {

@@ -5,22 +5,25 @@ import com.example.telecare.dto.interfaces.AdminDTOInf;
 import com.example.telecare.dto.interfaces.AppointmentDTOInfForAdmin;
 import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
-import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.dto.interfaces.*;
-import com.example.telecare.model.Feedback;
-import com.example.telecare.model.Medicine;
+import com.example.telecare.model.*;
 
-import com.example.telecare.model.Payment;
-import com.example.telecare.model.User;
+import com.example.telecare.repository.ListedPriceRepository;
 import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.AdminService;
 import com.example.telecare.utils.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -47,6 +50,12 @@ public class AdminServiceImpl implements AdminService {
     FeedbackServiceImpl feedbackService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ListedPriceRepository listedPriceRepository;
+
+
+    Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
         return medicineService.getAllMedicine(index, searchText);
@@ -176,12 +185,30 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void sendNotificationToAllUser(String role, int money, String reason) {
-        List<User> allUser = userRepository.findAll();
         switch (role) {
-
             case Constants.ROLE_SYSTEM_ADMIN:
-
+                sendNotificationToAllUser(reason);
             case Constants.ROLE_BUSINESS_ADMIN:
+                //change status
+                ListedPrice oldPrice = listedPriceRepository.getInUseListedPrice();
+                oldPrice.setIsUse((byte) 1);
+                listedPriceRepository.save(oldPrice);
+
+                //set for new price
+                ListedPrice newPrice = new ListedPrice();
+                newPrice.setReason(reason);
+                newPrice.setValue(money);
+                newPrice.setIsUse((byte) 0);
+                listedPriceRepository.save(newPrice);
+                sendNotificationToAllUser(reason);
         }
     }
+
+    @Async
+    public Future<List<User>> sendNotificationToAllUser(String message) {
+        List<User> allUser = userRepository.findAll();
+        allUser.forEach(user -> sendNotification(user.getId(),message));
+        return CompletableFuture.completedFuture(allUser);
+    }
+
 }
