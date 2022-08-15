@@ -7,17 +7,22 @@ import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.dto.interfaces.*;
-import com.example.telecare.model.Feedback;
-import com.example.telecare.model.Medicine;
+import com.example.telecare.model.*;
 
-import com.example.telecare.model.Payment;
+import com.example.telecare.repository.ListedPriceRepository;
+import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.AdminService;
+import com.example.telecare.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
@@ -41,6 +46,10 @@ public class AdminServiceImpl implements AdminService {
     ReportServiceImpl reportService;
     @Autowired
     FeedbackServiceImpl feedbackService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ListedPriceRepository listedPriceRepository;
 
     @Override
     public List<Medicine> getAllMedicine(int index, String searchText) {
@@ -176,9 +185,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void sendNotificationToAllUser(String role, int money, String reason) {
         switch (role) {
-            case Constants.ROLE_SYSTEM_ADMIN:
-                sendNotificationToAllUser(reason);
-            case Constants.ROLE_BUSINESS_ADMIN:
+            case Constants.ROLE_SYSTEM_ADMIN:{
+                sendNotificationToAllUser("Thông báo từ hệ thống: "+reason);
+                break;
+            }
+
+            case Constants.ROLE_BUSINESS_ADMIN:{
                 //change status
                 ListedPrice oldPrice = listedPriceRepository.getInUseListedPrice();
                 oldPrice.setIsUse((byte) 1);
@@ -186,12 +198,25 @@ public class AdminServiceImpl implements AdminService {
 
                 //set for new price
                 ListedPrice newPrice = new ListedPrice();
-                newPrice.setReason(reason);
+                newPrice.setReason("Thông báo từ hệ thống: "+reason);
                 newPrice.setValue(money);
                 newPrice.setIsUse((byte) 0);
                 listedPriceRepository.save(newPrice);
-                sendNotificationToAllUser(reason);
+                sendNotificationToAllUser("Thông báo từ hệ thống: "+reason);
+                break;
+            }
+
         }
+    }
+
+    @Override
+    public List<ListedPrice> getAllListedPriceForAdmin(int index, String search) {
+        return listedPriceRepository.getAllListedPriceForAdmin(index, search);
+    }
+
+    @Override
+    public int getNumberOfListedPrice(String search) {
+        return listedPriceRepository.getNumberOfListedPrice(search);
     }
 
     @Async

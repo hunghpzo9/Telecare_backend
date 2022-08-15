@@ -4,6 +4,7 @@ import com.example.telecare.dto.AuthenticationRequest;
 import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.dto.interfaces.*;
 import com.example.telecare.model.Feedback;
+import com.example.telecare.model.ListedPrice;
 import com.example.telecare.model.Medicine;
 import com.example.telecare.model.Payment;
 import com.example.telecare.service.impl.AdminServiceImpl;
@@ -197,6 +198,17 @@ public class AdminController {
                                                        @RequestParam String message) {
         adminService.sendNotificationToAllUser(role, money, message);
         return ResponseEntity.ok(new ResponseOkMessage("Đã gửi thông báo thành công", new Date()));
+    }
+    @GetMapping(value = "/listedPrice/getAll")
+    public ResponseEntity<List<ListedPrice>> getAllListedPriceForAdmin(@RequestParam int index, @RequestParam String searchText) {
+        return new ResponseEntity<>(adminService.getAllListedPriceForAdmin(index, searchText), HttpStatus.OK);
+    }
+
+    @GetMapping("/listedPrice/numberOfListedPrice")
+    public ResponseEntity<Integer> getNumberOfListedPrice(@RequestParam String searchText) {
+        int noa = adminService.getNumberOfListedPrice(searchText);
+        return new ResponseEntity(noa, HttpStatus.OK);
+
     }
 
 }
