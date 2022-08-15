@@ -189,7 +189,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTOInf> listAllDoctor(String search, int page) {
-        if (page < 1) {
+        if (page < 0) {
             throw new NotFoundException("Page can not less than 0");
         }
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -209,7 +209,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorDTOInf> listAllDoctorBySpecialty(String search, List<Integer> specialtyId, int page) {
-        if (page < 1) {
+        if (page < 0) {
             throw new NotFoundException("Page can not less than 0");
         }
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -228,7 +228,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
     @Override
     public List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page, int patientId) {
-        if (page < 1) {
+        if (page < 0) {
             throw new NotFoundException("Page can not less than 0");
         }
         if (patientId < 1) {
