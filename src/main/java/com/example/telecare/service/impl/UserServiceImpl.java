@@ -4,7 +4,7 @@ import com.example.telecare.dto.interfaces.AdminDTOInf;
 import com.example.telecare.dto.DoctorDTO;
 import com.example.telecare.dto.TwilioRequestDTO;
 import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.*;
 import com.example.telecare.repository.*;
 import com.example.telecare.security.PasswordHashService;
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
             doctor.setSignature(doctorDTO.getSignature());
 
             Specialty specialty = specialtyRepository.findById(doctorDTO.getSpecialtyId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Not found patient"));
+                    .orElseThrow(() -> new NotFoundException("Not found patient"));
             doctor.addSpecialty(specialty);
             doctorRepository.save(doctor);
 
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerAdmin(User user) {
+    public User registerAdmin(User user,String role) {
         User duplicateUserByPhone = userRepository.findUserByPhone(user.getPhone());
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByPhone != null) {
@@ -136,7 +136,11 @@ public class UserServiceImpl implements UserService {
 
             encodePassword(user);
             logger.info("Save user to database");
-            Role roleAdmin = roleRepository.findByName(Constants.ROLE_ADMIN);
+
+            Role roleAdmin = roleRepository.findByName(role);
+            if(roleAdmin == null){
+                throw new BadRequestException("Role không hợp lệ");
+            }
             user.addRole(roleAdmin);
 
             return userRepository.save(user);
@@ -147,13 +151,13 @@ public class UserServiceImpl implements UserService {
     public void updateStatus(Byte isActive, int id, Date expireDate, String reason) {
 
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Không tìm thấy bác sĩ"));
+                -> new NotFoundException("Không tìm thấy bác sĩ"));
         doctor.setExpireDateCertificate(expireDate);
 
         doctorRepository.save(doctor);
 
         User user = userRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+                -> new NotFoundException("Không tìm thấy người dùng"));
         Byte currentStatus = user.getIsActive();
         user.setIsActive(isActive);
         if (isActive == Constants.IS_BAN) {
@@ -177,7 +181,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateStatusForPatient(Byte isActive, int id, String reason) {
         User user = userRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+                -> new NotFoundException("Không tìm thấy người dùng"));
         Byte currentStatus = user.getIsActive();
         user.setIsActive(isActive);
         if (isActive == Constants.IS_BAN) {
@@ -192,7 +196,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(int id) {
         User user = userRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Không tìm thấy người dùng"));
+                -> new NotFoundException("Không tìm thấy người dùng"));
         return user;
     }
 

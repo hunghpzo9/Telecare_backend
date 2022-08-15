@@ -1,6 +1,7 @@
 package com.example.telecare.service.impl;
 
 import com.example.telecare.dto.interfaces.MedicineNameDTO;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Medicine;
 import com.example.telecare.repository.MedicineRepository;
 import com.example.telecare.service.MedicineService;
@@ -21,7 +22,11 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText, int index) {
-        return medicineRepository.getAllMedicineNameDistinct(searchText, index);
+        if(index < 0){
+            throw new NotFoundException("Medicine not found! Index can not less than 0");
+        }else{
+            return medicineRepository.getAllMedicineNameDistinct(searchText, index);
+        }
     }
 
     @Override

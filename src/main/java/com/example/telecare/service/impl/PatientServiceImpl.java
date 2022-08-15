@@ -4,7 +4,7 @@ import com.example.telecare.dto.PatientDTO;
 import com.example.telecare.dto.interfaces.PatientDTOInf;
 import com.example.telecare.dto.interfaces.PatientDTOAdminInf;
 import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.exception.ResourceNotFoundException;
+import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.Address;
 import com.example.telecare.model.Patient;
 import com.example.telecare.model.User;
@@ -25,21 +25,29 @@ public class PatientServiceImpl implements PatientService {
     UserRepository userRepository;
     @Autowired
     AddressRepository addressRepository;
+
     @Override
     public PatientDTOInf findPatientById(int uid) {
-        return patientRepository.findPatientById(uid);
+        PatientDTOInf patientDTOIn = patientRepository.findPatientById(uid);
+        if (uid < 1) {
+            throw new NotFoundException("Patient not found! PatientID is in correct");
+        }
+        if (patientDTOIn == null) {
+            throw new NotFoundException("Patient does not exist");
+        }
+        return patientDTOIn;
     }
 
     @Override
     public void updatePatient(PatientDTO patientDetail, int id) {
-        Patient patient = patientRepository.findById(id) .orElseThrow(()
-                -> new ResourceNotFoundException("Not found patient"));
+        Patient patient = patientRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Not found patient"));
 
-        User user = userRepository.findById(id) .orElseThrow(()
-                -> new ResourceNotFoundException("Not found user"));
+        User user = userRepository.findById(id).orElseThrow(()
+                -> new NotFoundException("Not found user"));
 
-        Address address = addressRepository.findById(user.getAddress().getId()) .orElseThrow(()
-                -> new ResourceNotFoundException("Not found address"));
+        Address address = addressRepository.findById(user.getAddress().getId()).orElseThrow(()
+                -> new NotFoundException("Not found address"));
 
         patient.setBloodType(patientDetail.getBloodType());
         patient.setHeight(patientDetail.getHeight());
@@ -76,7 +84,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<PatientDTOAdminInf> getAllPatient(int index, String search) {
-        return patientRepository.getAllPatient(index,search);
+        return patientRepository.getAllPatient(index, search);
     }
 
     @Override
