@@ -167,4 +167,9 @@ public class AdminServiceImpl implements AdminService {
     public Feedback findFeedBackByAppointmentId(int aid) {
         return feedbackService.findFeedBackByAppointmentId(aid);
     }
+
+    @Override
+    public void updateFeedbackStatusForAdmin(int id, Byte status) {
+        feedbackService.updateFeedbackStatusForAdmin(id, status);
+    }
 }

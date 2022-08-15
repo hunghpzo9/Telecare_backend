@@ -13,4 +13,6 @@ public interface FeedbackService {
     void updateFeedback(Feedback feedback,boolean isDelete);
 
     Feedback findFeedBackByAppointmentId(int aid);
+
+    void updateFeedbackStatusForAdmin(int id,Byte status);
 }

@@ -161,5 +161,12 @@ public class AdminController {
     public Feedback getFeedbackByAppointmentId(@PathVariable int id) {
         return adminService.findFeedBackByAppointmentId(id);
     }
+    @PutMapping(value = "/feedback/updateStatus")
+    public ResponseEntity<?> updateFeedbackStatusForAdmin( @RequestParam int id,@RequestParam Byte status) throws ParseException {
+
+        adminService.updateFeedbackStatusForAdmin(id,status);
+        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
+
+    }
 
 }
