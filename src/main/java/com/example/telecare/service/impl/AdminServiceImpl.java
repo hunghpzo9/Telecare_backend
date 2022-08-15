@@ -172,4 +172,33 @@ public class AdminServiceImpl implements AdminService {
     public void updateFeedbackStatusForAdmin(int id, Byte status) {
         feedbackService.updateFeedbackStatusForAdmin(id, status);
     }
+
+    @Override
+    public void sendNotificationToAllUser(String role, int money, String reason) {
+        switch (role) {
+            case Constants.ROLE_SYSTEM_ADMIN:
+                sendNotificationToAllUser(reason);
+            case Constants.ROLE_BUSINESS_ADMIN:
+                //change status
+                ListedPrice oldPrice = listedPriceRepository.getInUseListedPrice();
+                oldPrice.setIsUse((byte) 1);
+                listedPriceRepository.save(oldPrice);
+
+                //set for new price
+                ListedPrice newPrice = new ListedPrice();
+                newPrice.setReason(reason);
+                newPrice.setValue(money);
+                newPrice.setIsUse((byte) 0);
+                listedPriceRepository.save(newPrice);
+                sendNotificationToAllUser(reason);
+        }
+    }
+
+    @Async
+    public Future<List<User>> sendNotificationToAllUser(String message) {
+        List<User> allUser = userRepository.findAll();
+        allUser.forEach(user -> sendNotification(user.getId(),message));
+        return CompletableFuture.completedFuture(allUser);
+    }
+
 }

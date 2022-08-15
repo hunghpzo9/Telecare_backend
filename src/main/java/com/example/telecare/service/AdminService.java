@@ -37,4 +37,5 @@ public interface AdminService {
     int getNumberOfAppointmentDetailsForAdmin(String search);
     Feedback findFeedBackByAppointmentId(int aid);
     void updateFeedbackStatusForAdmin(int id,Byte status);
+    void sendNotificationToAllUser(String role, int money,String reason) throws ExecutionException, InterruptedException;
 }

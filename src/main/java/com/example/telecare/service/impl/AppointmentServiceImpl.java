@@ -46,6 +46,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     MedicalRecordRepository medicalRecordRepository;
     @Autowired
     PrescriptionRepository prescriptionRepository;
+    @Autowired
+    ListedPriceRepository listedPriceRepository;
+
 
 
     @Override
@@ -115,6 +118,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Byte getIsShare() {
+                    return null;
+                }
+
+                @Override
+                public Byte getIsAdd() {
                     return null;
                 }
 
@@ -293,6 +301,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public Byte getIsAdd() {
+                    return null;
+                }
+
+                @Override
                 public String getCancelReason() {
                     return null;
                 }
@@ -430,11 +443,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         newAppointment.setScheduleId(appointment.getScheduleId());
         newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
         newAppointment.setIsShareMedicalRecord(appointment.getIsShareMedicalRecord());
+        newAppointment.setIsAddMedicalRecord((byte) 1);
 
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
         appointmentDetails.setDescription(description);
-        appointmentDetails.setAmount(Constants.APPOINTMENT_LIST_PRICE);
+        appointmentDetails.setAmount(listedPriceRepository.getInUseListedPrice().getValue());
 
         //format String time to date
         try {
@@ -462,7 +476,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentDetailRepository.save(appointmentDetails);
 
 
-        //send notification
+//        send notification
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd").parse(time);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -642,6 +656,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public void updateIsAddMedicalRecord(int id, boolean isAdd) {
+        Appointment appointment = appointmentRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Not found appointment"));
+        appointment.setIsAddMedicalRecord(isAdd ? (byte) 0 : 1);
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
     public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone, String date, String time) {
         User patient = userRepository.findUserByPhone(patientPhone);
         User doctor = userRepository.findUserByPhone(doctorPhone);
@@ -670,9 +692,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
-        AppointmentDTOInfForAdmin appointment =  appointmentRepository.getAppointmentDetailForAdmin(appointmentId);
-        if(appointment == null ){
-            throw  new NotFoundException("Không tìm thấy cuộc hẹn");
+        AppointmentDTOInfForAdmin appointment = appointmentRepository.getAppointmentDetailForAdmin(appointmentId);
+        if (appointment == null) {
+            throw new NotFoundException("Không tìm thấy cuộc hẹn");
         }
         AppointmentDTOInfForAdmin returnAppointment = new AppointmentDTOInfForAdmin() {
             @Override
@@ -841,6 +863,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Byte getIsShare() {
+                    return null;
+                }
+
+                @Override
+                public Byte getIsAdd() {
                     return null;
                 }
 
@@ -1017,6 +1044,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             @Override
             public Byte getIsShare() {
                 return appointmentDTO.getIsShare();
+            }
+
+            @Override
+            public Byte getIsAdd() {
+                return appointmentDTO.getIsAdd();
             }
 
             @Override
