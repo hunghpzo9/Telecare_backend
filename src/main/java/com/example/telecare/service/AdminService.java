@@ -42,4 +42,5 @@ public interface AdminService {
     void sendNotificationToAllUser(String role, int money,String reason) throws ExecutionException, InterruptedException;
     List<ListedPrice> getAllListedPriceForAdmin(int index, String search);
     int getNumberOfListedPrice(String search);
+    AdminDashboardDTOInf getDashboard();
 }
