@@ -22,8 +22,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "            left outer join telecare.user u on a.doctor_id = u.id\n" +
             "            left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "            left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
+            "            left outer join telecare.cancel_appointment ca on ca.appointment_id = a.id\n" +
             "            where a.patient_id = ?1 and aps.id in (?2) group by s.end_at,s.start_at,ad.time\n" +
-            "                        order by ad.time",
+            "                        order by \n" +
+            "                               CASE WHEN aps.id in (1,2) THEN ad.time END,\n" +
+            "                               CASE WHEN aps.id in (3) THEN ad.time END DESC,\n" +
+            "                               CASE WHEN aps.id in (4) THEN ca.id END DESC",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId);
 
@@ -116,11 +120,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "    telecare.schedule s ON a.schedule_id = s.id\n" +
             "        LEFT OUTER JOIN\n" +
             "    telecare.appointment_status aps ON aps.id = ad.status_id\n" +
+            "        LEFT OUTER JOIN\n" +
+            "    telecare.cancel_appointment ca on ca.appointment_id = a.id\n" +
             "WHERE\n" +
             "    d.doctor_id = ?1\n" +
             "        AND aps.id IN (?2)\n" +
             "GROUP BY s.end_at , s.start_at , ad.time\n" +
-            "ORDER BY ad.time\n",
+            "ORDER BY           CASE WHEN aps.id in (1,2) THEN ad.time END,\n" +
+            "                   CASE WHEN aps.id in (3) THEN ad.time END DESC,\n" +
+            "                   CASE WHEN aps.id in (4) THEN ca.id END DESC\n",
             nativeQuery = true)
     List<AppointmentDTOInf> findAppointmentByDoctor(int id, List<Integer> statusId);
 
