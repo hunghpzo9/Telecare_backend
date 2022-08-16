@@ -19,8 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -223,6 +225,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int getNumberOfListedPrice(String search) {
         return listedPriceRepository.getNumberOfListedPrice(search);
+    }
+
+    @Override
+    public AdminDashboardDTOInf getDashboard() {
+        TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(tz);
+        int currentMonth = cal.get(Calendar.MONTH);
+        int currentYear = cal.get(Calendar.YEAR);
+        return userRepository.getDashboard(currentMonth,currentYear);
     }
 
 

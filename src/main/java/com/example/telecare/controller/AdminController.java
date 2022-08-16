@@ -210,5 +210,11 @@ public class AdminController {
         return new ResponseEntity(noa, HttpStatus.OK);
 
     }
+    @GetMapping("/dashboard")
+    public ResponseEntity<?> getDashboard() {
+        var dashboard = adminService.getDashboard();
+        return new ResponseEntity(dashboard, HttpStatus.OK);
+
+    }
 
 }
