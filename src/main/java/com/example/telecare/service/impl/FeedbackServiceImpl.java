@@ -23,6 +23,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback saveNewFeedback(Feedback feedback) {
+        feedback.setIsHidden((byte)FeedbackStatus.HIDDEN_FEEDBACK.status);
         return feedbackRepository.save(feedback);
     }
 
