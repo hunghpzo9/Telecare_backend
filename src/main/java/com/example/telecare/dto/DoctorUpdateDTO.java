@@ -19,6 +19,7 @@ public class DoctorUpdateDTO {
     String email;
     String imageUrl;
     String signature;
+    String certificate;
     String position;
     String jobPlace;
     Integer specialtyId;

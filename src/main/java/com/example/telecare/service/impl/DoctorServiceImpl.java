@@ -291,8 +291,6 @@ public class DoctorServiceImpl implements DoctorService {
         user.setGender(doctorDetail.getGender());
         user.setEmail(doctorDetail.getEmail());
         user.setImageUrl(doctorDetail.getImageUrl());
-
-
         System.out.println(user.getEmail());
 
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
@@ -303,6 +301,7 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setPosition(doctorDetail.getPosition());
         doctor.setJobPlace(doctorDetail.getJobPlace());
         doctor.setSignature(doctorDetail.getSignature());
+        doctor.setCertificate(doctorDetail.getCertificate());
 
         userRepository.save(user);
         doctorRepository.save(doctor);
