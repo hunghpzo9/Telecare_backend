@@ -543,7 +543,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         cancelAppointment.setUserId(userId);
         cancelAppointmentRepository.save(cancelAppointment);
 
-
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = formatter.format(cld.getTime());
