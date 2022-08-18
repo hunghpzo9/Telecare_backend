@@ -49,17 +49,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     ListedPriceRepository listedPriceRepository;
 
-
-
     @Override
     public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
 
         List<AppointmentDTOInf> appointmentList = appointmentRepository.findAppointmentByPatient(id, statusId);
         List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
         for (AppointmentDTOInf appointmentDTO : appointmentList) {
-
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             PatientDTOInf patient = patientService.findPatientById(finalAppointmentDTO.getPatientId());
+            Relative relative = null;
+            if(appointmentDTO.getRelativeId() != null){
+                relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
+            }
+            Relative finalRelative = relative;
             appointmentDTO = new AppointmentDTOInf() {
                 @Override
                 public Integer getId() {
@@ -133,6 +135,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public String getPatientName() {
+                    if (finalRelative != null) return finalRelative.getFullName();
                     return patient.getFullName();
                 }
 
@@ -233,7 +236,6 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             DoctorDTOInf doctorDTOInf = doctorService.findDoctorById(finalAppointmentDTO.getDoctorId());
             Relative relative = null;
-            System.out.println(appointmentDTO.getRelativeId());
             if (appointmentDTO.getRelativeId() != null) {
                 relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
             }
