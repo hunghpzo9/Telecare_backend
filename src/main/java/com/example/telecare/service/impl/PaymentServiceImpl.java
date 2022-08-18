@@ -263,7 +263,7 @@ public class PaymentServiceImpl implements PaymentService {
         String dateDatabase = databaseFormat.format(cld.getTime());
 
         Payment payment = new Payment();
-        payment.setStatus(0);
+        payment.setStatus(PaymentStatusPending);
         payment.setAppointmentId(paymentDTO.getAppointmentId());
         payment.setAmount(String.valueOf(paymentDTO.getAmount()));
         payment.setBankcode(paymentDTO.getBankCode());
