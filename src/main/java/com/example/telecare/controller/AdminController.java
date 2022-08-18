@@ -144,7 +144,7 @@ public class AdminController {
     @GetMapping("/payment/numberOfPayment")
     public ResponseEntity<Integer> getNumberOfPayment(@RequestParam String searchText) {
         int nop = adminService.getNumberOfPayment(searchText);
-        return new ResponseEntity<Integer>(nop, HttpStatus.OK);
+        return new ResponseEntity<>(nop, HttpStatus.OK);
 
     }
 
