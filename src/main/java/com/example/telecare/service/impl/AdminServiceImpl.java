@@ -31,7 +31,6 @@ import java.util.concurrent.Future;
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
-
     MedicineServiceImpl medicineService;
     @Autowired
     DoctorServiceImpl doctorService;
@@ -167,8 +166,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
         return appointmentService.getAppointmentDetailForAdmin(appointmentId);
-
-
     }
 
     @Override
@@ -234,6 +231,11 @@ public class AdminServiceImpl implements AdminService {
         int currentMonth = currentDate.getMonthValue();
         int currentYear = currentDate.getYear();
         return userRepository.getDashboard(currentMonth,currentYear);
+    }
+
+    @Override
+    public void updateMedicineStatus(int medicineId, Byte status) {
+        medicineService.updateMedicineStatus(medicineId,status);
     }
 
 
