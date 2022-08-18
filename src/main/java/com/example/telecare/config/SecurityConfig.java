@@ -1,6 +1,7 @@
 package com.example.telecare.config;
 
 
+import com.example.telecare.filter.CustomAuthenticationFilter;
 import com.example.telecare.filter.CustomAuthorizationFilter;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.utils.Constants;
@@ -32,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomAuthorizationFilter customAuthorizationFilter;
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
@@ -45,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
         corsConfiguration.setAllowCredentials(false);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
+
 
         // You can customize the following part based on your project, it's only a sample
         http.authorizeRequests().antMatchers("/**").permitAll().anyRequest()
@@ -88,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
