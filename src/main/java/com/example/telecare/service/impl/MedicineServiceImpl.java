@@ -34,4 +34,12 @@ public class MedicineServiceImpl implements MedicineService {
         return medicineRepository.getNumberOfMedicine(searchText);
     }
 
+    @Override
+    public void updateMedicineStatus(int medicineId, Byte status) {
+        Medicine medicine = medicineRepository.findById(medicineId).orElseThrow(()
+                -> new NotFoundException("Không tìm thấy thuốc"));
+        medicine.setStatus(status);
+        medicineRepository.save(medicine);
+    }
+
 }

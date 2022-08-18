@@ -42,6 +42,12 @@ public class AdminController {
         return new ResponseEntity(numberOfMedicine, HttpStatus.OK);
     }
 
+    @PutMapping(value = "/medicine/updateStatus")
+    public ResponseEntity<?> updateMedicineStatusForAdmin(@RequestParam int id,@RequestParam Byte status){
+        adminService.updateMedicineStatus(id,status);
+        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
+    }
+
     @GetMapping(value = "/doctor/{id}")
     public DoctorDTOInf findDoctorDetail(@PathVariable int id) {
         return adminService.findDoctorById(id);
@@ -189,7 +195,6 @@ public class AdminController {
 
         adminService.updateFeedbackStatusForAdmin(id,status);
         return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
-
     }
 
     @PostMapping(value = "/notification/sendAll")
