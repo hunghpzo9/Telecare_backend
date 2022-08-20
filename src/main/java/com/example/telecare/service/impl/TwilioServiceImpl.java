@@ -23,6 +23,7 @@ import java.util.Random;
 public class TwilioServiceImpl implements TwilioService {
     @Autowired
     TwilioConfig twilioConfig;
+
     Map<String, String> otpMap = new HashMap<>();
 
     @Override
@@ -34,13 +35,13 @@ public class TwilioServiceImpl implements TwilioService {
 
             //generate otp
             String otp = generateOtp();
-            String otpMessage = "Mã xác nhận của bạn là " + otp;
+            String otpMessage = "Mã xác nhận cho ứng dụng Telecare của bạn là " + otp;
 
-             Message.creator(
-                            to,
-                            from,
-                            otpMessage)
-                    .create();
+//             Message.creator(
+//                            to,
+//                            from,
+//                            otpMessage)
+//                    .create();
             otpMap.put(twilioRequestDTO.getPhoneNumber(), otp);
 
             twilioResponseDTO = new TwilioResponseDTO(OtpStatus.DELIVERED, otpMessage);
@@ -57,8 +58,6 @@ public class TwilioServiceImpl implements TwilioService {
         try {
             PhoneNumber to = new PhoneNumber(twilioRequestDTO.getPhoneNumber());
             PhoneNumber from = new PhoneNumber(twilioConfig.getTrialNumber());
-
-
 
             Message.creator(
                             to,
@@ -77,6 +76,7 @@ public class TwilioServiceImpl implements TwilioService {
     @Override
     public ResponseEntity<?> validateOtp(String userInputOtp, String phoneNumber) {
         if (userInputOtp.equals(otpMap.get(phoneNumber))) {
+
             return ResponseEntity.ok().body(new ResponseOkMessage("Mã OTP đã được xác thực",new Date()));
         } else {
             throw new BadRequestException("Mã OTP không hợp lệ");
