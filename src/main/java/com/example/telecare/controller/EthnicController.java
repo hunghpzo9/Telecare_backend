@@ -1,6 +1,5 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.model.City;
 import com.example.telecare.model.Ethnic;
 import com.example.telecare.service.impl.EthnicServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

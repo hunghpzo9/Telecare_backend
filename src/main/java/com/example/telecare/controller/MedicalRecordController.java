@@ -2,9 +2,6 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.interfaces.MedicalRecordDTOInf;
 import com.example.telecare.dto.interfaces.MedicalRecordDetailDTO;
-import com.example.telecare.dto.interfaces.PrescriptionDTOInf;
-import com.example.telecare.exception.BadRequestException;
-import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.MedicalRecord;
 import com.example.telecare.service.impl.MedicalRecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

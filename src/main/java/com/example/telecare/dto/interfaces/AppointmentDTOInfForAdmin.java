@@ -1,8 +1,5 @@
 package com.example.telecare.dto.interfaces;
 
-import com.example.telecare.model.MedicalRecord;
-import com.example.telecare.model.Prescription;
-
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;

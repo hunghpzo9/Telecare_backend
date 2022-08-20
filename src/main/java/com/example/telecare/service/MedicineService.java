@@ -1,7 +1,6 @@
 package com.example.telecare.service;
 
 import com.example.telecare.dto.interfaces.MedicineNameDTO;
-import com.example.telecare.model.Feedback;
 import com.example.telecare.model.Medicine;
 
 import java.util.List;
