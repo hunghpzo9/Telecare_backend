@@ -37,11 +37,11 @@ public class TwilioServiceImpl implements TwilioService {
             String otp = generateOtp();
             String otpMessage = "Mã xác nhận cho ứng dụng Telecare của bạn là " + otp;
 
-//             Message.creator(
-//                            to,
-//                            from,
-//                            otpMessage)
-//                    .create();
+             Message.creator(
+                            to,
+                            from,
+                            otpMessage)
+                    .create();
             otpMap.put(twilioRequestDTO.getPhoneNumber(), otp);
 
             twilioResponseDTO = new TwilioResponseDTO(OtpStatus.DELIVERED, otpMessage);
