@@ -7,6 +7,10 @@ import com.example.telecare.dto.TwilioResponseDTO;
 import com.example.telecare.enums.OtpStatus;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.service.TwilioService;
+import com.example.telecare.utils.Constants;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +19,28 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TwilioServiceImpl implements TwilioService {
     @Autowired
     TwilioConfig twilioConfig;
 
-    Map<String, String> otpMap = new HashMap<>();
+    private static final Integer EXPIRE_MINS = 10;
+
+    private LoadingCache<String, String> otpCache;
+
+    public TwilioServiceImpl() {
+        otpCache = CacheBuilder.newBuilder()
+                .expireAfterWrite(EXPIRE_MINS, TimeUnit.MINUTES)
+                .build(new CacheLoader<>() {
+                    @Override
+                    public String load(String s) {
+                        return null;
+                    }
+                });
+    }
 
     @Override
     public ResponseEntity<?> sendOtp(TwilioRequestDTO twilioRequestDTO) {
@@ -34,15 +50,14 @@ public class TwilioServiceImpl implements TwilioService {
             PhoneNumber from = new PhoneNumber(twilioConfig.getTrialNumber());
 
             //generate otp
-            String otp = generateOtp();
-            String otpMessage = "Mã xác nhận cho ứng dụng Telecare của bạn là " + otp;
+            String otp = generateOtp(twilioRequestDTO.getPhoneNumber());
+            String otpMessage = "Mã xác nhận cho ứng dụng Telecare của bạn là " + otp + ".";
 
              Message.creator(
                             to,
                             from,
                             otpMessage)
                     .create();
-            otpMap.put(twilioRequestDTO.getPhoneNumber(), otp);
 
             twilioResponseDTO = new TwilioResponseDTO(OtpStatus.DELIVERED, otpMessage);
             return ResponseEntity.ok(twilioResponseDTO);
@@ -53,7 +68,7 @@ public class TwilioServiceImpl implements TwilioService {
     }
 
     @Override
-    public ResponseEntity sendSms(TwilioRequestDTO twilioRequestDTO,String message) {
+    public ResponseEntity sendSms(TwilioRequestDTO twilioRequestDTO, String message) {
         TwilioResponseDTO twilioResponseDTO;
         try {
             PhoneNumber to = new PhoneNumber(twilioRequestDTO.getPhoneNumber());
@@ -75,16 +90,32 @@ public class TwilioServiceImpl implements TwilioService {
 
     @Override
     public ResponseEntity<?> validateOtp(String userInputOtp, String phoneNumber) {
-        if (userInputOtp.equals(otpMap.get(phoneNumber))) {
-
-            return ResponseEntity.ok().body(new ResponseOkMessage("Mã OTP đã được xác thực",new Date()));
+        if (userInputOtp.equals(getOtp(phoneNumber))) {
+            clearOtp(phoneNumber);
+            return ResponseEntity.ok().body(new ResponseOkMessage(Constants.OTP_VALID, new Date()));
+        } else if (getOtp(phoneNumber).equals(Constants.OTP_EXPIRE_MESSAGE)) {
+            throw new BadRequestException(Constants.OTP_EXPIRE_MESSAGE);
         } else {
-            throw new BadRequestException("Mã OTP không hợp lệ");
+            throw new BadRequestException(Constants.OTP_INCORRECT);
         }
 
     }
 
-    private String generateOtp() {
-        return new DecimalFormat("000000").format(new Random().nextInt(999999));
+    private String generateOtp(String key) {
+        String otp = new DecimalFormat("000000").format(new Random().nextInt(999999));
+        otpCache.put(key, otp);
+        return otp;
+    }
+
+    private String getOtp(String key) {
+        try {
+            return otpCache.get(key);
+        } catch (Exception e) {
+            return Constants.OTP_EXPIRE_MESSAGE;
+        }
+    }
+
+    private void clearOtp(String key) {
+        otpCache.invalidate(key);
     }
 }
