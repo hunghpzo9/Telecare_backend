@@ -1,14 +1,14 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.model.*;
-import com.example.telecare.service.DistrictService;
+import com.example.telecare.model.City;
+import com.example.telecare.model.District;
+import com.example.telecare.model.Ward;
 import com.example.telecare.service.impl.AddressServiceImpl;
 import com.example.telecare.service.impl.CityServiceImpl;
 import com.example.telecare.service.impl.DistrictServiceImpl;
 import com.example.telecare.service.impl.WardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

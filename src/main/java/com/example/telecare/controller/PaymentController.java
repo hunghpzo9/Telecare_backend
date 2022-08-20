@@ -1,21 +1,14 @@
 package com.example.telecare.controller;
 
-import com.example.telecare.config.VnpayConfig;
 import com.example.telecare.dto.PaymentDTO;
-import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.model.Payment;
 import com.example.telecare.service.impl.PaymentServiceImpl;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController

@@ -1,8 +1,6 @@
 package com.example.telecare.security;
 
-import com.example.telecare.exception.ForbiddenException;
 import com.example.telecare.repository.UserRepository;
-import com.example.telecare.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

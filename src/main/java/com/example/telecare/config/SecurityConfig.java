@@ -1,7 +1,6 @@
 package com.example.telecare.config;
 
 
-import com.example.telecare.filter.CustomAuthenticationFilter;
 import com.example.telecare.filter.CustomAuthorizationFilter;
 import com.example.telecare.security.MyUserDetailsService;
 import com.example.telecare.utils.Constants;

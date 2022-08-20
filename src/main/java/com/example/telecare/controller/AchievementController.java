@@ -2,7 +2,6 @@ package com.example.telecare.controller;
 
 import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.model.DoctorAchievement;
-import com.example.telecare.repository.AchievementRepository;
 import com.example.telecare.service.impl.AchievementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
