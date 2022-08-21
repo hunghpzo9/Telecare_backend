@@ -1090,17 +1090,22 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getCancelUserName() {
-                return cancelReasonDTOInf.getCancelUser();
+                if(cancelReasonDTOInf != null){
+                    return cancelReasonDTOInf.getCancelUser();
+                }
+                return null;
             }
 
             @Override
-            public String getCancelDescription() {
-                return cancelReasonDTOInf.getCancelDescription();
+            public String getCancelDescription() { if(cancelReasonDTOInf != null){
+                return cancelReasonDTOInf.getCancelDescription();}
+                return null;
             }
 
             @Override
-            public String getCancelReason() {
-                return cancelReasonDTOInf.getCancelReason();
+            public String getCancelReason() { if(cancelReasonDTOInf != null){
+                return cancelReasonDTOInf.getCancelReason();}
+                return null;
             }
 
             @Override
