@@ -200,7 +200,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left join medical_record as mr on a.id=mr.appointment_id\n" +
             "left join appointment_details as ad on a.id=ad.appointment_id\n" +
             "where up.full_name like %?2% or ud.full_name like %?2% or " +
-            "up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% \n" +
+            "up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% order by ad.time desc\n" +
             "limit ?1,10", nativeQuery = true)
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 

@@ -51,7 +51,7 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
             "            left outer join city c on a.city_id=c.id\n" +
             "            left outer join district d on a.district_id=d.id\n" +
             "            left outer join ward w on a.ward_id=w.id\n" +
-            "            where u.full_name like %?2% or u.phone like %?2% or p.job_place like %?2% or p.job like %?2%\n" +
+            "            where u.full_name like %?2% or u.phone like %?2% or p.job_place like %?2% or p.job like %?2% order by u.created_at desc\n" +
             "            limit ?1,10",
             nativeQuery = true)
     List<PatientDTOAdminInf> getAllPatient(int index, String search);

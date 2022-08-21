@@ -73,7 +73,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             "            left outer join telecare.doctor_specialty ds on d.doctor_id = ds.doctor_id\n" +
             "            left outer join telecare.specialty s on ds.specialty_id = s.id \n" +
             "            where u.full_name like %?2% or d.job_place like %?2% or s.name like %?2% or u.phone like %?2%\n" +
-            "            group by u.id \n" +
+            "            group by u.id order by u.created_at desc\n" +
             "            limit ?1,10\n",
             nativeQuery = true)
     List<DoctorDTOInf> getAllDoctor(int index, String search);
