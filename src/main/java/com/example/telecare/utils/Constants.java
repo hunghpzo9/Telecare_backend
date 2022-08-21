@@ -29,6 +29,13 @@ public class Constants {
 
     public static final String ROLE_BUSINESS_ADMIN= "BUSINESS ADMIN";
 
+    //Otp
+    public static final String OTP_EXPIRE_MESSAGE= "Mã Otp đã hết hiệu lực.";
+
+    public static final String OTP_INCORRECT= "Mã OTP không hợp lệ.";
+
+    public static final String OTP_VALID= "Mã OTP đã được xác thực.";
+
     public static final int HIDDEN_FEEDBACK= 0;
 
     public static final int SHOW_FEEDBACK= 1;

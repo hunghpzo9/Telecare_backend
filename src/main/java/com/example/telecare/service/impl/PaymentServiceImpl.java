@@ -143,7 +143,7 @@ public class PaymentServiceImpl implements PaymentService {
                             payment.setBanktranNo(vnp_BankTranNo);
                             payment.setCardtype(vnp_CardType);
                             payment.setTransactionNo(vnp_TransactionNo);
-                            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                            if ("00".equals(vnp_ResponseCode)) {
                                 Appointment appointment = appointmentRepository.findById(payment.getAppointmentId())
                                         .orElseThrow(() -> new NotFoundException("Not found schedule"));
                                 appointment.setPaymentStatusId(PaymentStatus.PAID.status);
@@ -154,10 +154,9 @@ public class PaymentServiceImpl implements PaymentService {
                                 payment.setStatus(PaymentStatusFailed);
                                 // Here Code update PaymnentStatus = 2 into your Database
                             }
+                            payment.setResponseCode(vnp_ResponseCode);
                             paymentRepository.save(payment);
                             logger.info("{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}");
-
-
                         } else {
                             logger.info("{\"RspCode\":\"02\",\"Message\":\"Order already confirmed\"}");
 
@@ -214,7 +213,6 @@ public class PaymentServiceImpl implements PaymentService {
         Calendar cld = Calendar.getInstance();
         cld.setTimeZone(tz);
 
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
 
@@ -264,7 +262,7 @@ public class PaymentServiceImpl implements PaymentService {
         String dateDatabase = databaseFormat.format(cld.getTime());
 
         Payment payment = new Payment();
-        payment.setStatus(0);
+        payment.setStatus(PaymentStatusPending);
         payment.setAppointmentId(paymentDTO.getAppointmentId());
         payment.setAmount(String.valueOf(paymentDTO.getAmount()));
         payment.setBankcode(paymentDTO.getBankCode());

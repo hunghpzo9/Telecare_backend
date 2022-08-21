@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
@@ -40,6 +39,12 @@ public class AdminController {
         int numberOfMedicine = adminService.getNumberOfMedicine(searchText);
 
         return new ResponseEntity(numberOfMedicine, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/medicine/updateStatus")
+    public ResponseEntity<?> updateMedicineStatusForAdmin(@RequestParam int id,@RequestParam Byte status){
+        adminService.updateMedicineStatus(id,status);
+        return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
     }
 
     @GetMapping(value = "/doctor/{id}")
@@ -144,7 +149,7 @@ public class AdminController {
     @GetMapping("/payment/numberOfPayment")
     public ResponseEntity<Integer> getNumberOfPayment(@RequestParam String searchText) {
         int nop = adminService.getNumberOfPayment(searchText);
-        return new ResponseEntity<Integer>(nop, HttpStatus.OK);
+        return new ResponseEntity<>(nop, HttpStatus.OK);
 
     }
 
@@ -189,7 +194,6 @@ public class AdminController {
 
         adminService.updateFeedbackStatusForAdmin(id,status);
         return ResponseEntity.ok(new ResponseOkMessage("Cập nhật thành công", new Date()));
-
     }
 
     @PostMapping(value = "/notification/sendAll")

@@ -1,16 +1,15 @@
 package com.example.telecare.controller;
-import com.example.telecare.dto.interfaces.DoctorDTOInf;
+
 import com.example.telecare.dto.DoctorUpdateDTO;
 import com.example.telecare.dto.ResponseOkMessage;
+import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import com.example.telecare.service.impl.NotificationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 

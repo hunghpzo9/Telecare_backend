@@ -1,6 +1,5 @@
 package com.example.telecare.repository;
 
-import com.example.telecare.model.Role;
 import com.example.telecare.model.Specialty;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

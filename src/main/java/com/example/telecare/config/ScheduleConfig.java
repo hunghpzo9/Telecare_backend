@@ -9,8 +9,7 @@ import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.NotificationServiceImpl;
 import com.example.telecare.utils.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -21,8 +20,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-//@Configuration
+@Configuration
 @EnableScheduling
+@Slf4j
 public class ScheduleConfig {
     @Autowired
     AppointmentServiceImpl appointmentService;
@@ -38,7 +38,7 @@ public class ScheduleConfig {
 
     @Autowired
     MedicalRecordRepository medicalRecordRepository;
-    private static final Logger logger = LoggerFactory.getLogger(ScheduleConfig.class);
+
 
     @Scheduled(fixedRate = 1000 * 60)
     private void cancelAppointmentTask() {
@@ -53,7 +53,7 @@ public class ScheduleConfig {
                 cancelAppointment.setDescription("Hệ thống tự động huỷ");
 
                 appointmentService.cancelAppointment(cancelAppointment, appointmentDTO.getDoctorId());
-                logger.info("Cancel appointment id: {}", appointmentDTO.getId());
+                log.info("Cancel appointment id: {}", appointmentDTO.getId());
             }
         }
     }
@@ -72,7 +72,7 @@ public class ScheduleConfig {
             for (MedicalRecord medicalRecord : medicalRecords) {
                 medicalRecord.setIsEdited((byte) Constants.IS_NOT_EDITED);
                 medicalRecordRepository.save(medicalRecord);
-
+                log.info("Overdue medical record: {}", medicalRecord.getId());
             }
         }
     }
@@ -93,8 +93,9 @@ public class ScheduleConfig {
                 user.setIsActive((byte) Constants.IS_BAN);
                 user.setReason("Bác sĩ đã quá hạn chứng chỉ");
                 userRepository.save(user);
+                log.info("Expire doctor: {}", user.getId());
             }
         }
-        logger.info("Expire doctor: {}", expireDoctor.size());
+
     }
 }

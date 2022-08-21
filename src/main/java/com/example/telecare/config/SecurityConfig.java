@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomAuthorizationFilter customAuthorizationFilter;
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
@@ -45,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
         corsConfiguration.setAllowCredentials(false);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
+
 
         // You can customize the following part based on your project, it's only a sample
         http.authorizeRequests().antMatchers("/**").permitAll().anyRequest()
@@ -82,12 +84,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/admin/**").hasAnyAuthority(Constants.ROLE_SYSTEM_ADMIN,Constants.ROLE_BUSINESS_ADMIN)
 
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
-                        Constants.ROLE_SYSTEM_ADMIN, Constants.ROLE_DOCTOR)
+                        Constants.ROLE_SYSTEM_ADMIN,Constants.ROLE_BUSINESS_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers("/api/v1/terms/**").hasAnyAuthority(Constants.ROLE_PATIENT,
+                        Constants.ROLE_SYSTEM_ADMIN,Constants.ROLE_BUSINESS_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)
                 .antMatchers("/.well-known/assetlinks.json").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
     }

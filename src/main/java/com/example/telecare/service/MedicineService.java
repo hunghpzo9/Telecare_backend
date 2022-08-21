@@ -11,4 +11,6 @@ public interface MedicineService {
     List<MedicineNameDTO> getAllMedicineNameDistinct(String searchText, int index);
 
     int getNumberOfMedicine(String searchText);
+
+    void updateMedicineStatus(int medicineId, Byte status);
 }

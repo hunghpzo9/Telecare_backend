@@ -49,17 +49,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     ListedPriceRepository listedPriceRepository;
 
-
-
     @Override
     public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
 
         List<AppointmentDTOInf> appointmentList = appointmentRepository.findAppointmentByPatient(id, statusId);
         List<AppointmentDTOInf> returnAppointmentList = new ArrayList<>();
         for (AppointmentDTOInf appointmentDTO : appointmentList) {
-
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             PatientDTOInf patient = patientService.findPatientById(finalAppointmentDTO.getPatientId());
+            Relative relative = null;
+            if(appointmentDTO.getRelativeId() != null){
+                relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
+            }
+            Relative finalRelative = relative;
             appointmentDTO = new AppointmentDTOInf() {
                 @Override
                 public Integer getId() {
@@ -127,12 +129,23 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public String getCancelUserName() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelDescription() {
+                    return null;
+                }
+
+                @Override
                 public String getCancelReason() {
                     return null;
                 }
 
                 @Override
                 public String getPatientName() {
+                    if (finalRelative != null) return finalRelative.getFullName();
                     return patient.getFullName();
                 }
 
@@ -233,7 +246,6 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             DoctorDTOInf doctorDTOInf = doctorService.findDoctorById(finalAppointmentDTO.getDoctorId());
             Relative relative = null;
-            System.out.println(appointmentDTO.getRelativeId());
             if (appointmentDTO.getRelativeId() != null) {
                 relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
             }
@@ -302,6 +314,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Byte getIsAdd() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelUserName() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelDescription() {
                     return null;
                 }
 
@@ -871,6 +893,16 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public String getCancelUserName() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelDescription() {
+                    return null;
+                }
+
+                @Override
                 public String getCancelReason() {
                     return null;
                 }
@@ -983,6 +1015,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());
+        CancelReasonDTOInf cancelReasonDTOInf = cancelAppointmentRepository.getCancelDetailByAppointment(appointmentDTO.getId());
         Relative relative = null;
         if (appointmentDTO.getRelativeId() != null) {
             relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
@@ -1056,8 +1089,23 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
-            public String getCancelReason() {
-                return appointmentDTO.getCancelReason();
+            public String getCancelUserName() {
+                if(cancelReasonDTOInf != null){
+                    return cancelReasonDTOInf.getCancelUser();
+                }
+                return null;
+            }
+
+            @Override
+            public String getCancelDescription() { if(cancelReasonDTOInf != null){
+                return cancelReasonDTOInf.getCancelDescription();}
+                return null;
+            }
+
+            @Override
+            public String getCancelReason() { if(cancelReasonDTOInf != null){
+                return cancelReasonDTOInf.getCancelReason();}
+                return null;
             }
 
             @Override

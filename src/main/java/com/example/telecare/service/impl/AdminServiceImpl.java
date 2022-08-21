@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +31,6 @@ import java.util.concurrent.Future;
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
-
     MedicineServiceImpl medicineService;
     @Autowired
     DoctorServiceImpl doctorService;
@@ -166,8 +166,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId) {
         return appointmentService.getAppointmentDetailForAdmin(appointmentId);
-
-
     }
 
     @Override
@@ -229,12 +227,15 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminDashboardDTOInf getDashboard() {
-        TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(tz);
-        int currentMonth = cal.get(Calendar.MONTH);
-        int currentYear = cal.get(Calendar.YEAR);
+        LocalDate currentDate = LocalDate.now();
+        int currentMonth = currentDate.getMonthValue();
+        int currentYear = currentDate.getYear();
         return userRepository.getDashboard(currentMonth,currentYear);
+    }
+
+    @Override
+    public void updateMedicineStatus(int medicineId, Byte status) {
+        medicineService.updateMedicineStatus(medicineId,status);
     }
 
 

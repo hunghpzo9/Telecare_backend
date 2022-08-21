@@ -43,4 +43,5 @@ public interface AdminService {
     List<ListedPrice> getAllListedPriceForAdmin(int index, String search);
     int getNumberOfListedPrice(String search);
     AdminDashboardDTOInf getDashboard();
+    void updateMedicineStatus(int medicineId, Byte status);
 }

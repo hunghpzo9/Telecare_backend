@@ -43,7 +43,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                   ,s.start_at as startAt,s.end_at as endAt,a.is_add_medical_record as isAdd\n" +
             "                                   ,ad.time,aps.name as status,aps.id as statusId,ad.amount\n" +
             "                                   ,mr.url as medicalRecordUrl, pre.url as prescriptionUrl\n" +
-            "                                   ,ca.description as cancelReason\n" +
             "                                    FROM telecare.appointment a\n" +
             "                                    left outer join telecare.patient p on a.patient_id = p.patient_id\n" +
             "                                    left outer join telecare.doctor_specialty ds on ds.doctor_id = a.doctor_id\n" +
@@ -52,7 +51,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                    left outer join telecare.user u on a.doctor_id = u.id\n" +
             "                                    left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "                                    left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "                                    left outer join telecare.cancel_appointment ca on ca.appointment_id = a.id\n" +
             "                                    left outer join telecare.medical_record mr on a.id=mr.appointment_id\n" +
             "                                   left outer join telecare.prescription pre on a.id=pre.appointment_id\n" +
             "                                    where a.id = ?1\n" +
