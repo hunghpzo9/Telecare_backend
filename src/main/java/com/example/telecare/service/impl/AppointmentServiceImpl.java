@@ -129,6 +129,16 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public String getCancelUserName() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelDescription() {
+                    return null;
+                }
+
+                @Override
                 public String getCancelReason() {
                     return null;
                 }
@@ -304,6 +314,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
                 @Override
                 public Byte getIsAdd() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelUserName() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelDescription() {
                     return null;
                 }
 
@@ -873,6 +893,16 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public String getCancelUserName() {
+                    return null;
+                }
+
+                @Override
+                public String getCancelDescription() {
+                    return null;
+                }
+
+                @Override
                 public String getCancelReason() {
                     return null;
                 }
@@ -985,6 +1015,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
         PatientDTOInf patient = patientService.findPatientById(appointmentDTO.getPatientId());
         DoctorDTOInf doctor = doctorService.findDoctorById(appointmentDTO.getDoctorId());
+        CancelReasonDTOInf cancelReasonDTOInf = cancelAppointmentRepository.getCancelDetailByAppointment(appointmentDTO.getId());
         Relative relative = null;
         if (appointmentDTO.getRelativeId() != null) {
             relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
@@ -1058,8 +1089,18 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
+            public String getCancelUserName() {
+                return cancelReasonDTOInf.getCancelUser();
+            }
+
+            @Override
+            public String getCancelDescription() {
+                return cancelReasonDTOInf.getCancelDescription();
+            }
+
+            @Override
             public String getCancelReason() {
-                return appointmentDTO.getCancelReason();
+                return cancelReasonDTOInf.getCancelReason();
             }
 
             @Override
