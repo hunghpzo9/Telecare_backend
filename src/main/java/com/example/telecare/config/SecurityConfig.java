@@ -84,7 +84,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/admin/**").hasAnyAuthority(Constants.ROLE_SYSTEM_ADMIN,Constants.ROLE_BUSINESS_ADMIN)
 
                 .antMatchers("/api/v1/payment/**").hasAnyAuthority(Constants.ROLE_PATIENT,
-                        Constants.ROLE_SYSTEM_ADMIN, Constants.ROLE_DOCTOR)
+                        Constants.ROLE_SYSTEM_ADMIN,Constants.ROLE_BUSINESS_ADMIN, Constants.ROLE_DOCTOR)
+                .antMatchers("/api/v1/terms/**").hasAnyAuthority(Constants.ROLE_PATIENT,
+                        Constants.ROLE_SYSTEM_ADMIN,Constants.ROLE_BUSINESS_ADMIN, Constants.ROLE_DOCTOR)
                 .antMatchers("/api/v1/notification/**").hasAnyAuthority(Constants.ROLE_PATIENT,Constants.ROLE_DOCTOR)
                 .antMatchers("/.well-known/assetlinks.json").permitAll()
                 .anyRequest().authenticated()
