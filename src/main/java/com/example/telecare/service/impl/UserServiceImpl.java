@@ -36,6 +36,9 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
 
     @Autowired
+    TwilioServiceImpl twilioService;
+
+    @Autowired
     PatientRepository patientRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -173,7 +176,7 @@ public class UserServiceImpl implements UserService {
             String phone = "+84" + user.getPhone().substring(1);
             logger.info(phone);
             twilioRequestDTO.setPhoneNumber(phone);
-            //twilioService.sendSmsToDoctor(twilioRequestDTO,Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi);
+            twilioService.sendSms(twilioRequestDTO,"Tài khoản Telecare của bạn đã được kích hoạt. Cảm ơn đã sử dụng hệ thống của chúng tôi");
         }
 
     }
