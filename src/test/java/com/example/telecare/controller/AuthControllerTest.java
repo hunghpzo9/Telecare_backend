@@ -73,7 +73,7 @@ public class AuthControllerTest {
             (byte) 0,
             "https://firebasestorage.googleapis.com/v0/b/telecare-chat-storing.appspot.com/o/avatars%2F52fc29b0-ea30-11ec-9544-9fb644460543.jpeg?alt=media&token=56ed8122-af70-459f-8335-cd645bbfda94",
             new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-06-08 18:12:54"),
-            new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-07-01 17:20:35"), new Patient(), new Doctor(), new Address(), "");
+            new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-07-01 17:20:35"), new Patient(), new Doctor(), new Address(), "", "");
 
     User duplicatePhonePatient = new User(new HashSet<>(), 1,
             "Nguyễn Thái Hưng",
@@ -85,7 +85,7 @@ public class AuthControllerTest {
             (byte) 0,
             "https://firebasestorage.googleapis.com/v0/b/telecare-chat-storing.appspot.com/o/avatars%2F52fc29b0-ea30-11ec-9544-9fb644460543.jpeg?alt=media&token=56ed8122-af70-459f-8335-cd645bbfda94",
             new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-06-08 18:12:54"),
-            new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-07-01 17:20:35"), new Patient(), new Doctor(), new Address(), "");
+            new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-07-01 17:20:35"), new Patient(), new Doctor(), new Address(), "", "");
 
     User duplicateEmailPatient = new User(new HashSet<>(), 1,
             "Nguyễn Thái Hưng",
@@ -97,7 +97,7 @@ public class AuthControllerTest {
             (byte) 0,
             "https://firebasestorage.googleapis.com/v0/b/telecare-chat-storing.appspot.com/o/avatars%2F52fc29b0-ea30-11ec-9544-9fb644460543.jpeg?alt=media&token=56ed8122-af70-459f-8335-cd645bbfda94",
             new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-06-08 18:12:54"),
-            new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-07-01 17:20:35"), new Patient(), new Doctor(), new Address(), "");
+            new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse("2022-07-01 17:20:35"), new Patient(), new Doctor(), new Address(), "", "");
 
 
     public AuthControllerTest() throws ParseException {

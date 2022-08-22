@@ -9,6 +9,7 @@ import com.example.telecare.repository.UserRepository;
 import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.NotificationServiceImpl;
 import com.example.telecare.utils.Constants;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +41,7 @@ public class ScheduleConfig {
     MedicalRecordRepository medicalRecordRepository;
 
 
-    @Scheduled(fixedRate = 1000 * 60)
+    @Scheduled(fixedRate = 1000 * 5)
     private void cancelAppointmentTask() {
         List<AppointmentDTOInf> appointmentList = appointmentService.findAppointmentOverdue();
         if (!appointmentList.isEmpty()) {
@@ -96,6 +97,10 @@ public class ScheduleConfig {
                 log.info("Expire doctor: {}", user.getId());
             }
         }
-
     }
+//    @Scheduled(fixedRate = 1000 * 5)
+//    private void sendFCMToComingAppointment() throws FirebaseMessagingException {
+//
+//        notificationService.sendCloudMessaging();
+//    }
 }

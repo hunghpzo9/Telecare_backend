@@ -71,6 +71,9 @@ public class User {
     @Basic
     @Column(name = "reason")
     private String reason;
+    @Basic
+    @Column(name = "fcm_token")
+    private String fcmToken;
 
 
     @Override
