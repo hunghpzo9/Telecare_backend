@@ -466,6 +466,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         newAppointment.setPaymentStatusId(PaymentStatus.PENDING.status);
         newAppointment.setIsShareMedicalRecord(appointment.getIsShareMedicalRecord());
         newAppointment.setIsAddMedicalRecord((byte) 1);
+        newAppointment.setIsSendFcmUpcoming((byte) 0);
+        newAppointment.setIsSendFcmOntime((byte) 0);
 
         AppointmentDetails appointmentDetails = new AppointmentDetails();
         appointmentDetails.setStatusId(AppointmentStatus.NOT_CONFIRM.status);
@@ -1010,6 +1012,34 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public int getInUseListedPrice() {
         return listedPriceRepository.getInUseListedPrice().getValue();
+    }
+
+    @Override
+    public List<AppointmentDTOInf> getComingAppointmentInFifteenMin() {
+        Date d = new Date();
+        DateFormat dateFormatDay = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss");
+
+        dateFormatDay.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        dateFormatTime.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+
+        String date = dateFormatDay.format(d);
+        String time = dateFormatTime.format(d);
+        return appointmentRepository.getComingAppointmentInFifteenMin(date,time);
+    }
+
+    @Override
+    public List<AppointmentDTOInf> getCurrentAppointmentOnTime() {
+        Date d = new Date();
+        DateFormat dateFormatDay = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss");
+
+        dateFormatDay.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        dateFormatTime.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+
+        String date = dateFormatDay.format(d);
+        String time = dateFormatTime.format(d);
+        return appointmentRepository.getCurrentAppointmentOnTime(date,time);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {

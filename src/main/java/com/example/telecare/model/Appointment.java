@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,6 +55,13 @@ public class Appointment {
     @Basic
     @Column(name = "is_add_medical_record")
     private byte isAddMedicalRecord;
+    @Basic
+    @Column(name = "is_send_fcm_upcoming")
+    private Byte isSendFcmUpcoming;
+    @Basic
+    @Column(name = "is_send_fcm_ontime")
+    private Byte isSendFcmOntime;
+
 
 
 
@@ -81,4 +89,19 @@ public class Appointment {
         return result;
     }
 
+    public Byte getIsSendFcmUpcoming() {
+        return isSendFcmUpcoming;
+    }
+
+    public void setIsSendFcmUpcoming(Byte isSendFcmUpcoming) {
+        this.isSendFcmUpcoming = isSendFcmUpcoming;
+    }
+
+    public Byte getIsSendFcmOntime() {
+        return isSendFcmOntime;
+    }
+
+    public void setIsSendFcmOntime(Byte isSendFcmOntime) {
+        this.isSendFcmOntime = isSendFcmOntime;
+    }
 }
