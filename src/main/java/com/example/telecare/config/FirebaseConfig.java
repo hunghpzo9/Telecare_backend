@@ -3,6 +3,7 @@ package com.example.telecare.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 import org.springframework.context.annotation.Configuration;
 import java.io.InputStream;
 
@@ -16,7 +17,8 @@ public class FirebaseConfig {
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(in))
                     .build();
-            FirebaseApp.initializeApp(options);
+            var app = FirebaseApp.initializeApp(options);
+            FirebaseMessaging.getInstance(app);
         } catch (Exception e) {
             e.printStackTrace();
         }

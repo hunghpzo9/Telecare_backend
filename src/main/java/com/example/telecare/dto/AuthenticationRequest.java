@@ -11,4 +11,5 @@ import lombok.*;
 public class AuthenticationRequest {
     private String phone;
     private String password;
+    private String fcmToken;
 }
