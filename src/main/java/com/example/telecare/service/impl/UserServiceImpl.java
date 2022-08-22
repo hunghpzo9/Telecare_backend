@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PatientRepository patientRepository;
+    @Autowired
+    NotificationServiceImpl notificationService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -165,6 +167,7 @@ public class UserServiceImpl implements UserService {
         user.setIsActive(isActive);
         if (isActive == Constants.IS_BAN) {
             user.setReason(reason);
+            notificationService.sendNotification(id,"Thông báo từ admin: "+reason);
         } else if (isActive == Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN) {
             user.setReason(null);
         }
@@ -189,6 +192,7 @@ public class UserServiceImpl implements UserService {
         user.setIsActive(isActive);
         if (isActive == Constants.IS_BAN) {
             user.setReason(reason);
+            notificationService.sendNotification(id,"Thông báo từ admin: "+reason);
         } else if (isActive == Constants.IS_ACTIVE && currentStatus == Constants.IS_BAN) {
             user.setReason(null);
         }
