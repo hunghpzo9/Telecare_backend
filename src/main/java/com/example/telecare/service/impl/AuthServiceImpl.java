@@ -47,6 +47,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> login(AuthenticationRequest authenticationRequest){
         AuthenticationResponse authenticationResponse = getUser(authenticationRequest);
+        User user = userRepository.findUserByPhone(authenticationRequest.getPhone());
+        user.setFcmToken(authenticationRequest.getFcmToken());
+        userRepository.save(user);
         return ResponseEntity.ok(authenticationResponse);
     }
 

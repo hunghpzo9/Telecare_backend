@@ -53,4 +53,8 @@ public interface AppointmentService {
     int getNumberOfAppointmentDetailsForAdmin(String search);
 
     int getInUseListedPrice();
+
+    List<AppointmentDTOInf> getComingAppointmentInFifteenMin();
+
+    List<AppointmentDTOInf> getCurrentAppointmentOnTime();
 }
