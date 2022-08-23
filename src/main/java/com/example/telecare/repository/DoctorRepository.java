@@ -91,12 +91,14 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             nativeQuery = true)
     Integer getNumberDoneAppointment(int uid);
 
-    @Query(value = "Select  Count(DISTINCT a.patient_id)+  Count(DISTINCT a.relative_id)  from appointment a left outer join appointment_details ad\n" +
-            "                        on a.id = ad. appointment_id\n" +
-            "                        where a.doctor_id = ?1\n" +
-            "                        and ad.status_id = 3",
+    @Query(value = "SELECT countPatient.count + COUNT(DISTINCT a.relative_id) FROM telecare.appointment a  left outer join appointment_details ad\n" +
+            "    on a.id = ad. appointment_id ,\n" +
+            "     (SELECT COUNT(DISTINCT a.patient_id) as count FROM telecare.appointment a  left outer join appointment_details ad\n" +
+            "    on a.id = ad. appointment_id where a.doctor_id = ?1  and ad.status_id = 3 and a.relative_id IS NULL) countPatient\n" +
+            "    where a.doctor_id = ?1  and ad.status_id = 3 and a.relative_id IS NOT NULL\n" +
+            "    ;",
             nativeQuery = true)
-    Integer getNumberPatient(int uid);
+    Integer getNumberPatientByDoctor(int uid);
 
     @Query(value = "SELECT avg(f.rating) as rating FROM \n" +
             "                        telecare.feedback f\n" +
