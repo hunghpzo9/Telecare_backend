@@ -143,7 +143,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             @Override
             public Integer getPatientCount() {
-                return doctorRepository.getNumberPatient(doctorDTOInf.getId());
+                return doctorRepository.getNumberPatientByDoctor(doctorDTOInf.getId());
             }
 
             @Override
