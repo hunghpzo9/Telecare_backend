@@ -16,9 +16,15 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "SELECT * FROM telecare.user WHERE email = ?1",
             nativeQuery = true)
     User findUserByEmail(String email);
+
+    @Query(value = "SELECT fcm_token from user WHERE id = ?1",
+            nativeQuery = true)
+    String getFcmTokenByUser(int id);
+
     @Query(value = "SELECT * FROM telecare.user WHERE id = ?1",
             nativeQuery = true)
     User findUserById(String uid);
+
     @Query(value = "SELECT u.id as id,u.full_name as fullName,u.date_of_birth as dob,u.gender as gender,u.phone as phone,u.email as email FROM telecare.user as u where id=?1",
             nativeQuery = true)
     AdminDTOInf findAdminById(int id);
@@ -71,5 +77,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
             "  ;",
             nativeQuery = true)
     AdminDashboardDTOInf getDashboard(int currentMonth,int currentYear);
+
+
 
 }

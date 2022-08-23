@@ -11,6 +11,7 @@ import com.example.telecare.service.impl.AppointmentServiceImpl;
 import com.example.telecare.service.impl.DoctorServiceImpl;
 import com.example.telecare.service.impl.EthnicServiceImpl;
 import com.example.telecare.service.impl.PatientServiceImpl;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class AppointmentController {
     public ResponseEntity<?> bookAppointment(@RequestBody Appointment appointment
             , @RequestParam("description") String description
             , @RequestParam("time") String time
-            , @RequestParam(value = "medicalRecordId", required = false) List<Integer> medicalRecordId) {
+            , @RequestParam(value = "medicalRecordId", required = false) List<Integer> medicalRecordId) throws FirebaseMessagingException {
 
         appointmentService.createNewAppointment(appointment, description, time, medicalRecordId);
         return ResponseEntity.ok(appointment);
@@ -110,7 +111,7 @@ public class AppointmentController {
     }
 
     @PutMapping(value = "/confirm")
-    public ResponseEntity<?> confirmAppointment(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) {
+    public ResponseEntity<?> confirmAppointment(@RequestParam("id") int id, @RequestBody AppointmentDetails appointmentDetails) throws FirebaseMessagingException {
         appointmentService.confirmAppointment(appointmentDetails, id);
         return ResponseEntity.ok(appointmentDetails);
     }

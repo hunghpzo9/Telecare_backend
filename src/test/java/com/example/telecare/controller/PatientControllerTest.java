@@ -169,6 +169,11 @@ class PatientControllerTest {
         public String getInsurance() {
             return null;
         }
+
+        @Override
+        public Integer getCountDoneAppointment() {
+            return null;
+        }
     };
     @AfterEach
     void tearDown() {
