@@ -9,6 +9,7 @@ import com.example.telecare.model.*;
 import com.example.telecare.repository.*;
 import com.example.telecare.service.AppointmentService;
 import com.example.telecare.utils.Constants;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +59,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDTOInf finalAppointmentDTO = appointmentDTO;
             PatientDTOInf patient = patientService.findPatientById(finalAppointmentDTO.getPatientId());
             Relative relative = null;
-            if(appointmentDTO.getRelativeId() != null){
+            if (appointmentDTO.getRelativeId() != null) {
                 relative = relativeService.findRelativeById(appointmentDTO.getRelativeId());
             }
             Relative finalRelative = relative;
@@ -439,10 +440,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void createNewAppointment(Appointment appointment, String description, String time, List<Integer> medicalRecordId) {
+    public void createNewAppointment(Appointment appointment, String description, String time, List<Integer> medicalRecordId) throws FirebaseMessagingException {
 
 
         DoctorDTOInf doctor = doctorService.findDoctorById(appointment.getDoctorId());
+
         if (doctor.getIsActive() != Constants.IS_ACTIVE) {
             throw new BadRequestException("Bác sĩ hiện đang được xem xét, không thể đặt được");
         }
@@ -524,6 +526,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        List<String> registrationTokens = Arrays.asList(
+                userRepository.getFcmTokenByUser(appointment.getPatientId())
+        );
+        notificationService.sendCloudMessaging(registrationTokens, "Thông báo", Constants.NEW_APPOINTMENT_MESSAGE);
     }
 
     @Override
@@ -589,22 +596,27 @@ public class AppointmentServiceImpl implements AppointmentService {
             endAt = endAt.substring(0, endAt.length() - 3);
 
             //notification for patient
-            notificationService.sendNotification(appointment.getPatientId(),
-                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+            String notificationMessage = "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                    + simpleDateFormat.format(notificationDate) + " đã bị huỷ.";
+
+            notificationService.sendNotification(appointment.getPatientId(), notificationMessage);
 
             //notification for doctor
-            notificationService.sendNotification(appointment.getDoctorId(),
-                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã bị huỷ.");
+            notificationService.sendNotification(appointment.getDoctorId(), notificationMessage);
 
-        } catch (ParseException e) {
+            List<String> registrationTokens = Arrays.asList(
+                    userRepository.getFcmTokenByUser(appointment.getPatientId()),
+                    userRepository.getFcmTokenByUser(appointment.getDoctorId())
+            );
+            notificationService.sendCloudMessaging(registrationTokens, "Thông báo", notificationMessage);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void confirmAppointment(AppointmentDetails appointmentDetails, int id) {
+    public void confirmAppointment(AppointmentDetails appointmentDetails, int id) throws FirebaseMessagingException {
         AppointmentDetails appointmentDs = appointmentDetailRepository.findAppointmentDetailsByAppointmentId(id);
         appointmentDs.setStatusId(appointmentDetails.getStatusId());
         appointmentDetailRepository.save(appointmentDs);
@@ -613,6 +625,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Not found appointment"));
         appointmentRepository.save(appointment);
+
 
         try {
             Date notificationDate = new SimpleDateFormat("yyyy-MM-dd")
@@ -625,14 +638,21 @@ public class AppointmentServiceImpl implements AppointmentService {
             String endAt = schedule.getEndAt().toString();
             endAt = endAt.substring(0, endAt.length() - 3);
 
+            String notificationMessage = "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                    + simpleDateFormat.format(notificationDate) + " đã được bác sĩ xác nhận.";
             //notification for patient
             notificationService.sendNotification(appointment.getPatientId(),
-                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã được bác sĩ xác nhận.");
+                    notificationMessage);
 
+
+            List<String> registrationTokens = Arrays.asList(
+                    userRepository.getFcmTokenByUser(appointment.getPatientId())
+            );
+            notificationService.sendCloudMessaging(registrationTokens, "Thông báo", notificationMessage);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -657,16 +677,18 @@ public class AppointmentServiceImpl implements AppointmentService {
             endAt = endAt.substring(0, endAt.length() - 3);
 
             //notification for patient
-            notificationService.sendNotification(appointment.getPatientId(),
-                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+            String notificationMessage="Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
+                    + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.";
+            notificationService.sendNotification(appointment.getPatientId(),notificationMessage);
 
             //notification for doctor
-            notificationService.sendNotification(appointment.getDoctorId(),
-                    "Lịch khám của bạn vào lúc " + startAt + " - " + endAt + " ngày "
-                            + simpleDateFormat.format(notificationDate) + " đã được hoàn thành.");
+            notificationService.sendNotification(appointment.getDoctorId(),notificationMessage);
 
-        } catch (ParseException e) {
+            List<String> registrationTokens = Arrays.asList(
+                    userRepository.getFcmTokenByUser(appointment.getPatientId())
+            );
+            notificationService.sendCloudMessaging(registrationTokens, "Thông báo", notificationMessage);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1025,7 +1047,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         String date = dateFormatDay.format(d);
         String time = dateFormatTime.format(d);
-        return appointmentRepository.getComingAppointmentInFifteenMin(date,time);
+        return appointmentRepository.getComingAppointmentInFifteenMin(date, time);
     }
 
     @Override
@@ -1039,7 +1061,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         String date = dateFormatDay.format(d);
         String time = dateFormatTime.format(d);
-        return appointmentRepository.getCurrentAppointmentOnTime(date,time);
+        return appointmentRepository.getCurrentAppointmentOnTime(date, time);
     }
 
     private AppointmentDTOInf setReturnAppointment(AppointmentDTOInf appointmentDTO) {
@@ -1120,21 +1142,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             @Override
             public String getCancelUserName() {
-                if(cancelReasonDTOInf != null){
+                if (cancelReasonDTOInf != null) {
                     return cancelReasonDTOInf.getCancelUser();
                 }
                 return null;
             }
 
             @Override
-            public String getCancelDescription() { if(cancelReasonDTOInf != null){
-                return cancelReasonDTOInf.getCancelDescription();}
+            public String getCancelDescription() {
+                if (cancelReasonDTOInf != null) {
+                    return cancelReasonDTOInf.getCancelDescription();
+                }
                 return null;
             }
 
             @Override
-            public String getCancelReason() { if(cancelReasonDTOInf != null){
-                return cancelReasonDTOInf.getCancelReason();}
+            public String getCancelReason() {
+                if (cancelReasonDTOInf != null) {
+                    return cancelReasonDTOInf.getCancelReason();
+                }
                 return null;
             }
 

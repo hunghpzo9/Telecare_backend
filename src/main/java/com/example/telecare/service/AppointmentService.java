@@ -6,6 +6,7 @@ import com.example.telecare.dto.interfaces.CancelDTOInf;
 import com.example.telecare.model.Appointment;
 import com.example.telecare.model.AppointmentDetails;
 import com.example.telecare.model.CancelAppointment;
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface AppointmentService {
 
     AppointmentDTOInf findAppointmentById(int id);
 
-    void createNewAppointment(Appointment appointment, String description, String time,List<Integer> medicalRecordId);
+    void createNewAppointment(Appointment appointment, String description, String time,List<Integer> medicalRecordId) throws FirebaseMessagingException;
 
     List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
 
@@ -28,7 +29,7 @@ public interface AppointmentService {
 
     void cancelAppointment(CancelAppointment cancelAppointment,int userId);
 
-    void confirmAppointment(AppointmentDetails appointmentDetails, int id);
+    void confirmAppointment(AppointmentDetails appointmentDetails, int id) throws FirebaseMessagingException;
 
     void endAppointment(int id);
 

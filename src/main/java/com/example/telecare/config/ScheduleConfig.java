@@ -103,10 +103,11 @@ public class ScheduleConfig {
             }
         }
     }
+
     @Scheduled(fixedRate = 1000 * 5)
     private void sendFCMToComingAppointment() throws FirebaseMessagingException {
         List<AppointmentDTOInf> upComingApp = appointmentService.getComingAppointmentInFifteenMin();
-        for(AppointmentDTOInf appointmentDTOInf : upComingApp){
+        for (AppointmentDTOInf appointmentDTOInf : upComingApp) {
             User patient = userRepository.findUserById(appointmentDTOInf.getPatientId().toString());
             User doctor = userRepository.findUserById(appointmentDTOInf.getDoctorId().toString());
 
@@ -115,29 +116,26 @@ public class ScheduleConfig {
                     // ...
                     doctor.getFcmToken()
             );
-            notificationService.sendCloudMessaging(registrationTokens,"Thông báo",Constants.UPCOMING_APPOINTMENT_MESSAGE);
+            notificationService.sendCloudMessaging(registrationTokens, "Thông báo", Constants.UPCOMING_APPOINTMENT_MESSAGE);
             Appointment appointment = appointmentRepository.findById(appointmentDTOInf.getId()).
                     orElseThrow(() -> new NotFoundException("Not found appointment"));
-            appointment.setIsSendFcmUpcoming((byte)1);
+            appointment.setIsSendFcmUpcoming((byte) 1);
             appointmentRepository.save(appointment);
         }
     }
+
     @Scheduled(fixedRate = 1000 * 5)
     private void sendFCMToAppointmentOnTime() throws FirebaseMessagingException {
         List<AppointmentDTOInf> onTimeApp = appointmentService.getCurrentAppointmentOnTime();
-        for(AppointmentDTOInf appointmentDTOInf : onTimeApp){
-            User patient = userRepository.findUserById(appointmentDTOInf.getPatientId().toString());
-            User doctor = userRepository.findUserById(appointmentDTOInf.getDoctorId().toString());
-
+        for (AppointmentDTOInf appointmentDTOInf : onTimeApp) {
             List<String> registrationTokens = Arrays.asList(
-                    patient.getFcmToken(),
-                    // ...
-                    doctor.getFcmToken()
+                    userRepository.getFcmTokenByUser(appointmentDTOInf.getPatientId()),
+                    userRepository.getFcmTokenByUser(appointmentDTOInf.getDoctorId())
             );
-            notificationService.sendCloudMessaging(registrationTokens,"Thông báo",Constants.ON_TIME_APPOINTMENT_MESSAGE);
+            notificationService.sendCloudMessaging(registrationTokens, "Thông báo", Constants.ON_TIME_APPOINTMENT_MESSAGE);
             Appointment appointment = appointmentRepository.findById(appointmentDTOInf.getId()).
                     orElseThrow(() -> new NotFoundException("Not found appointment"));
-            appointment.setIsSendFcmOntime((byte)1);
+            appointment.setIsSendFcmOntime((byte) 1);
             appointmentRepository.save(appointment);
         }
     }
