@@ -1,6 +1,7 @@
 package com.example.telecare.config;
 
 import com.example.telecare.dto.interfaces.AppointmentDTOInf;
+import com.example.telecare.enums.AppointmentStatus;
 import com.example.telecare.exception.NotFoundException;
 import com.example.telecare.model.*;
 import com.example.telecare.repository.AppointmentRepository;
@@ -51,15 +52,18 @@ public class ScheduleConfig {
         List<AppointmentDTOInf> appointmentList = appointmentService.findAppointmentOverdue();
         if (!appointmentList.isEmpty()) {
             for (AppointmentDTOInf appointmentDTO : appointmentList) {
-                CancelAppointment cancelAppointment = new CancelAppointment();
+                if(appointmentDTO.getStatusId() != AppointmentStatus.CANCEL.status){
+                    CancelAppointment cancelAppointment = new CancelAppointment();
 
-                cancelAppointment.setUserId(appointmentDTO.getDoctorId());
-                cancelAppointment.setCancelReasonId(Constants.SYSTEM_CANCEL_STATUS);
-                cancelAppointment.setAppointmentId(appointmentDTO.getId());
-                cancelAppointment.setDescription("Hệ thống tự động huỷ");
+                    cancelAppointment.setUserId(appointmentDTO.getDoctorId());
+                    cancelAppointment.setCancelReasonId(Constants.SYSTEM_CANCEL_STATUS);
+                    cancelAppointment.setAppointmentId(appointmentDTO.getId());
+                    cancelAppointment.setDescription("Hệ thống tự động huỷ");
 
-                appointmentService.cancelAppointment(cancelAppointment, appointmentDTO.getDoctorId());
-                log.info("Cancel appointment id: {}", appointmentDTO.getId());
+                    appointmentService.cancelAppointment(cancelAppointment, appointmentDTO.getDoctorId());
+                    log.info("Cancel appointment id: {}", appointmentDTO.getId());
+                }
+
             }
         }
     }
