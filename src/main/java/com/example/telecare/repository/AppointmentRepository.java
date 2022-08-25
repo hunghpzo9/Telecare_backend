@@ -57,18 +57,21 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                    group by s.end_at,s.start_at,ad.time",
             nativeQuery = true)
     AppointmentDTOInf findAppointmentDetailById(int id);
-    @Query(value = "SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
-            "            telecare.appointment_details ad on a.id = ad.appointment_id\n" +
-            "            where time = ?3 and a.patient_id = ?2 and (ad.status_id = 2 or ad.status_id = 1)\n" +
-            "            \n" +
-            "            UNION\n" +
-            "            SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
-            "            telecare.appointment_details ad on a.id = ad.appointment_id\n" +
-            "            where time = ?3 and a.doctor_id = ?1 and ad.status_id = 2 UNION\n" +
-            "                        SELECT id FROM schedule where end_at< ?4"
+    @Query(value = "SELECT a.schedule_id FROM telecare.appointment a left outer join\n" +
+            "                        telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "                        where time = ?3 and a.patient_id = ?2 and (ad.status_id = 2 or ad.status_id = 1)\n" +
+            "                       \n" +
+            "                        UNION\n" +
+            "                        SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
+            "                        telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "                        where time = ?3 and a.doctor_id = ?1 and (ad.status_id = 2 or ad.status_id = 1)\n" +
+            "\t\t\t\t\t\tUNION\n" +
+            "\t\t\t\t\t\tSELECT  CASE WHEN (?5 = ?3) THEN id \n" +
+            "                        end\n" +
+            "                        FROM schedule where end_at < ?4"
             ,
             nativeQuery = true)
-    List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time,String currentTime);
+    List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time,String currentTime,String currentDate);
 
     @Query(value = "SELECT COUNT(*) FROM telecare.cancel_appointment ca where\n" +
             "created_at > (DATE_ADD(?2, INTERVAL -6048000 SECOND))\n" +
