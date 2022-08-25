@@ -64,10 +64,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "            UNION\n" +
             "            SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
             "            telecare.appointment_details ad on a.id = ad.appointment_id\n" +
-            "            where time = ?3 and a.doctor_id = ?1 and ad.status_id = 2"
+            "            where time = ?3 and a.doctor_id = ?1 and ad.status_id = 2 UNION\n" +
+            "                        SELECT id FROM schedule where end_at< ?4"
             ,
             nativeQuery = true)
-    List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
+    List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time,String currentTime);
 
     @Query(value = "SELECT COUNT(*) FROM telecare.cancel_appointment ca where\n" +
             "created_at > (DATE_ADD(?2, INTERVAL -6048000 SECOND))\n" +
