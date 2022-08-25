@@ -49,6 +49,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     PrescriptionRepository prescriptionRepository;
     @Autowired
     ListedPriceRepository listedPriceRepository;
+    @Autowired
+    FeedbackRepository feedbackRepository;
 
     @Override
     public List<AppointmentDTOInf> findAppointmentByPatient(int id, List<Integer> statusId) {
@@ -127,6 +129,12 @@ public class AppointmentServiceImpl implements AppointmentService {
                 @Override
                 public Byte getIsAdd() {
                     return null;
+                }
+
+                @Override
+                public Boolean getIsFeedback() {
+                    var feedback = feedbackRepository.findFeedbackByAppointmentId(finalAppointmentDTO.getId());
+                    return feedback != null;
                 }
 
                 @Override
@@ -316,6 +324,12 @@ public class AppointmentServiceImpl implements AppointmentService {
                 @Override
                 public Byte getIsAdd() {
                     return null;
+                }
+
+                @Override
+                public Boolean getIsFeedback() {
+                    var feedback = feedbackRepository.findFeedbackByAppointmentId(finalAppointmentDTO.getId());
+                    return feedback != null;
                 }
 
                 @Override
@@ -923,6 +937,12 @@ public class AppointmentServiceImpl implements AppointmentService {
                 }
 
                 @Override
+                public Boolean getIsFeedback() {
+                    var feedback = feedbackRepository.findFeedbackByAppointmentId(finalAppointmentDTO.getId());
+                    return feedback != null;
+                }
+
+                @Override
                 public String getCancelUserName() {
                     return null;
                 }
@@ -1144,6 +1164,12 @@ public class AppointmentServiceImpl implements AppointmentService {
             @Override
             public Byte getIsAdd() {
                 return appointmentDTO.getIsAdd();
+            }
+
+            @Override
+            public Boolean getIsFeedback() {
+                var feedback = feedbackRepository.findFeedbackByAppointmentId(appointmentDTO.getId());
+                return feedback != null;
             }
 
             @Override
