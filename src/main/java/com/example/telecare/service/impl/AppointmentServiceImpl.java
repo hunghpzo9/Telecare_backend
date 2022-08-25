@@ -536,9 +536,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Integer> listScheduleFindByDoctorAndTime(int doctorId, int patientId, String time) {
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        String currentTime = formatter.format(cld.getTime());
-        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId, patientId, time,currentTime);
+        SimpleDateFormat formatterTime = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatterDate = new SimpleDateFormat("yyyy-MM-dd");
+        String currentTime = formatterTime.format(cld.getTime());
+        String currentDate = formatterDate.format(cld.getTime());
+        return appointmentRepository.listScheduleFindByDoctorAndTime(doctorId, patientId, time,currentTime,currentDate);
     }
 
     @Override
