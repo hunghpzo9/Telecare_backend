@@ -542,7 +542,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         List<String> registrationTokens = Arrays.asList(
-                userRepository.getFcmTokenByUser(appointment.getPatientId())
+                userRepository.getFcmTokenByUser(appointment.getDoctorId())
         );
         notificationService.sendCloudMessaging(registrationTokens, "Thông báo", Constants.NEW_APPOINTMENT_MESSAGE);
     }
