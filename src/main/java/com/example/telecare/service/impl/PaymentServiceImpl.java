@@ -263,6 +263,14 @@ public class PaymentServiceImpl implements PaymentService {
         SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateDatabase = databaseFormat.format(calendarSaveInDatabase.getTime());
 
+        //get all pending payment and set status Failed
+        List<Payment> pendingPayment = paymentRepository.getAllPendingPayment(paymentDTO.getAppointmentId());
+        pendingPayment.forEach(payment -> {
+            payment.setResponseCode("24");
+            payment.setStatus(PaymentStatusFailed);
+            paymentRepository.save(payment);
+        });
+
         Payment payment = new Payment();
         payment.setStatus(PaymentStatusPending);
         payment.setAppointmentId(paymentDTO.getAppointmentId());
@@ -292,13 +300,4 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.getNumberOfPayment(searchText);
     }
 
-    @Override
-    public void changeStatusAllCancelPayment(int patientId) {
-        List<Payment> payments = paymentRepository.getAllPaymentCancel(patientId);
-        payments.forEach(payment -> {
-            payment.setResponseCode("24");
-            payment.setStatus(PaymentStatusFailed);
-            paymentRepository.save(payment);
-        });
-    }
 }
