@@ -26,12 +26,12 @@ public class DoctorUpdateDTO {
     String position;
     String jobPlace;
 
-//    List<DoctorExperience> updateDoctorExperiences;
-//    List<DoctorExperience> deleteDoctorExperiences;
-//
-//    List<DoctorAchievement> updateDoctorAchievements;
-//    List<DoctorAchievement> deleteDoctorAchievements;
-//
-//    List<Integer> updateDoctorSpecialtyId;
-//    List<Integer> deleteDoctorSpecialtyId;
+    List<DoctorExperience> updateDoctorExperiences;
+    List<DoctorExperience> deleteDoctorExperiences;
+
+    List<DoctorAchievement> updateDoctorAchievements;
+    List<DoctorAchievement> deleteDoctorAchievements;
+
+    List<Integer> updateDoctorSpecialtyId;
+    List<Integer> deleteDoctorSpecialtyId;
 }
