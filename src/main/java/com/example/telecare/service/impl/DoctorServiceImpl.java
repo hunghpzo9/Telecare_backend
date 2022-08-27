@@ -301,48 +301,46 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setSignature(doctorDetail.getSignature());
         doctor.setCertificate(doctorDetail.getCertificate());
 
-//        if (doctorDetail.getUpdateDoctorExperiences().size() != 0) {
-//            List<DoctorExperience> doctorExperiences = doctorDetail.getUpdateDoctorExperiences();
-//            for (DoctorExperience de : doctorExperiences) {
-//                de.setDoctorId(doctor.getDoctorId());
-//                experienceRepository.save(de);
-//            }
-//        }
-//
-//        if (doctorDetail.getDeleteDoctorExperiences().size() != 0) {
-//            List<DoctorExperience> doctorExperiences = doctorDetail.getDeleteDoctorExperiences();
-//            for (DoctorExperience de : doctorExperiences) {
-//                experienceRepository.delete(de);
-//            }
-//        }
-//
-//        if (doctorDetail.getUpdateDoctorAchievements().size() != 0) {
-//            List<DoctorAchievement> doctorAchievements = doctorDetail.getUpdateDoctorAchievements();
-//            for (DoctorAchievement da : doctorAchievements) {
-//                da.setDoctorId(doctor.getDoctorId());
-//                achievementRepository.save(da);
-//            }
-//        }
-//
-//        if (doctorDetail.getDeleteDoctorExperiences().size() != 0) {
-//            List<DoctorAchievement> doctorAchievements = doctorDetail.getDeleteDoctorAchievements();
-//            for (DoctorAchievement da : doctorAchievements) {
-//                achievementRepository.delete(da);
-//            }
-//        }
-//
-//        if (doctorDetail.getUpdateDoctorSpecialtyId().size() != 0) {
-//            System.out.println("not zero");
-//            for(Integer sid : doctorDetail.getUpdateDoctorSpecialtyId()){
-//                doctor.addSpecialty(specialtyRepository.findSpecialtyById(sid));
-//            }
-//        }
-//        if (doctorDetail.getDeleteDoctorSpecialtyId().size() != 0) {
-//            System.out.println("not zero");
-//            for(Integer sid : doctorDetail.getDeleteDoctorSpecialtyId()){
-//                doctor.removeSpecialty(specialtyRepository.findSpecialtyById(sid));
-//            }
-//        }
+        if (doctorDetail.getUpdateDoctorExperiences().size() != 0) {
+            List<DoctorExperience> doctorExperiences = doctorDetail.getUpdateDoctorExperiences();
+            for (DoctorExperience de : doctorExperiences) {
+                de.setDoctorId(doctor.getDoctorId());
+                experienceRepository.save(de);
+            }
+        }
+
+        if (doctorDetail.getDeleteDoctorExperiences().size() != 0) {
+            List<DoctorExperience> doctorExperiences = doctorDetail.getDeleteDoctorExperiences();
+            for (DoctorExperience de : doctorExperiences) {
+                experienceRepository.delete(de);
+            }
+        }
+
+        if (doctorDetail.getUpdateDoctorAchievements().size() != 0) {
+            List<DoctorAchievement> doctorAchievements = doctorDetail.getUpdateDoctorAchievements();
+            for (DoctorAchievement da : doctorAchievements) {
+                da.setDoctorId(doctor.getDoctorId());
+                achievementRepository.save(da);
+            }
+        }
+
+        if (doctorDetail.getDeleteDoctorExperiences().size() != 0) {
+            List<DoctorAchievement> doctorAchievements = doctorDetail.getDeleteDoctorAchievements();
+            for (DoctorAchievement da : doctorAchievements) {
+                achievementRepository.delete(da);
+            }
+        }
+
+        if (doctorDetail.getUpdateDoctorSpecialtyId().size() != 0) {
+            for(Integer sid : doctorDetail.getUpdateDoctorSpecialtyId()){
+                doctor.addSpecialty(specialtyRepository.findSpecialtyById(sid));
+            }
+        }
+        if (doctorDetail.getDeleteDoctorSpecialtyId().size() != 0) {
+            for(Integer sid : doctorDetail.getDeleteDoctorSpecialtyId()){
+                doctor.removeSpecialty(specialtyRepository.findSpecialtyById(sid));
+            }
+        }
 
         userRepository.save(user);
         doctorRepository.save(doctor);
