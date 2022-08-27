@@ -37,7 +37,7 @@ public interface AppointmentService {
 
     void updateIsAddMedicalRecord(int appointmentId,boolean isAdd);
 
-    AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone,String date,String time);
+    AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone);
 
     List<AppointmentDTOInf> findAppointmentOverdue();
 
