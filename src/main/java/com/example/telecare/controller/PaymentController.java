@@ -97,10 +97,4 @@ public class PaymentController {
         return ResponseEntity.ok(payment);
     }
 
-    @PostMapping(value = "/changeStatusAllCancelPayment")
-    public ResponseEntity<?> changeStatusAllCancelPayment(@RequestParam(value = "patientId")
-                                                                  int patientId) {
-        paymentService.changeStatusAllCancelPayment(patientId);
-        return ResponseEntity.ok(new ResponseOkMessage("Đã huỷ giao dịch thành công",new Date()));
-    }
 }
