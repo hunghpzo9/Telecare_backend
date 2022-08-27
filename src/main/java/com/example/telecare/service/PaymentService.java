@@ -48,5 +48,6 @@ public interface PaymentService {
      Payment findSuccessPaymentDetailByAppointmentId(int id);
      List<Payment> getAllPayment(int index, String searchText);
      int getNumberOfPayment(String searchText);
+     void changeStatusAllCancelPayment(int patientId);
 
 }
