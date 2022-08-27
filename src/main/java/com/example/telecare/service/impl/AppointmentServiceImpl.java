@@ -729,9 +729,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone, String date, String time) {
+    public AppointmentDTOInf getCurrentAppointmentAvailable(String patientPhone, String doctorPhone) {
+
         User patient = userRepository.findUserByPhone(patientPhone);
         User doctor = userRepository.findUserByPhone(doctorPhone);
+        Date d = new Date();
+        DateFormat dateFormatDay = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss");
+
+        dateFormatDay.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        dateFormatTime.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        String date = dateFormatDay.format(d);
+        String time = dateFormatTime.format(d);
+
         return appointmentRepository.getCurrentAppointmentAvailable(patient.getId(), doctor.getId(), date, time);
     }
 
