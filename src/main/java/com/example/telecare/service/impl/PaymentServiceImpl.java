@@ -210,15 +210,17 @@ public class PaymentServiceImpl implements PaymentService {
         vnp_Params.put("vnp_ReturnUrl", vnpayConfig.vnpReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
         TimeZone tz = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
-        Calendar cld = Calendar.getInstance();
-        cld.setTimeZone(tz);
+        Calendar calendarSaveInDatabase = Calendar.getInstance();
+        Calendar calendarSaveOnSystem = Calendar.getInstance();
+        calendarSaveOnSystem.setTimeZone(tz);
+        calendarSaveInDatabase.setTimeZone(tz);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        String vnp_CreateDate = formatter.format(cld.getTime());
+        String vnp_CreateDate = formatter.format(calendarSaveOnSystem.getTime());
 
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
-        cld.add(Calendar.MINUTE, 15);
-        String vnp_ExpireDate = formatter.format(cld.getTime());
+        calendarSaveOnSystem.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = formatter.format(calendarSaveOnSystem.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
         //Build data to hash and querystring
         List fieldNames = new ArrayList(vnp_Params.keySet());
@@ -259,7 +261,7 @@ public class PaymentServiceImpl implements PaymentService {
         //save pending payment to database
 
         SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateDatabase = databaseFormat.format(cld.getTime());
+        String dateDatabase = databaseFormat.format(calendarSaveInDatabase.getTime());
 
         Payment payment = new Payment();
         payment.setStatus(PaymentStatusPending);
@@ -288,5 +290,15 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public int getNumberOfPayment(String searchText) {
         return paymentRepository.getNumberOfPayment(searchText);
+    }
+
+    @Override
+    public void changeStatusAllCancelPayment(int patientId) {
+        List<Payment> payments = paymentRepository.getAllPaymentCancel(patientId);
+        payments.forEach(payment -> {
+            payment.setResponseCode("24");
+            payment.setStatus(PaymentStatusFailed);
+            paymentRepository.save(payment);
+        });
     }
 }
