@@ -45,13 +45,18 @@ class ExperienceControllerTest {
     @InjectMocks
     private ExperienceController experienceController;
 
-    DoctorExperience exp1 = new DoctorExperience(1, "2 năm", 1);
-    DoctorExperience exp2 = new DoctorExperience(2, "3 năm", 1);
-    DoctorExperience exp3 = new DoctorExperience(3, "4 năm", 1);
-    DoctorExperience exp4 = new DoctorExperience(4, "5 năm", 2);
-    DoctorExperience exp5 = new DoctorExperience(5, "6 năm", 3);
+//    DoctorExperience exp1 = new DoctorExperience(1, "2 năm", 1);
+//    DoctorExperience exp2 = new DoctorExperience(2, "3 năm", 1);
+//    DoctorExperience exp3 = new DoctorExperience(3, "4 năm", 1);
+//    DoctorExperience exp4 = new DoctorExperience(4, "5 năm", 1);
+//    DoctorExperience exp5 = new DoctorExperience(5, "6 năm", 1);
 
-
+//
+    DoctorExperience exp1 = new DoctorExperience(1, "2 năm", null);
+    DoctorExperience exp2 = new DoctorExperience(2, "3 năm", null);
+    DoctorExperience exp3 = new DoctorExperience(3, "4 năm", null);
+    DoctorExperience exp4 = new DoctorExperience(4, "5 năm", null);
+    DoctorExperience exp5 = new DoctorExperience(5, "6 năm", null);
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -68,7 +73,7 @@ class ExperienceControllerTest {
                 .builder()
                 .id(6)
                 .experience("10 Năm")
-                .doctorId(1)
+
                 .build();
 
         Mockito.when(experienceRepository.save(newDoctorExperience)).thenReturn(newDoctorExperience);
