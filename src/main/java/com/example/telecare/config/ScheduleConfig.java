@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-@Configuration
+//@Configuration
 @EnableScheduling
 @Slf4j
 public class ScheduleConfig {

@@ -28,7 +28,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
     int getNumberOfPayment(String searchText);
 
 
-    @Query(value = "SELECT p.* FROM telecare.payment p where appointment_id = 4 and p.status = 0;"
+    @Query(value = "SELECT p.* FROM telecare.payment p where appointment_id = ?1 and p.status = 0;"
             ,nativeQuery = true)
     List<Payment> getAllPendingPayment(int appointmentId);
 

@@ -128,6 +128,10 @@ public class Doctor {
         this.specialties.add(specialty);
     }
 
+    public void removeSpecialty(Specialty specialty) {
+        this.specialties.remove(specialty);
+    }
+
     public String getSignature() {
         return signature;
     }
