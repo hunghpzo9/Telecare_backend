@@ -77,6 +77,7 @@ public class RelativeServiceImpl implements RelativeService {
             relative.setPhone(relativeDetail.getPhone());
             relative.setEmail(relativeDetail.getEmail());
             relative.setImageUrl(relativeDetail.getImageUrl());
+            relative.setEthnicId(relativeDetail.getEthnicId());
 
             relativeRepository.save(relative);
 
