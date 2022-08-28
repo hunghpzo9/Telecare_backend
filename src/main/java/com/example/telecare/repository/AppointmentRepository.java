@@ -207,22 +207,24 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 
     @Query(value = "select a.id , up.full_name patientName,up.id patientId,up.phone patientPhone,\n" +
-            "            ud.full_name doctorName,ud.id doctorId,ad.time\n" +
-            "            ,s.start_at startAt, s.end_at endAt,aps.name appointmentStatus,\n" +
-            "            p.trace prescriptionTrace, p.url prescriptionUrl,\n" +
-            "            mr.trace medicalRecordTrace,mr.url medicalRecordUrl,\n" +
-            "            ps.status paymentStatus, re.full_name relativeName\n" +
-            "            from appointment as a \n" +
-            "            left join user as up on a.patient_id=up.id\n" +
-            "            left join user as ud on a.doctor_id=ud.id\n" +
-            "            left join prescription as p on a.id = p.appointment_id\n" +
-            "            left join medical_record as mr on a.id=mr.appointment_id\n" +
-            "            left join appointment_details as ad on a.id=ad.appointment_id\n" +
-            "            left join appointment_status as aps on ad.status_id=aps.id\n" +
-            "            left join schedule s on s.id = a.schedule_id\n" +
-            "            left join payment_status ps on ps.id = a.payment_status_id\n" +
-            "            left join relative re on re.id = a.relative_id\n" +
-            "            where a.id = ?1", nativeQuery = true)
+            "                        ud.full_name doctorName,ud.id doctorId,ad.time,\n" +
+            "                        ca.description as cancelReason,ad.refuse_fill_reason as refuseFillReason\n" +
+            "                        ,s.start_at startAt, s.end_at endAt,aps.name appointmentStatus,\n" +
+            "                        p.trace prescriptionTrace, p.url prescriptionUrl,\n" +
+            "                        mr.trace medicalRecordTrace,mr.url medicalRecordUrl,\n" +
+            "                        ps.status paymentStatus, re.full_name relativeName\n" +
+            "                        from appointment as a\n" +
+            "                        left join user as up on a.patient_id=up.id\n" +
+            "                        left join user as ud on a.doctor_id=ud.id\n" +
+            "                        left join prescription as p on a.id = p.appointment_id\n" +
+            "                        left join medical_record as mr on a.id=mr.appointment_id\n" +
+            "                        left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "                        left join appointment_status as aps on ad.status_id=aps.id\n" +
+            "                        left join schedule s on s.id = a.schedule_id\n" +
+            "                        left join payment_status ps on ps.id = a.payment_status_id\n" +
+            "                        left join relative re on re.id = a.relative_id\n" +
+            "                        left outer join cancel_appointment ca on ca.appointment_id = a.id\n" +
+            "                        where a.id = ?1", nativeQuery = true)
     AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
 
 

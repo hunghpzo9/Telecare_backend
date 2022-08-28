@@ -853,6 +853,16 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
+            public String getCancelReason() {
+                return appointment.getCancelReason();
+            }
+
+            @Override
+            public String getRefuseFillReason() {
+                return appointment.getRefuseFillReason();
+            }
+
+            @Override
             public List<MedicalRecordDTOInf> getListSharedMedicalRecord() {
 
                 return medicalRecordRepository.getSharedMedicalRecordByAppointmentAdmin(appointmentId);
