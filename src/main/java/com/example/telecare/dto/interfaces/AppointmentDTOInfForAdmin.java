@@ -23,6 +23,7 @@ public interface AppointmentDTOInfForAdmin {
     String getRelativeName();
     String getCancelReason();
     String getRefuseFillReason();
+    String getCancelPerson();
     List<MedicalRecordDTOInf> getListSharedMedicalRecord();
     List<PrescriptionDTOInf> getListSharedPrescription();
 
