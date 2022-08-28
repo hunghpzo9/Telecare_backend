@@ -70,7 +70,7 @@ public class Constants {
 
     //Mesage
 
-    public static final String UPCOMING_APPOINTMENT_MESSAGE= "Còn 15 phút nữa là đén ca khám của bạn vui lòng chú ý để vào khám đúng giờ.";
+    public static final String UPCOMING_APPOINTMENT_MESSAGE= "Sắp đến ca khám của bạn vui lòng chú ý để vào khám đúng giờ.";
 
     public static final String ON_TIME_APPOINTMENT_MESSAGE= "Đã đến giờ khám vui lòng vào phòng khám.";
 

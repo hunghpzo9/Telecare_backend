@@ -91,18 +91,14 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             nativeQuery = true)
     Integer getNumberDoneAppointment(int uid);
 
-    @Query(value = "SELECT  Sum(CASE WHEN ad.status_id = 3 or ad.status_id = 2 THEN 1 ELSE 0 END )\n" +
-            "as appointmentDoneCount\n" +
-            "FROM telecare.user u\n" +
-            "            right outer join telecare.doctor d on u.id = d.doctor_id\n" +
-            "            left outer join telecare.appointment a on d.doctor_id = a.doctor_id\n" +
-            "            left outer join telecare.appointment_details ad on a.id = ad.appointment_id\n" +
-            "            left outer join telecare.appointment_status apt on ad.status_id = apt.id\n" +
-            "            where d.doctor_id = ?1\n" +
-            "            group by d.doctor_id\n" +
-            "         ",
+    @Query(value = "SELECT countPatient.count + COUNT(DISTINCT a.relative_id) FROM telecare.appointment a  left outer join appointment_details ad\n" +
+            "    on a.id = ad. appointment_id ,\n" +
+            "     (SELECT COUNT(DISTINCT a.patient_id) as count FROM telecare.appointment a  left outer join appointment_details ad\n" +
+            "    on a.id = ad. appointment_id where a.doctor_id = ?1  and ad.status_id = 3 and a.relative_id IS NULL) countPatient\n" +
+            "    where a.doctor_id = ?1  and ad.status_id = 3 and a.relative_id IS NOT NULL\n" +
+            "    ;",
             nativeQuery = true)
-    Integer getNumberPatient(int uid);
+    Integer getNumberPatientByDoctor(int uid);
 
     @Query(value = "SELECT avg(f.rating) as rating FROM \n" +
             "                        telecare.feedback f\n" +
@@ -123,7 +119,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     int getNumberOfDoctor(String search);
 
     @Query(value = "SELECT d.* FROM telecare.doctor d left outer join user u on u.id = d.doctor_id \n" +
-            "where expire_date_certificate < NOW() and u.is_active != 2;"
+            "where expire_date_certificate <= NOW() and u.is_active != 2;"
             , nativeQuery = true)
     List<Doctor> getAllExpireDoctor(String time);
 

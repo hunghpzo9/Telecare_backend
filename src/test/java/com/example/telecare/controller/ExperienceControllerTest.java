@@ -48,9 +48,8 @@ class ExperienceControllerTest {
     DoctorExperience exp1 = new DoctorExperience(1, "2 năm", 1);
     DoctorExperience exp2 = new DoctorExperience(2, "3 năm", 1);
     DoctorExperience exp3 = new DoctorExperience(3, "4 năm", 1);
-    DoctorExperience exp4 = new DoctorExperience(4, "5 năm", 2);
-    DoctorExperience exp5 = new DoctorExperience(5, "6 năm", 3);
-
+    DoctorExperience exp4 = new DoctorExperience(4, "5 năm", 1);
+    DoctorExperience exp5 = new DoctorExperience(5, "6 năm", 1);
 
     @BeforeEach
     void setUp() {

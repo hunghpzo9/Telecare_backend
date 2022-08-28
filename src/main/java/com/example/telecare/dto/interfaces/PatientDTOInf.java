@@ -44,4 +44,6 @@ public interface PatientDTOInf {
     String getReason();
 
     String getInsurance();
+
+    Integer getCountDoneAppointment();
 }

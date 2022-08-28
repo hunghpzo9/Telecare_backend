@@ -7,16 +7,10 @@ import com.example.telecare.dto.interfaces.DoctorDTOInf;
 import com.example.telecare.dto.interfaces.DoctorExperienceDTO;
 import com.example.telecare.exception.BadRequestException;
 import com.example.telecare.exception.NotFoundException;
-import com.example.telecare.model.Doctor;
+import com.example.telecare.model.*;
 
 
-import com.example.telecare.model.Patient;
-import com.example.telecare.model.Specialty;
-import com.example.telecare.model.User;
-import com.example.telecare.repository.DoctorRepository;
-import com.example.telecare.repository.PatientRepository;
-import com.example.telecare.repository.SpecialtyRepository;
-import com.example.telecare.repository.UserRepository;
+import com.example.telecare.repository.*;
 import com.example.telecare.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +34,10 @@ public class DoctorServiceImpl implements DoctorService {
     UserRepository userRepository;
     @Autowired
     SpecialtyRepository specialtyRepository;
+    @Autowired
+    ExperienceRepository experienceRepository;
+    @Autowired
+    AchievementRepository achievementRepository;
 
     @Override
     public DoctorDTOInf findDoctorById(int uid) {
@@ -143,7 +141,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             @Override
             public Integer getPatientCount() {
-                return doctorRepository.getNumberPatient(doctorDTOInf.getId());
+                return doctorRepository.getNumberPatientByDoctor(doctorDTOInf.getId());
             }
 
             @Override
@@ -197,7 +195,7 @@ public class DoctorServiceImpl implements DoctorService {
         String currentDate = formatter.format(cld.getTime());
         System.out.println(currentDate);
 
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search, page,currentDate);
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctor(search, page, currentDate);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
             DoctorDTOInf finalDoctorDTO = doctorDTOInf;
@@ -217,7 +215,7 @@ public class DoctorServiceImpl implements DoctorService {
         String currentDate = formatter.format(cld.getTime());
 
 
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search, specialtyId, page,currentDate);
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllDoctorBySpecialty(search, specialtyId, page, currentDate);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
             DoctorDTOInf finalDoctorDTO = doctorDTOInf;
@@ -226,6 +224,7 @@ public class DoctorServiceImpl implements DoctorService {
         }
         return returnDoctorPage;
     }
+
     @Override
     public List<DoctorDTOInf> listAllFavoriteDoctorById(String search, int page, int patientId) {
         if (page < 0) {
@@ -234,7 +233,7 @@ public class DoctorServiceImpl implements DoctorService {
         if (patientId < 1) {
             throw new NotFoundException("Patient not found! PatientID is incorrect");
         }
-        List<DoctorDTOInf> doctorPage = doctorRepository.listAllFavoriteDoctorById(search,page,patientId);
+        List<DoctorDTOInf> doctorPage = doctorRepository.listAllFavoriteDoctorById(search, page, patientId);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
             DoctorDTOInf finalDoctorDTO = doctorDTOInf;
@@ -252,7 +251,7 @@ public class DoctorServiceImpl implements DoctorService {
         if (doctorId < 1) {
             throw new NotFoundException("Doctor not found! DoctorID is incorrect");
         }
-        if(doctorRepository.countFavoriteDoctor(patientId,doctorId) > 0){
+        if (doctorRepository.countFavoriteDoctor(patientId, doctorId) > 0) {
             return true;
         }
         return false;
@@ -291,7 +290,6 @@ public class DoctorServiceImpl implements DoctorService {
         user.setGender(doctorDetail.getGender());
         user.setEmail(doctorDetail.getEmail());
         user.setImageUrl(doctorDetail.getImageUrl());
-        System.out.println(user.getEmail());
 
         User duplicateUserByEmail = userRepository.findUserByEmail(user.getEmail());
         if (duplicateUserByEmail != null && duplicateUserByEmail.getId() != user.getId()) {
@@ -302,6 +300,47 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setJobPlace(doctorDetail.getJobPlace());
         doctor.setSignature(doctorDetail.getSignature());
         doctor.setCertificate(doctorDetail.getCertificate());
+
+        if (doctorDetail.getUpdateDoctorExperiences().size() != 0) {
+            List<DoctorExperience> doctorExperiences = doctorDetail.getUpdateDoctorExperiences();
+            for (DoctorExperience de : doctorExperiences) {
+                de.setDoctorId(doctor.getDoctorId());
+                experienceRepository.save(de);
+            }
+        }
+
+        if (doctorDetail.getDeleteDoctorExperiences().size() != 0) {
+            List<DoctorExperience> doctorExperiences = doctorDetail.getDeleteDoctorExperiences();
+            for (DoctorExperience de : doctorExperiences) {
+                experienceRepository.delete(de);
+            }
+        }
+
+        if (doctorDetail.getUpdateDoctorAchievements().size() != 0) {
+            List<DoctorAchievement> doctorAchievements = doctorDetail.getUpdateDoctorAchievements();
+            for (DoctorAchievement da : doctorAchievements) {
+                da.setDoctorId(doctor.getDoctorId());
+                achievementRepository.save(da);
+            }
+        }
+
+        if (doctorDetail.getDeleteDoctorExperiences().size() != 0) {
+            List<DoctorAchievement> doctorAchievements = doctorDetail.getDeleteDoctorAchievements();
+            for (DoctorAchievement da : doctorAchievements) {
+                achievementRepository.delete(da);
+            }
+        }
+
+        if (doctorDetail.getUpdateDoctorSpecialtyId().size() != 0) {
+            for(Integer sid : doctorDetail.getUpdateDoctorSpecialtyId()){
+                doctor.addSpecialty(specialtyRepository.findSpecialtyById(sid));
+            }
+        }
+        if (doctorDetail.getDeleteDoctorSpecialtyId().size() != 0) {
+            for(Integer sid : doctorDetail.getDeleteDoctorSpecialtyId()){
+                doctor.removeSpecialty(specialtyRepository.findSpecialtyById(sid));
+            }
+        }
 
         userRepository.save(user);
         doctorRepository.save(doctor);
@@ -319,11 +358,11 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorDTOInf> getAllDoctor(int index,String search) {
+    public List<DoctorDTOInf> getAllDoctor(int index, String search) {
         if (index < 0) {
             throw new NotFoundException("Index can not less than 0");
         }
-        List<DoctorDTOInf> doctorPage = doctorRepository.getAllDoctor(index,search);
+        List<DoctorDTOInf> doctorPage = doctorRepository.getAllDoctor(index, search);
         List<DoctorDTOInf> returnDoctorPage = new ArrayList<>();
         for (DoctorDTOInf doctorDTOInf : doctorPage) {
             DoctorDTOInf finalDoctorDTO = doctorDTOInf;

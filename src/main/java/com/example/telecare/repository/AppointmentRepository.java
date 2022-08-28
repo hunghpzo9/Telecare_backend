@@ -57,17 +57,21 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                                    group by s.end_at,s.start_at,ad.time",
             nativeQuery = true)
     AppointmentDTOInf findAppointmentDetailById(int id);
-    @Query(value = "SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
-            "            telecare.appointment_details ad on a.id = ad.appointment_id\n" +
-            "            where time = ?3 and a.patient_id = ?2 and (ad.status_id = 2 or ad.status_id = 1)\n" +
-            "            \n" +
-            "            UNION\n" +
-            "            SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
-            "            telecare.appointment_details ad on a.id = ad.appointment_id\n" +
-            "            where time = ?3 and a.doctor_id = ?1 and ad.status_id = 2"
+    @Query(value = "SELECT a.schedule_id FROM telecare.appointment a left outer join\n" +
+            "                        telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "                        where time = ?3 and a.patient_id = ?2 and (ad.status_id = 2 or ad.status_id = 1)\n" +
+            "                       \n" +
+            "                        UNION\n" +
+            "                        SELECT a.schedule_id FROM telecare.appointment a left outer join \n" +
+            "                        telecare.appointment_details ad on a.id = ad.appointment_id\n" +
+            "                        where time = ?3 and a.doctor_id = ?1 and (ad.status_id = 2 or ad.status_id = 1)\n" +
+            "\t\t\t\t\t\tUNION\n" +
+            "\t\t\t\t\t\tSELECT  CASE WHEN (?5 = ?3) THEN id \n" +
+            "                        end\n" +
+            "                        FROM schedule where end_at < ?4"
             ,
             nativeQuery = true)
-    List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time);
+    List<Integer> listScheduleFindByDoctorAndTime(int doctorId,int patientId, String time,String currentTime,String currentDate);
 
     @Query(value = "SELECT COUNT(*) FROM telecare.cancel_appointment ca where\n" +
             "created_at > (DATE_ADD(?2, INTERVAL -6048000 SECOND))\n" +
@@ -162,7 +166,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        left outer join telecare.user u on a.doctor_id = u.id\n" +
             "                        left outer join telecare.schedule s on a.schedule_id = s.id\n" +
             "                        left outer join telecare.appointment_status aps on aps.id = ad.status_id\n" +
-            "                        where aps.id in (1,2) and ((ad.time < ?1 \n" +
+            "                        where aps.id in (1,2) and ((ad.time = ?1 \n" +
             "                        and s.end_at <= ?2) or ad.time < ?1 )\n" +
             "                        group by s.end_at,s.start_at,ad.time\n" +
             "                                    ",
@@ -203,22 +207,28 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
 
     @Query(value = "select a.id , up.full_name patientName,up.id patientId,up.phone patientPhone,\n" +
-            "            ud.full_name doctorName,ud.id doctorId,ad.time\n" +
-            "            ,s.start_at startAt, s.end_at endAt,aps.name appointmentStatus,\n" +
-            "            p.trace prescriptionTrace, p.url prescriptionUrl,\n" +
-            "            mr.trace medicalRecordTrace,mr.url medicalRecordUrl,\n" +
-            "            ps.status paymentStatus, re.full_name relativeName\n" +
-            "            from appointment as a \n" +
-            "            left join user as up on a.patient_id=up.id\n" +
-            "            left join user as ud on a.doctor_id=ud.id\n" +
-            "            left join prescription as p on a.id = p.appointment_id\n" +
-            "            left join medical_record as mr on a.id=mr.appointment_id\n" +
-            "            left join appointment_details as ad on a.id=ad.appointment_id\n" +
-            "            left join appointment_status as aps on ad.status_id=aps.id\n" +
-            "            left join schedule s on s.id = a.schedule_id\n" +
-            "            left join payment_status ps on ps.id = a.payment_status_id\n" +
-            "            left join relative re on re.id = a.relative_id\n" +
-            "            where a.id = ?1", nativeQuery = true)
+            "                        ud.full_name doctorName,ud.id doctorId,ad.time,\n" +
+            "                        ca.description as cancelReason,ad.refuse_fill_reason as refuseFillReason,\n" +
+            "                       if( ad.status_id = 4, if(r.id= 1 or r.id=2, cud.full_name,\"Hệ thống\"),null) as cancelPerson\n" +
+            "                        ,s.start_at startAt, s.end_at endAt,aps.name appointmentStatus,\n" +
+            "                        p.trace prescriptionTrace, p.url prescriptionUrl,\n" +
+            "                        mr.trace medicalRecordTrace,mr.url medicalRecordUrl,\n" +
+            "                        ps.status paymentStatus, re.full_name relativeName\n" +
+            "                        from appointment as a\n" +
+            "                        left join user as up on a.patient_id=up.id\n" +
+            "                        left join user as ud on a.doctor_id=ud.id\n" +
+            "                        left join prescription as p on a.id = p.appointment_id\n" +
+            "                        left join medical_record as mr on a.id=mr.appointment_id\n" +
+            "                        left join appointment_details as ad on a.id=ad.appointment_id\n" +
+            "                        left join appointment_status as aps on ad.status_id=aps.id\n" +
+            "                        left join schedule s on s.id = a.schedule_id\n" +
+            "                        left join payment_status ps on ps.id = a.payment_status_id\n" +
+            "                        left join relative re on re.id = a.relative_id\n" +
+            "                        left outer join cancel_appointment ca on ca.appointment_id = a.id\n" +
+            "                        left outer join user as cud on ca.user_id = cud.id\n" +
+            "                        left outer join cancel_reason cr on cr.id = ca.cancel_reason_id\n" +
+            "                        left outer join role r on r.id = cr.role_id \n" +
+            "                        where a.id = ?1", nativeQuery = true)
     AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
 
 

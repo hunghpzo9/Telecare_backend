@@ -21,6 +21,9 @@ public interface AppointmentDTOInfForAdmin {
     Time getEndAt();
     String getPaymentStatus();
     String getRelativeName();
+    String getCancelReason();
+    String getRefuseFillReason();
+    String getCancelPerson();
     List<MedicalRecordDTOInf> getListSharedMedicalRecord();
     List<PrescriptionDTOInf> getListSharedPrescription();
 

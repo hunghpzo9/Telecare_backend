@@ -1,5 +1,8 @@
 package com.example.telecare.dto;
 
+import com.example.telecare.model.DoctorAchievement;
+import com.example.telecare.model.DoctorExperience;
+import com.example.telecare.model.DoctorSpecialty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +25,13 @@ public class DoctorUpdateDTO {
     String certificate;
     String position;
     String jobPlace;
-    Integer specialtyId;
+
+    List<DoctorExperience> updateDoctorExperiences;
+    List<DoctorExperience> deleteDoctorExperiences;
+
+    List<DoctorAchievement> updateDoctorAchievements;
+    List<DoctorAchievement> deleteDoctorAchievements;
+
+    List<Integer> updateDoctorSpecialtyId;
+    List<Integer> deleteDoctorSpecialtyId;
 }

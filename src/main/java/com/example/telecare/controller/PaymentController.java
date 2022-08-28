@@ -1,6 +1,7 @@
 package com.example.telecare.controller;
 
 import com.example.telecare.dto.PaymentDTO;
+import com.example.telecare.dto.ResponseOkMessage;
 import com.example.telecare.model.Payment;
 import com.example.telecare.service.impl.PaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 @CrossOrigin(maxAge = 60 * 60 * 24 * 30)
 @RestController
@@ -88,9 +90,11 @@ public class PaymentController {
                                            HttpServletRequest req) throws UnsupportedEncodingException {
         return paymentService.createPayment(paymentDTO, req);
     }
+
     @GetMapping(value = "/detail")
-    public ResponseEntity<?> paymentDetail(@RequestParam(value = "appointment_id") int appointment_id)  {
-        Payment payment =  paymentService.findSuccessPaymentDetailByAppointmentId(appointment_id);
-        return  ResponseEntity.ok(payment);
+    public ResponseEntity<?> paymentDetail(@RequestParam(value = "appointment_id") int appointment_id) {
+        Payment payment = paymentService.findSuccessPaymentDetailByAppointmentId(appointment_id);
+        return ResponseEntity.ok(payment);
     }
+
 }
