@@ -208,7 +208,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     @Query(value = "select a.id , up.full_name patientName,up.id patientId,up.phone patientPhone,\n" +
             "                        ud.full_name doctorName,ud.id doctorId,ad.time,\n" +
-            "                        ca.description as cancelReason,ad.refuse_fill_reason as refuseFillReason\n" +
+            "                        ca.description as cancelReason,ad.refuse_fill_reason as refuseFillReason,\n" +
+            "                       if( ad.status_id = 4, if(r.id= 1 or r.id=2, cud.full_name,\"Hệ thống\"),null) as cancelPerson\n" +
             "                        ,s.start_at startAt, s.end_at endAt,aps.name appointmentStatus,\n" +
             "                        p.trace prescriptionTrace, p.url prescriptionUrl,\n" +
             "                        mr.trace medicalRecordTrace,mr.url medicalRecordUrl,\n" +
@@ -224,6 +225,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        left join payment_status ps on ps.id = a.payment_status_id\n" +
             "                        left join relative re on re.id = a.relative_id\n" +
             "                        left outer join cancel_appointment ca on ca.appointment_id = a.id\n" +
+            "                        left outer join user as cud on ca.user_id = cud.id\n" +
+            "                        left outer join cancel_reason cr on cr.id = ca.cancel_reason_id\n" +
+            "                        left outer join role r on r.id = cr.role_id \n" +
             "                        where a.id = ?1", nativeQuery = true)
     AppointmentDTOInfForAdmin getAppointmentDetailForAdmin(int appointmentId);
 

@@ -863,6 +863,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
 
             @Override
+            public String getCancelPerson() {
+                return appointment.getCancelPerson();
+            }
+
+            @Override
             public List<MedicalRecordDTOInf> getListSharedMedicalRecord() {
 
                 return medicalRecordRepository.getSharedMedicalRecordByAppointmentAdmin(appointmentId);
