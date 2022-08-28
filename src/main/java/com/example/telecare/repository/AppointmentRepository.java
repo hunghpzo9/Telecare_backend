@@ -201,7 +201,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left join user as ud on a.doctor_id=ud.id\n" +
             "left join medical_record as mr on a.id=mr.appointment_id\n" +
             "left join appointment_details as ad on a.id=ad.appointment_id\n" +
-            "where up.full_name like %?2% or ud.full_name like %?2% or " +
+            "where a.id like %?2% or up.full_name like %?2% or ud.full_name like %?2% or " +
             "up.phone like %?2% or p.trace like %?2% or mr.trace like %?2% or ad.time like %?2% order by ad.time desc\n" +
             "limit ?1,10", nativeQuery = true)
     List<AppointmentDTOInfForAdmin> getAllAppointmentForAdmin(int index, String search);
@@ -239,7 +239,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "left join user as ud on a.doctor_id=ud.id\n" +
             "left join medical_record as mr on a.id=mr.appointment_id\n" +
             "left join appointment_details as ad on a.id=ad.appointment_id\n" +
-            "where up.full_name like %?1% or ud.full_name like %?1% or up.phone like %?1% or p.trace like %?1% or mr.trace like %?1% or ad.time like %?1% "
+            "where a.id like %?1% or up.full_name like %?1% or ud.full_name like %?1% or up.phone like %?1% or p.trace like %?1% or mr.trace like %?1% or ad.time like %?1% "
             ,nativeQuery = true)
     int getNumberOfAppointmentForAdmin(String search);
 
@@ -252,7 +252,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        left join appointment_details as ad on a.id=ad.appointment_id\n" +
             "                        left join appointment_status as aps on ad.status_id=aps.id\n" +
             "                        left join schedule s on s.id = a.schedule_id\n" +
-            "                        where  up.full_name like %?2% or ud.full_name like %?2% or ad.time like %?2% or aps.name like %?2%\n" +
+            "                        where a.id like %?2% or up.full_name like %?2% or ud.full_name like %?2% or ad.time like %?2% or aps.name like %?2%\n" +
             "                        order by a.created_at desc\n" +
             "                        limit ?1,10", nativeQuery = true)
     List<AppointmentDTOInfForAdmin> getAllAppointmentDetailsForAdmin(int index, String search);
@@ -263,7 +263,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             "                        left join appointment_details as ad on a.id=ad.appointment_id\n" +
             "                        left join appointment_status as aps on ad.status_id=aps.id\n" +
             "                        left join schedule s on s.id = a.schedule_id\n" +
-            "                        where  up.full_name like %?1% or ud.full_name like %?1% or ad.time like %?1% or aps.name like %?1%"
+            "                        where  a.id like %?1% or up.full_name like %?1% or ud.full_name like %?1% or ad.time like %?1% or aps.name like %?1%"
             ,nativeQuery = true)
     int getNumberOfAppointmentDetailsForAdmin(String search);
 
