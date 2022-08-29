@@ -25,7 +25,7 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, In
             "        LEFT OUTER JOIN\n" +
             "    telecare.user u ON a.doctor_id = u.id\n" +
             "WHERE\n" +
-            "    a.patient_id = ?1\n" +
+            "    a.patient_id = ?1 order by id desc\n" +
             "LIMIT 5 OFFSET ?2", nativeQuery = true)
     List<MedicalRecordDTOInf> getMedicalRecordByPatientId(int id, int page);
 
